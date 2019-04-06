@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "1049069169744",
+    "firebase_url": "https://my-class-nits.firebaseio.com",
+    "project_id": "my-class-nits",
+    "storage_bucket": "my-class-nits.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049069169744:android:dc2d66bb3a2f421c",
+        "android_client_info": {
+          "package_name": "com.pistudiosofficial.myclass"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049069169744-kb48lfspeol6lunu9foombg7e6v6o9p8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pistudiosofficial.myclass",
+            "certificate_hash": "0caaa5592968e313788488f4c7b8b26932855ae7"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlwEqzctLGePP9QsPgkF0-1UsMySEBclI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049069169744-4l3r588t4aqdi2ll0gqo7u7jqhvla171.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
