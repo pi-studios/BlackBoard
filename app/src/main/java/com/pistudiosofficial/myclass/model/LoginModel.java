@@ -1,23 +1,23 @@
 package com.pistudiosofficial.myclass.model;
 
-import android.util.Log;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.pistudiosofficial.myclass.ConnectionObject;
 import com.pistudiosofficial.myclass.UserObject;
-import com.pistudiosofficial.myclass.presenter.LoginActivityPresenterInterface;
+import com.pistudiosofficial.myclass.presenter.presenter_interfaces.LoginPresenterInterface;
 
 import androidx.annotation.NonNull;
 
 import static com.pistudiosofficial.myclass.Common.FIREBASE_USER;
 import static com.pistudiosofficial.myclass.Common.mAUTH;
+import static com.pistudiosofficial.myclass.Common.mREF_connections;
 import static com.pistudiosofficial.myclass.Common.mREF_users;
 
 public class LoginModel {
-    LoginActivityPresenterInterface presenter;
+    LoginPresenterInterface presenter;
 
-    public LoginModel(LoginActivityPresenterInterface presenter) {
+    public LoginModel(LoginPresenterInterface presenter) {
         this.presenter = presenter;
     }
 
@@ -45,6 +45,18 @@ public class LoginModel {
                             presenter.signupSuccess();
                             userObject.UID = mAUTH.getUid();
                             mREF_users.child(userObject.UID).setValue(userObject);
+                            if(userObject.AdminLevel.equals("admin")){
+                                ConnectionObject object = new ConnectionObject("","self","");
+                                mREF_connections.child(userObject.UID).setValue(object);
+                            }
+                            if(userObject.AdminLevel.equals("master_admin")){
+                                ConnectionObject object = new ConnectionObject("self","","");
+                                mREF_connections.child(userObject.UID).setValue(object);
+                            }
+                            if(userObject.AdminLevel.equals("user")){
+                                ConnectionObject object = new ConnectionObject("","","self");
+                                mREF_connections.child(userObject.UID).setValue(object);
+                            }
                         } else {
                             presenter.signupFailed();
                         }

@@ -2,13 +2,14 @@ package com.pistudiosofficial.myclass.presenter;
 
 import com.pistudiosofficial.myclass.UserObject;
 import com.pistudiosofficial.myclass.model.LoginModel;
-import com.pistudiosofficial.myclass.view.LoginActivityViewInterface;
+import com.pistudiosofficial.myclass.presenter.presenter_interfaces.LoginPresenterInterface;
+import com.pistudiosofficial.myclass.view.LoginActivityView;
 
-public class LoginActivityPresenter implements LoginActivityPresenterInterface {
+public class LoginPresenter implements LoginPresenterInterface {
 
-    LoginActivityViewInterface view;
+    LoginActivityView view;
     LoginModel loginModel;
-    public LoginActivityPresenter(LoginActivityViewInterface view) {
+    public LoginPresenter(LoginActivityView view) {
         this.view = view;
         loginModel = new LoginModel(this);
     }

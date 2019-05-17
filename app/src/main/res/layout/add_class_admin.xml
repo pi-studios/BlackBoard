@@ -15,7 +15,7 @@
         android:inputType="textPersonName" />
 
     <EditText
-        android:id="@+id/et_code"
+        android:id="@+id/et_addFaculty_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -57,7 +57,7 @@
         android:inputType="number" />
 
     <Button
-        android:id="@+id/bt_add"
+        android:id="@+id/bt_add_class"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Add" />

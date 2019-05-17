@@ -16,4 +16,7 @@ public class UserObject {
         AdminLevel = adminLevel;
         Roll = roll;
     }
+
+    public UserObject() {
+    }
 }

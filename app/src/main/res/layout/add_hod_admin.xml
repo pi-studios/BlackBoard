@@ -10,16 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Enter Faculty Email"
+        android:hint="Enter HOD Email"
         android:inputType="textPersonName" />
-
-    <EditText
-        android:id="@+id/et_addFaculty_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Enter Class Join Code"
-        android:inputType="number" />
 
 
     <Button

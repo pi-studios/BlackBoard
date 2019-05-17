@@ -7,25 +7,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pistudiosofficial.myclass.R;
-import com.pistudiosofficial.myclass.presenter.LoginActivityPresenter;
-import com.pistudiosofficial.myclass.view.LoginActivityViewInterface;
+import com.pistudiosofficial.myclass.presenter.LoginPresenter;
+import com.pistudiosofficial.myclass.view.LoginActivityView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 
-public class LoginActivity extends AppCompatActivity implements LoginActivityViewInterface {
+public class LoginActivity extends AppCompatActivity implements LoginActivityView {
 
     private EditText email,password;
     private Button login;
     private TextView createAcc;
-    private LoginActivityPresenter presenter;
+    private LoginPresenter presenter;
     private RadioGroup radioGroup;
     private String admin = "user";
     private EditText roll;
@@ -110,15 +108,13 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
         super.onBackPressed();
         if(dialog.isShowing()){
             dialog.dismiss();
-        }else {
-            finish();
         }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        presenter = new LoginActivityPresenter(this);
+        presenter = new LoginPresenter(this);
     }
 
     @Override
