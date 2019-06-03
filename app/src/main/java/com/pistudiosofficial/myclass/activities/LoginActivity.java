@@ -16,6 +16,7 @@ import com.pistudiosofficial.myclass.presenter.LoginPresenter;
 import com.pistudiosofficial.myclass.view.LoginActivityView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 
 public class LoginActivity extends AppCompatActivity implements LoginActivityView {
@@ -38,6 +39,8 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
         login = findViewById(R.id.bt_logIn);
         createAcc = findViewById(R.id.tv_createAccount);
         dialog = new Dialog(LoginActivity.this);
+
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override

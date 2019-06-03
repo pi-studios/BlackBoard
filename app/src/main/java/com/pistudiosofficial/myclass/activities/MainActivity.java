@@ -181,10 +181,12 @@ public class MainActivity extends AppCompatActivity
             if(CURRENT_USER.AdminLevel.equals("user")){
                 presenter.performConnectionDownload();
             }
-        } else if (id == R.id.nav_notification_history) {
+        }
+        else if (id == R.id.nav_notification_history) {
             intent = new Intent(getApplicationContext(),NotificationHistoryActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_slideshow) {
+        }
+        else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
 
