@@ -7,4 +7,10 @@ public interface CheckAttendancePresenterInterface {
     void adminCheckAttendanceDataDownloadSuccess(ArrayList<Double> arrayList);
     void adminCheckAttendanceDataDownloadFailed();
 
+    void exportCsvSuccess();
+    void exportCsvFailed();
+
+    void broadcastSuccess();
+    void broadcastFailed();
+
 }

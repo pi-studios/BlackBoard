@@ -1,7 +1,8 @@
 package com.pistudiosofficial.myclass.presenter.presenter_interfaces;
 
 import com.pistudiosofficial.myclass.ClassObject;
-import com.pistudiosofficial.myclass.StudentClassObject;
+
+import com.pistudiosofficial.myclass.UserObject;
 
 import java.util.ArrayList;
 
@@ -19,5 +20,10 @@ public interface MainPresenterInterface {
 
     void addUserClassSuccess();
     void addUserClassFailed();
+
+    void transferCollabActionFailed();
+
+    void connectionListDownloadSuccess(ArrayList<UserObject> userList);
+    void connectionListDownloadFailed();
 
 }

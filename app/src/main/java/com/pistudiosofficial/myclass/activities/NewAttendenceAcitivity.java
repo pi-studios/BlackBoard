@@ -14,12 +14,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.pistudiosofficial.myclass.AdapterNewAttendenceList;
-import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.presenter.NewAttendencePresenter;
 import com.pistudiosofficial.myclass.view.NewAttendenceView;
 
-import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
 import static com.pistudiosofficial.myclass.Common.TEMP01_LIST;
 
 public class NewAttendenceAcitivity extends AppCompatActivity implements AdapterNewAttendenceList.OnItemListener, NewAttendenceView {
@@ -57,7 +55,6 @@ public class NewAttendenceAcitivity extends AppCompatActivity implements Adapter
                         }).setNegativeButton("No",null).show();
             }
         });
-
     }
 
     @Override

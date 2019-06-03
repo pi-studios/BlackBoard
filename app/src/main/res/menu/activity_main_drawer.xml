@@ -9,9 +9,9 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="Connections" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_notification_history"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="Notification History" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"

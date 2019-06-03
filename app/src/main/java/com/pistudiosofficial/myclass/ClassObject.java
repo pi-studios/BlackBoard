@@ -3,7 +3,9 @@ package com.pistudiosofficial.myclass;
 import java.io.Serializable;
 
 public class ClassObject implements Serializable {
-    public String facultyName, facultyEmail, facultyUID, className, joinCode, sessionStart, sessionEnd, startRoll, endRoll;
+    public String facultyName, facultyEmail, facultyUID,
+            className, joinCode, sessionStart,
+            sessionEnd, startRoll, endRoll;
 
     public ClassObject(String facultyName,String facultyEmail, String facultyUID, String className, String joinCode, String sessionStart, String sessionEnd, String startRoll, String endRoll) {
         this.facultyEmail=facultyEmail;

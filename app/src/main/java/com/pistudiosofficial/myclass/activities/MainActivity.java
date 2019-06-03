@@ -1,24 +1,31 @@
 package com.pistudiosofficial.myclass.activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+import com.pistudiosofficial.myclass.AdapterConnectionList;
 import com.pistudiosofficial.myclass.ClassObject;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.AdapterClassList;
 import com.pistudiosofficial.myclass.StudentClassObject;
+import com.pistudiosofficial.myclass.UserObject;
 import com.pistudiosofficial.myclass.presenter.MainPresenter;
 import com.pistudiosofficial.myclass.view.MainActivityView;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -51,24 +58,25 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
     ProgressDialog progressDialog;
     View headerView;
-    Dialog addClassDialog;
+    Dialog addClassDialog, connectionListDialog;
     RecyclerView recyclerViewClassList;
     AdapterClassList adminClassListAdapter;
     AdapterClassList userClassListAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         headerView = navigationView.getHeaderView(0);
         headerView.findViewById(R.id.headerImage).setOnClickListener(new View.OnClickListener() {
@@ -170,10 +178,12 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         Intent intent;
         if (id == R.id.nav_connections) {
-            intent = new Intent(getApplicationContext(),ConnectionListActivity.class);
+            if(CURRENT_USER.AdminLevel.equals("user")){
+                presenter.performConnectionDownload();
+            }
+        } else if (id == R.id.nav_notification_history) {
+            intent = new Intent(getApplicationContext(),NotificationHistoryActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
-
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -184,7 +194,7 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -192,6 +202,16 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            boolean hasPermission = (ContextCompat.checkSelfPermission(getBaseContext(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+            if (!hasPermission) {
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        },1);
+            }
+        }
 
         //Variable Initialization
         mAUTH = FirebaseAuth.getInstance();
@@ -201,6 +221,7 @@ public class MainActivity extends AppCompatActivity
         mREF_classList = FIREBASE_DATABASE.getReference("class_list");
         mREF_oldRecords = FIREBASE_DATABASE.getReference("old_records");
         mREF_student_classList = FIREBASE_DATABASE.getReference("student_class_list");
+        mREF_admin_classList = FIREBASE_DATABASE.getReference("admin_class_list");
 
         CURRENT_CLASS_ID_LIST = new ArrayList<>();
         CURRENT_ADMIN_CLASS_LIST = new ArrayList<>();
@@ -262,6 +283,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void downloadDataFailed() {
         Toast.makeText(MainActivity.this,"Data Load Failed",Toast.LENGTH_SHORT).show();
+        progressDialog.dismiss();
     }
 
     @Override
@@ -322,6 +344,41 @@ public class MainActivity extends AppCompatActivity
         Toast.makeText(MainActivity.this,"Class Add Failed", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void addCollab(int index, String email) {
+        presenter.addCollab(index,email);
+    }
+
+    @Override
+    public void transferClass(int index, String email) {
+        presenter.transferClass(index,email);
+    }
+
+    @Override
+    public void transferClassFailed() {
+        Toast.makeText(this,"Failed Transfer",Toast.LENGTH_SHORT).show();
+    }
+
+    @SuppressLint("WrongConstant")
+    @Override
+    public void connectionListDownloadSuccess(ArrayList<UserObject> userList) {
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        AdapterConnectionList adapterConnectionList = new AdapterConnectionList(userList,connectionListDialog);
+        connectionListDialog = new Dialog(this);
+        connectionListDialog.setContentView(R.layout.connection_list_dialog);
+        RecyclerView recyclerView = connectionListDialog.findViewById(R.id.recycler_connection_list);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(llm);
+        recyclerView.setAdapter(adapterConnectionList);
+        adapterConnectionList.notifyDataSetChanged();
+        connectionListDialog.show();
+    }
+
+    @Override
+    public void connectionListDownloadFailed() {
+        Toast.makeText(this, "Connection List Load Failed",Toast.LENGTH_SHORT).show();
+    }
+
     private void sessionDatePick(final EditText editText){
         final Calendar myCalendar = Calendar.getInstance();
 
@@ -330,7 +387,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                // TODO Auto-generated method stub
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);

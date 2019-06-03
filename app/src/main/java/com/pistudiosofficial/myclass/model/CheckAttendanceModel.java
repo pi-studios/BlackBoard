@@ -12,6 +12,7 @@ import com.pistudiosofficial.myclass.presenter.presenter_interfaces.CheckAttenda
 
 import java.util.ArrayList;
 
+import static com.pistudiosofficial.myclass.Common.ATTD_PERCENTAGE_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
@@ -43,6 +44,9 @@ public class CheckAttendanceModel {
                         }
                         mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("attendance_percentage")
                                 .removeEventListener(valueEventListener);
+                        for (int i =0; i<checkAttendanceList.size(); i++){
+                            ATTD_PERCENTAGE_LIST.add(checkAttendanceList.get(i).toString());
+                        }
                         presenter.adminCheckAttendanceDataDownloadSuccess(checkAttendanceList);
                     }
 

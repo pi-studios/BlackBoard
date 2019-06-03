@@ -1,7 +1,5 @@
 package com.pistudiosofficial.myclass;
 
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,40 +10,41 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
 
-public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterCheckAttendanceList.MyViewHolder> {
+public class AdapterNotificationHistory extends RecyclerView.Adapter<AdapterNotificationHistory.MyViewHolder> {
 
-    ArrayList<Double> attendanceList;
+    ArrayList<String> title,body;
 
-    public AdapterCheckAttendanceList( ArrayList<Double> attendanceList) {
-        this.attendanceList = attendanceList;
+    public AdapterNotificationHistory(ArrayList<String> title, ArrayList<String> body) {
+        this.title = title;
+        this.body = body;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View view = inflater.inflate(R.layout.check_attendance_row,viewGroup,false);
+        View view = inflater.inflate(R.layout.notification_history_row,viewGroup,false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        Log.i("TAG","ROLL lIST: "+ROLL_LIST.size()+"  attendanceList "+attendanceList.size());
-        myViewHolder.textView.setText(ROLL_LIST.get(i)+"  -----  "+attendanceList.get(i));
+        myViewHolder.textViewTitle.setText(title.get(i));
+        myViewHolder.textViewBody.setText(body.get(i));
     }
 
     @Override
     public int getItemCount() {
-        return ROLL_LIST.size();
+        return title.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView textView;
+        TextView textViewTitle,textViewBody;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.tv_new_attendance);
+            textViewTitle = itemView.findViewById(R.id.tv_notification_title_row);
+            textViewBody = itemView.findViewById(R.id.tv_notification_body_row);
         }
     }
 

@@ -25,4 +25,26 @@
         android:text="New Attendance"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/bt_exportCSV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Export CSV"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView_admin_checkAttendance" />
+
+    <Button
+        android:id="@+id/bt_notify_admin_checkAttendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Notify"
+        app:layout_constraintEnd_toStartOf="@+id/bt_newAttendance"
+        app:layout_constraintStart_toEndOf="@+id/bt_exportCSV"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView_admin_checkAttendance" />
 </androidx.constraintlayout.widget.ConstraintLayout>

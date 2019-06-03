@@ -43,7 +43,7 @@ public class SplashActivity extends AppCompatActivity {
     public void timer(){
 
         if (haveNetworkConnection()){
-            new CountDownTimer(2000,1000){
+            new CountDownTimer(1500,100){
                 @Override
                 public void onTick(long millisUntilFinished) {
 

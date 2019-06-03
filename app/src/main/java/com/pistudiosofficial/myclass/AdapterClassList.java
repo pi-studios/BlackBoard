@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -92,7 +93,44 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
                 final Dialog dialog = new Dialog(view.getContext());
                 dialog.setContentView(R.layout.end_session_dialog);
                 Button button = dialog.findViewById(R.id.bt_faculty_end_session);
+                Button addCollabButton = dialog.findViewById(R.id.bt_faculty_add_collab);
+                Button transferClass = dialog.findViewById(R.id.bt_faculty_transfer);
                 dialog.show();
+                final Dialog subDialog = new Dialog(view.getContext());
+                addCollabButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                        subDialog.setContentView(R.layout.add_hod_admin);
+                        subDialog.show();
+                        final EditText editText = subDialog.findViewById(R.id.et_addFaculty_email);
+                        Button newButton = subDialog.findViewById(R.id.bt_add_new_class_student_popup);
+                        newButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                mainActivityView.addCollab(i,editText.getText().toString());
+                                subDialog.dismiss();
+                            }
+                        });
+                    }
+                });
+                transferClass.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                        subDialog.setContentView(R.layout.add_hod_admin);
+                        subDialog.show();
+                        final EditText editText = subDialog.findViewById(R.id.et_addFaculty_email);
+                        Button newButton = subDialog.findViewById(R.id.bt_add_new_class_student_popup);
+                        newButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                mainActivityView.transferClass(i,editText.getText().toString());
+                                subDialog.dismiss();
+                            }
+                        });
+                    }
+                });
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View view) {

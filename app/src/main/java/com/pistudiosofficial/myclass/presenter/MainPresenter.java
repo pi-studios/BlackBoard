@@ -1,13 +1,17 @@
 package com.pistudiosofficial.myclass.presenter;
 
+
 import com.pistudiosofficial.myclass.ClassObject;
-import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.StudentClassObject;
+import com.pistudiosofficial.myclass.UserObject;
 import com.pistudiosofficial.myclass.model.MainModel;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.MainPresenterInterface;
 import com.pistudiosofficial.myclass.view.MainActivityView;
 
 import java.util.ArrayList;
+
+import static com.pistudiosofficial.myclass.Common.CURRENT_ADMIN_CLASS_LIST;
+import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 
 public class MainPresenter implements MainPresenterInterface {
 
@@ -24,6 +28,8 @@ public class MainPresenter implements MainPresenterInterface {
     }
 
     public void performAdminClassListDownload(){
+        CURRENT_ADMIN_CLASS_LIST.clear();
+        CURRENT_CLASS_ID_LIST.clear();
         model.performAdminClassListDownload();
     }
 
@@ -37,8 +43,20 @@ public class MainPresenter implements MainPresenterInterface {
         model.performEndSession(index);
     }
 
+    public void addCollab(int index, String email){
+        model.addCollab(index,email);
+    }
+
+    public void transferClass(int index, String email){
+        model.transferClass(index, email);
+    }
+
     public void performUserAddClass(StudentClassObject studentClassObject){
         model.performUserAddClass(studentClassObject);
+    }
+
+    public void performConnectionDownload(){
+        model.performConnectionDownload();
     }
 
     @Override
@@ -66,9 +84,7 @@ public class MainPresenter implements MainPresenterInterface {
         classList = new ArrayList<>();
         if(classObjectArrayList != null){
             for(int i = 0; i<classObjectArrayList.size(); i++) {
-               if (classObjectArrayList.get(i).facultyUID.equals(Common.CURRENT_USER.UID)){
                    classList.add(classObjectArrayList.get(i));
-               }
             }
             if(classList == null){
                 view.downloadDataFailed();
@@ -77,13 +93,22 @@ public class MainPresenter implements MainPresenterInterface {
                 view.loadAdminClassList(classList);
             }
         }
+        else{
+            view.downloadDataFailed();
+        }
 
     }
 
     @Override
     public void userClassListDownloadSuccess(ArrayList<ClassObject> classObjectArrayList,
                                              ArrayList<String> userPercentageList) {
-        view.loadUserClassList(classObjectArrayList, userPercentageList);
+        if (classObjectArrayList != null && classObjectArrayList.size()>0){
+            view.loadUserClassList(classObjectArrayList, userPercentageList);
+        }
+        else {
+
+            view.downloadDataFailed();
+        }
     }
 
     @Override
@@ -94,6 +119,21 @@ public class MainPresenter implements MainPresenterInterface {
     @Override
     public void addUserClassFailed() {
         view.addUserClassFailed();
+    }
+
+    @Override
+    public void transferCollabActionFailed() {
+        view.transferClassFailed();
+    }
+
+    @Override
+    public void connectionListDownloadSuccess(ArrayList<UserObject> userList) {
+        view.connectionListDownloadSuccess(userList);
+    }
+
+    @Override
+    public void connectionListDownloadFailed() {
+        view.connectionListDownloadFailed();
     }
 
 }

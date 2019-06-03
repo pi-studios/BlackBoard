@@ -23,8 +23,5 @@ public class CheckAttendanceActivity extends AppCompatActivity {
             fragment = new AdminCheckAttendanceFragment();
             getFragmentManager().beginTransaction().replace(R.id.frame_layout_CheckAttendance,fragment).commit();
         }
-
-
-
     }
 }
