@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
 
                 presenter.performLogin(email.getText().toString(),password.getText().toString());
             }
-        });
+    });
 
         createAcc.setOnClickListener(new View.OnClickListener() {
             @Override
