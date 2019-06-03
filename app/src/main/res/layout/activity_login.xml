@@ -7,31 +7,58 @@
     tools:context=".activities.LoginActivity">
 
 
+    <!--<ImageView-->
+    <!--android:id="@+id/imageView"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="60dp"-->
+    <!--android:scaleType="centerCrop"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent"-->
+    <!--app:srcCompat="@drawable/blackboard" />-->
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="L O G I N"
+        android:textColor="#020101"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/et_email"
-        android:layout_width="273dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="73dp"
-        android:layout_marginTop="121dp"
-        android:layout_marginEnd="66dp"
+        android:layout_marginTop="220dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:ellipsize="start"
         android:ems="10"
+        android:gravity="center"
         android:hint="Email"
         android:inputType="textEmailAddress"
+        android:textCursorDrawable="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/et_password"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="74dp"
         android:layout_marginTop="51dp"
-        android:layout_marginEnd="70dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:ellipsize="start"
         android:ems="10"
+        android:gravity="center"
         android:hint="Password"
         android:inputType="textPassword"
+        android:textCursorDrawable="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_email" />
@@ -41,8 +68,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
-        android:gravity="center_horizontal"
+        android:background="@drawable/buttonshape"
+        android:elevation="10dp"
+        android:gravity="center"
         android:text="Log In"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +84,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
         android:gravity="center_horizontal"
-        android:text="Create An Account"
+        android:text="NEW ACCOUNT"
+        android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

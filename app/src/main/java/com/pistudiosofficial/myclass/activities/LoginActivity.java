@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+       setContentView(R.layout.activity_login);
 
         email = findViewById(R.id.et_email);
         password = findViewById(R.id.et_password);
@@ -42,9 +42,16 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (email.getText().toString().matches("")||password.getText().toString().matches("")) {
+                    Toast.makeText(LoginActivity.this, "Please fill Credentials", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 presenter.performLogin(email.getText().toString(),password.getText().toString());
             }
         });
+
         createAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,6 +106,7 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
                     }
                 });
                 dialog.show();
+
             }
         });
     }
