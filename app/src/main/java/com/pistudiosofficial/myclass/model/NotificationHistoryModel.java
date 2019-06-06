@@ -20,13 +20,15 @@ public class NotificationHistoryModel {
     NotificationHistoryPresenterInterface presenter;
     NotificationStoreObj obj;
     ArrayList<NotificationStoreObj> notifobjList;
+    ValueEventListener valueEventListener;
+
     public NotificationHistoryModel(NotificationHistoryPresenterInterface presenter) {
         this.presenter = presenter;
         notifobjList = new ArrayList<>();
     }
 
     public void downloadNotificationHistory(){
-        mREF_classList.addValueEventListener(new ValueEventListener() {
+        valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (String s : CURRENT_CLASS_ID_LIST){
@@ -37,18 +39,24 @@ public class NotificationHistoryModel {
                 }
                 if (notifobjList != null && notifobjList.size()>0){
                     presenter.notificationDownloadSuccess(notifobjList);
+                    done();
                 }
                 else{
                     presenter.notificationDownloadFailed();
+                    done();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 presenter.notificationDownloadFailed();
+                done();
             }
-        });
+        };
+        mREF_classList.addValueEventListener(valueEventListener);
     }
-
+    public void done(){
+        mREF_classList.removeEventListener(valueEventListener);
+    }
 
 }

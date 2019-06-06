@@ -2,6 +2,7 @@ package com.pistudiosofficial.myclass.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,20 +13,23 @@ import android.widget.Toast;
 
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.presenter.LoginPresenter;
+import com.pistudiosofficial.myclass.presenter.SignUpPresenter;
+import com.pistudiosofficial.myclass.view.SignUpView;
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity implements SignUpView {
 
 
     private RadioGroup radioGroup;
     private String admin = "user";
-    private LoginPresenter presenter;
+    private SignUpPresenter presenter;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         final EditText name,roll,phone,password1,password2,email;
-
+        progressDialog = new ProgressDialog(this);
         name = findViewById(R.id.et_name);
         phone = findViewById(R.id.et_phone);
         password1 = findViewById(R.id.et_password_sign);
@@ -68,6 +72,7 @@ public class SignupActivity extends AppCompatActivity {
                             phone.getText().toString(),
                             name.getText().toString(),
                             admin,roll.getText().toString());
+                    progressDialog.show();
                 }else{
                     Toast.makeText(SignupActivity.this,"Password Not Match \n Cannot be less than 6 character",Toast.LENGTH_SHORT).show();
                 }
@@ -76,9 +81,29 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        presenter = new SignUpPresenter(this);
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(SignupActivity.this,LoginActivity.class));
         finish();
+    }
+
+    @Override
+    public void successSignup() {
+        Toast.makeText(this,"Success",Toast.LENGTH_SHORT);
+        Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+        startActivity(intent);
+        finish();
+        progressDialog.dismiss();
+    }
+    @Override
+    public void showErrorFailed() {
+        progressDialog.dismiss();
+        Toast.makeText(this,"FAILED! Try Again",Toast.LENGTH_SHORT).show();
     }
 }

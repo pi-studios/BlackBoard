@@ -5,7 +5,4 @@ public interface LoginPresenterInterface {
     void loginSuccess();
     void loginFailed();
 
-    void signupSuccess();
-    void signupFailed();
-
 }

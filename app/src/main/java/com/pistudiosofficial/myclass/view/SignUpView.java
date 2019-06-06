@@ -1,8 +1,8 @@
 package com.pistudiosofficial.myclass.view;
 
-public interface LoginActivityView {
+public interface SignUpView {
 
     void showErrorFailed();
-    void successLogin();
+    void successSignup();
 
 }

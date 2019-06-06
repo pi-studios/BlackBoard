@@ -59,6 +59,7 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this,SignupActivity.class));
+                finish();
 //                dialog.setContentView(R.layout.signup_dialog);
 //                final EditText name,phone,password1,password2,email;
 //
@@ -139,12 +140,6 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
         Intent intent = new Intent(getApplicationContext(),MainActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    @Override
-    public void successSignup() {
-        dialog.dismiss();
-        Toast.makeText(this,"Success",Toast.LENGTH_SHORT);
     }
 
 }

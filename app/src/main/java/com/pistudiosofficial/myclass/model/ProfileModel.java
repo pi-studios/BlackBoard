@@ -22,7 +22,7 @@ public class ProfileModel {
         if(CURRENT_USER.AdminLevel.equals("admin")) {
             mREF_connections.child(CURRENT_USER.UID).child("master_admin").setValue(email);
         }
-
+        presenter.hodAddSuccess();
     }
 
     public void downloadProfileData(){

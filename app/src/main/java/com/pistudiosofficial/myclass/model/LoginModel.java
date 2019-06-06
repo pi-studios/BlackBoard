@@ -35,33 +35,4 @@ public class LoginModel {
                     }
                 });
     }
-    public void signup(String getEmailSign, String getPasswordSign, final UserObject userObject){
-        mAUTH.createUserWithEmailAndPassword(getEmailSign, getPasswordSign)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FIREBASE_USER = mAUTH.getCurrentUser();
-                            presenter.signupSuccess();
-                            userObject.UID = mAUTH.getUid();
-                            mREF_users.child(userObject.UID).setValue(userObject);
-                            if(userObject.AdminLevel.equals("admin")){
-                                ConnectionObject object = new ConnectionObject("","self","");
-                                mREF_connections.child(userObject.UID).setValue(object);
-                            }
-                            if(userObject.AdminLevel.equals("master_admin")){
-                                ConnectionObject object = new ConnectionObject("self","","");
-                                mREF_connections.child(userObject.UID).setValue(object);
-                            }
-                            if(userObject.AdminLevel.equals("user")){
-                                ConnectionObject object = new ConnectionObject("","","self");
-                                mREF_connections.child(userObject.UID).setValue(object);
-                            }
-                        } else {
-                            presenter.signupFailed();
-                        }
-                    }
-                });
-    }
-
 }

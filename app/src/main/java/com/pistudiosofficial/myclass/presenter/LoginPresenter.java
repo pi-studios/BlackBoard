@@ -14,11 +14,6 @@ public class LoginPresenter implements LoginPresenterInterface {
         loginModel = new LoginModel(this);
     }
 
-    public void performSignUp(String getEmailSign, String getPasswordSign, String getPhoneSign, String getNameSign, String getAdminLevelSign, String getRollSign){
-        UserObject userObject = new UserObject(getEmailSign, getPhoneSign, getNameSign, getAdminLevelSign, getRollSign);
-        loginModel.signup(getEmailSign,getPasswordSign,userObject);
-    }
-
     public void performLogin(String getEmailLogin,String getPasswordLogin){
         loginModel.login(getEmailLogin,getPasswordLogin);
     }
@@ -34,13 +29,4 @@ public class LoginPresenter implements LoginPresenterInterface {
         view.showErrorFailed();
     }
 
-    @Override
-    public void signupSuccess() {
-        view.successSignup();
-    }
-
-    @Override
-    public void signupFailed() {
-        view.showErrorFailed();
-    }
 }
