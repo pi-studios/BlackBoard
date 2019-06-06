@@ -8,32 +8,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-
-import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
-import com.pistudiosofficial.myclass.AdapterConnectionList;
-import com.pistudiosofficial.myclass.ClassObject;
-import com.pistudiosofficial.myclass.R;
-import com.pistudiosofficial.myclass.AdapterClassList;
-import com.pistudiosofficial.myclass.StudentClassObject;
-import com.pistudiosofficial.myclass.UserObject;
-import com.pistudiosofficial.myclass.presenter.MainPresenter;
-import com.pistudiosofficial.myclass.view.MainActivityView;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,13 +21,53 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+import com.pistudiosofficial.myclass.AdapterClassList;
+import com.pistudiosofficial.myclass.AdapterConnectionList;
+import com.pistudiosofficial.myclass.ClassObject;
+import com.pistudiosofficial.myclass.R;
+import com.pistudiosofficial.myclass.StudentClassObject;
+import com.pistudiosofficial.myclass.UserObject;
+import com.pistudiosofficial.myclass.presenter.MainPresenter;
+import com.pistudiosofficial.myclass.view.MainActivityView;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import static com.pistudiosofficial.myclass.Common.*;
+import static com.pistudiosofficial.myclass.Common.ATTD_PERCENTAGE_LIST;
+import static com.pistudiosofficial.myclass.Common.CURRENT_ADMIN_CLASS_LIST;
+import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
+import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
+import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST;
+import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST_ID;
+import static com.pistudiosofficial.myclass.Common.FIREBASE_DATABASE;
+import static com.pistudiosofficial.myclass.Common.FIREBASE_USER;
+import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
+import static com.pistudiosofficial.myclass.Common.SHARED_PREFERENCES;
+import static com.pistudiosofficial.myclass.Common.TEMP01_LIST;
+import static com.pistudiosofficial.myclass.Common.mAUTH;
+import static com.pistudiosofficial.myclass.Common.mREF_admin_classList;
+import static com.pistudiosofficial.myclass.Common.mREF_classList;
+import static com.pistudiosofficial.myclass.Common.mREF_connections;
+import static com.pistudiosofficial.myclass.Common.mREF_oldRecords;
+import static com.pistudiosofficial.myclass.Common.mREF_student_classList;
+import static com.pistudiosofficial.myclass.Common.mREF_users;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainActivityView {
@@ -132,6 +150,7 @@ public class MainActivity extends AppCompatActivity
                 sessionEnd = addClassDialog.findViewById(R.id.et_session_end);
                 startRoll = addClassDialog.findViewById(R.id.et_roll_start);
                 endRoll = addClassDialog.findViewById(R.id.et_roll_end);
+                addClassDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 addClassDialog.show();
                 sessionDatePick(sessionStart);
                 sessionDatePick(sessionEnd);
@@ -154,6 +173,7 @@ public class MainActivity extends AppCompatActivity
                 Button addClass = addClassDialog.findViewById(R.id.bt_add_new_class_student_popup);
                 facultyemail = addClassDialog.findViewById(R.id.et_addFaculty_email);
                 facultyjoinCode = addClassDialog.findViewById(R.id.et_addFaculty_code);
+                addClassDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 addClassDialog.show();
                 final int roll = Integer.parseInt(CURRENT_USER.Roll)%1000;
                 addClass.setOnClickListener(new View.OnClickListener() {

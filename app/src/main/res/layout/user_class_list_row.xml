@@ -2,61 +2,69 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="5dp"
+    android:layout_margin="2dp"
     android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/tv_user_row_className"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="10dp"
-        android:text="CG 1206"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/tv_user_row_className"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="10dp"
+            android:text="CG 1206"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tv_facultyname_student_main_recycler_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:text="Badal Soni"
+            android:textSize="14sp"
+            android:textStyle="italic" />
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="2"
         android:orientation="horizontal">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_session_student_main_recycler_row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_facultyname_student_main_recycler_row"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Badal Soni"
-                android:paddingStart="10dp"
-                android:textSize="14sp"
-                android:textStyle="italic" />
-
-            <TextView
-                android:id="@+id/tv_session_student_main_recycler_row"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:layout_weight="1"
-                android:text="2019-2020"
-                android:textSize="18sp" />
-        </LinearLayout>
+            android:paddingStart="10dp"
+            android:text="2019-2020"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_attendance_student_main_recycler_row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:paddingStart="10dp"
             android:text="Attendance  - 75%"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:background="@color/colorPrimaryDark"
-        android:layout_height="1dp" />
+    android:id="@+id/view"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/colorPrimaryDark"
+    android:paddingTop="5dp"
+        android:paddingBottom="5dp"/>
 </LinearLayout>

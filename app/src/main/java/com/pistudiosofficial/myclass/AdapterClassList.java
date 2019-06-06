@@ -4,7 +4,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,6 @@ import com.pistudiosofficial.myclass.view.MainActivityView;
 import java.util.ArrayList;
 
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
-import static com.pistudiosofficial.myclass.Common.LOG;
 
 public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyViewHolder> {
 
@@ -95,6 +95,7 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
                 Button button = dialog.findViewById(R.id.bt_faculty_end_session);
                 Button addCollabButton = dialog.findViewById(R.id.bt_faculty_add_collab);
                 Button transferClass = dialog.findViewById(R.id.bt_faculty_transfer);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
                 final Dialog subDialog = new Dialog(view.getContext());
                 addCollabButton.setOnClickListener(new View.OnClickListener() {
