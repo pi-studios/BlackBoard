@@ -21,6 +21,10 @@
             "package_name": "com.pistudiosofficial.myclass",
             "certificate_hash": "0caaa5592968e313788488f4c7b8b26932855ae7"
           }
+        },
+        {
+          "client_id": "1049069169744-4l3r588t4aqdi2ll0gqo7u7jqhvla171.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [

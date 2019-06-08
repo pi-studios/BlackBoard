@@ -200,11 +200,12 @@ public class MainModel {
     }
 
     public void performUserClassListDownload(){
+        ChildEventListener childEventListener;
         studentClassObjectArrayList = new ArrayList<>();
         userAttendancePercentList = new ArrayList<>();
         classObjectArrayList = new ArrayList<>();
         roll = Integer.parseInt(CURRENT_USER.Roll)%1000;
-        mREF_student_classList.addChildEventListener(new ChildEventListener() {
+        childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 studentClassObject = dataSnapshot.getValue(StudentClassObject.class);
@@ -235,7 +236,7 @@ public class MainModel {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
         valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -251,6 +252,8 @@ public class MainModel {
 
                         userAttendancePercentList.add(temp);
                         mREF_classList.removeEventListener(valueEventListener);
+
+                        mREF_student_classList.removeEventListener(childEventListener);
                         presenter.userClassListDownloadSuccess(classObjectArrayList, userAttendancePercentList);
                     }
                     if (studentClassObjectArrayList == null || studentClassObjectArrayList.size()<1){
@@ -263,6 +266,7 @@ public class MainModel {
                     presenter.downloadDataFailed();
                 }
             };
+        mREF_student_classList.addChildEventListener(childEventListener);
         mREF_classList.addValueEventListener(valueEventListener);
     }
 

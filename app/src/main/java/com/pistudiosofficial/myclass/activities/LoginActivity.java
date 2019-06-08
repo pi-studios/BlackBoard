@@ -2,6 +2,7 @@ package com.pistudiosofficial.myclass.activities;
 
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -29,6 +30,7 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
     private String admin = "user";
     private EditText roll;
     private Dialog dialog;
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +41,7 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
         login = findViewById(R.id.bt_logIn);
         createAcc = findViewById(R.id.tv_createAccount);
         dialog = new Dialog(LoginActivity.this);
-
+        progressDialog = new ProgressDialog(this);
 
 
         login.setOnClickListener(new View.OnClickListener() {
@@ -50,7 +52,7 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
                     Toast.makeText(LoginActivity.this, "Please fill Credentials", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                progressDialog.show();
                 presenter.performLogin(email.getText().toString(),password.getText().toString());
             }
     });
@@ -132,11 +134,13 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
 
     @Override
     public void showErrorFailed() {
+        progressDialog.dismiss();
         Toast.makeText(this,"FAILED! Try Again",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void successLogin() {
+        progressDialog.dismiss();
         Intent intent = new Intent(getApplicationContext(),MainActivity.class);
         startActivity(intent);
         finish();

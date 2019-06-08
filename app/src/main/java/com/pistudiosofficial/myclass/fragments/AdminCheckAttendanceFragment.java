@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.pistudiosofficial.myclass.AdapterCheckAttendanceList;
 import com.pistudiosofficial.myclass.R;
+import com.pistudiosofficial.myclass.activities.CreatePollActivity;
 import com.pistudiosofficial.myclass.activities.NewAttendenceAcitivity;
 import com.pistudiosofficial.myclass.presenter.CheckAttendancePresenter;
 import com.pistudiosofficial.myclass.view.CheckAttendanceFragView;;
@@ -37,7 +38,7 @@ import static com.pistudiosofficial.myclass.Common.SHARED_PREFERENCES;
 
 public class AdminCheckAttendanceFragment extends Fragment implements CheckAttendanceFragView {
     ProgressDialog progressDialog;
-    Button bt_newAttendance,bt_exportCSV, bt_notify;
+    Button bt_newAttendance,bt_exportCSV, bt_notify,bt_createPoll;
     RecyclerView recyclerView;
     CheckAttendancePresenter presenter;
     Dialog dialog;
@@ -142,6 +143,15 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                     }
                 });
                 dialog.show();
+            }
+        });
+
+        bt_createPoll = v.findViewById(R.id.bt_create_poll);
+        bt_createPoll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), CreatePollActivity.class);
+                v.getContext().startActivity(intent);
             }
         });
 

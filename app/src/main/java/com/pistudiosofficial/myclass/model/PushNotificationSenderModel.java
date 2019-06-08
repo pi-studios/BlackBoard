@@ -2,23 +2,35 @@ package com.pistudiosofficial.myclass.model;
 
 // This model Sends Notification to all student user
 
+import android.widget.ArrayAdapter;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.pistudiosofficial.myclass.NotificationStoreObj;
+import com.pistudiosofficial.myclass.StudentClassObject;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.CheckAttendancePresenterInterface;
 
+import java.util.ArrayList;
+
+import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
+import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
+import static com.pistudiosofficial.myclass.Common.mREF_student_classList;
+import static com.pistudiosofficial.myclass.Common.mREF_users;
 
 public class PushNotificationSenderModel {
 
+    ArrayList<String> studentUID;
     String className, creationTime, classID,simpleTime;
 
     DatabaseReference mRefNotification;
     CheckAttendancePresenterInterface presenter;
-
+    ValueEventListener valueEventListener;
     //Class cancel or shift
     String date01,date02,type;
 
@@ -60,7 +72,10 @@ public class PushNotificationSenderModel {
         mRefNotification.push().setValue(obj, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                if(databaseError==null){presenter.broadcastSuccess();}
+                if(databaseError==null){
+                    fcmMasterNotificationList(obj);
+                    presenter.broadcastSuccess();
+                    return;}
                 else{
                     presenter.broadcastFailed();
                 }
@@ -82,7 +97,11 @@ public class PushNotificationSenderModel {
         mRefNotification.push().setValue(obj, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                if(databaseError == null){presenter.broadcastSuccess();}
+                if(databaseError == null){
+                    fcmMasterNotificationList(obj);
+                    presenter.broadcastSuccess();
+                    return;
+                }
                 else{
                     presenter.broadcastFailed();
                 }
@@ -91,4 +110,34 @@ public class PushNotificationSenderModel {
 
     }
 
+    public void fcmMasterNotificationList(NotificationStoreObj obj){
+
+        studentUID = new ArrayList<>();
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot s : dataSnapshot.getChildren()){
+                    if (s.getValue(StudentClassObject.class).classKey.equals(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))){
+                        studentUID.add(s.getValue(StudentClassObject.class).studentUID);
+                    }
+                }
+                finishUpload(obj);
+                return;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        mREF_student_classList.addValueEventListener(valueEventListener);
+    }
+
+    public void finishUpload(NotificationStoreObj obj){
+        mREF_student_classList.removeEventListener(valueEventListener);
+        for (String str : studentUID){
+            mREF_users.child(str).child("notification").push().setValue(obj);
+        }
+        return;
+    }
 }

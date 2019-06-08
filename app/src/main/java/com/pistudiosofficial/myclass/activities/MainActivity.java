@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.action_signout) {
+            mREF_users.child(mAUTH.getUid()).child("token").setValue("");
             mAUTH.signOut();
             Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
             startActivity(intent);
