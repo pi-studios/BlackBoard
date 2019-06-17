@@ -30,13 +30,16 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.pistudiosofficial.myclass.AdapterClassList;
 import com.pistudiosofficial.myclass.AdapterConnectionList;
+import com.pistudiosofficial.myclass.AdapterPagerView;
 import com.pistudiosofficial.myclass.ClassObject;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.StudentClassObject;
@@ -72,14 +75,15 @@ import static com.pistudiosofficial.myclass.Common.mREF_users;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainActivityView {
 
-    MainPresenter presenter;
+    public static MainPresenter presenter;
     NavigationView navigationView;
     ProgressDialog progressDialog;
     View headerView;
-    Dialog addClassDialog, connectionListDialog;
-    RecyclerView recyclerViewClassList;
-    AdapterClassList adminClassListAdapter;
-    AdapterClassList userClassListAdapter;
+    Dialog connectionListDialog;
+    AdapterPagerView adapterPagerView;
+    TabLayout tabLayout;
+    ViewPager viewPager;
+    boolean flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,10 +109,13 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        recyclerViewClassList = findViewById(R.id.recyclerView_ClassList);
-
+        viewPager = findViewById(R.id.fragment_container);
+        adapterPagerView = new AdapterPagerView(getSupportFragmentManager());
+        tabLayout = findViewById(R.id.tabbar);
+        tabLayout.setupWithViewPager(viewPager);
 
     }
+
 
     @Override
     public void onBackPressed() {
@@ -140,54 +147,6 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         if(id == R.id.action_add_class){
-            if (CURRENT_USER.AdminLevel.equals("admin")){
-                addClassDialog = new Dialog(this);
-                addClassDialog.setContentView(R.layout.add_class_admin);
-                final EditText className, joinCode, sessionStart, sessionEnd, startRoll, endRoll;
-                Button addClass = addClassDialog.findViewById(R.id.bt_add_class);
-                className = addClassDialog.findViewById(R.id.et_class_name);
-                joinCode = addClassDialog.findViewById(R.id.et_addFaculty_code);
-                sessionStart = addClassDialog.findViewById(R.id.et_session_start);
-                sessionEnd = addClassDialog.findViewById(R.id.et_session_end);
-                startRoll = addClassDialog.findViewById(R.id.et_roll_start);
-                endRoll = addClassDialog.findViewById(R.id.et_roll_end);
-                addClassDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                addClassDialog.show();
-                sessionDatePick(sessionStart);
-                sessionDatePick(sessionEnd);
-                addClass.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ClassObject classObject = new ClassObject(CURRENT_USER.Name,CURRENT_USER.Email,
-                                CURRENT_USER.UID,className.getText().toString(),
-                                joinCode.getText().toString(), sessionStart.getText().toString(),
-                                sessionEnd.getText().toString(), startRoll.getText().toString(),
-                                endRoll.getText().toString());
-                        presenter.performAdminAddClass(classObject);
-                    }
-                });
-            }
-            if (CURRENT_USER.AdminLevel.equals("user")){
-                addClassDialog = new Dialog(this);
-                addClassDialog.setContentView(R.layout.add_class_user);
-                final EditText facultyemail,facultyjoinCode;
-                Button addClass = addClassDialog.findViewById(R.id.bt_add_new_class_student_popup);
-                facultyemail = addClassDialog.findViewById(R.id.et_addFaculty_email);
-                facultyjoinCode = addClassDialog.findViewById(R.id.et_addFaculty_code);
-                addClassDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                addClassDialog.show();
-                final int roll = Integer.parseInt(CURRENT_USER.Roll)%1000;
-                addClass.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        StudentClassObject studentClassObject = new StudentClassObject(
-                                Integer.toString(roll),facultyemail.getText().toString(),
-                                facultyjoinCode.getText().toString(),CURRENT_USER.UID,null
-                        );
-                        presenter.performUserAddClass(studentClassObject);
-                    }
-                });
-            }
 
         }
         return super.onOptionsItemSelected(item);
@@ -239,13 +198,14 @@ public class MainActivity extends AppCompatActivity
         //Variable Initialization
         mAUTH = FirebaseAuth.getInstance();
         FIREBASE_DATABASE = FirebaseDatabase.getInstance();
+
         mREF_users = FIREBASE_DATABASE.getReference("users");
         mREF_connections = FIREBASE_DATABASE.getReference("connections");
         mREF_classList = FIREBASE_DATABASE.getReference("class_list");
         mREF_oldRecords = FIREBASE_DATABASE.getReference("old_records");
-        mREF_student_classList = FIREBASE_DATABASE.getReference("student_class_list");
-        mREF_admin_classList = FIREBASE_DATABASE.getReference("admin_class_list");
-
+        mREF_users.keepSynced(true);
+        mREF_classList.keepSynced(true);
+        mREF_connections.keepSynced(true);
         CURRENT_CLASS_ID_LIST = new ArrayList<>();
         CURRENT_ADMIN_CLASS_LIST = new ArrayList<>();
         ATTD_PERCENTAGE_LIST = new ArrayList<>();
@@ -253,19 +213,6 @@ public class MainActivity extends AppCompatActivity
         ROLL_LIST = new ArrayList<>();
         CURRENT_USER_CLASS_LIST = new ArrayList<>();
         CURRENT_USER_CLASS_LIST_ID = new ArrayList<>();
-
-        SHARED_PREFERENCES = getSharedPreferences("", Context.MODE_PRIVATE);
-
-        //Check for Double attendance (for Admin Level)
-        Date todayDate = Calendar.getInstance().getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String todayString = formatter.format(todayDate);
-        String day = SHARED_PREFERENCES.getString("day","");
-        if(!todayString.equals(day)){
-            for(int i=0; i<CURRENT_CLASS_ID_LIST.size();i++){
-                SHARED_PREFERENCES.edit().putString(CURRENT_CLASS_ID_LIST.get(i), "false").apply();
-            }
-        }
 
         //Logged in Check and perform DataLoad
         FIREBASE_USER = mAUTH.getCurrentUser();
@@ -275,6 +222,23 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
             finish();
         }else {
+            mREF_student_classList = mREF_users.child(mAUTH.getUid()).child("class_list"); //FIREBASE_DATABASE.getReference("student_class_list");
+            mREF_admin_classList = mREF_users.child(mAUTH.getUid()).child("class_list");
+
+            SHARED_PREFERENCES = getSharedPreferences("", Context.MODE_PRIVATE);
+
+            //Check for Double attendance (for Admin Level)
+            Date todayDate = Calendar.getInstance().getTime();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String todayString = formatter.format(todayDate);
+            String day = SHARED_PREFERENCES.getString("day","");
+            if(!todayString.equals(day)){
+                for(int i=0; i<CURRENT_CLASS_ID_LIST.size();i++){
+                    SHARED_PREFERENCES.edit().putString(CURRENT_CLASS_ID_LIST.get(i), "false").apply();
+                }
+            }
+
+
             presenter = new MainPresenter(this);
             progressDialog = ProgressDialog.show(MainActivity.this, "",
                     "Loading. Please wait...", true);
@@ -312,7 +276,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void addAdminClassSuccess() {
         presenter.performAdminClassListDownload();
-        addClassDialog.dismiss();
         Toast.makeText(MainActivity.this,"Success",Toast.LENGTH_SHORT).show();
     }
 
@@ -330,12 +293,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void loadAdminClassList(ArrayList<ClassObject> classObjectArrayList) {
         CURRENT_ADMIN_CLASS_LIST = classObjectArrayList;
-        adminClassListAdapter = new AdapterClassList(classObjectArrayList,null,this);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerViewClassList.setLayoutManager(llm);
-        recyclerViewClassList.setAdapter(adminClassListAdapter);
-        adminClassListAdapter.notifyDataSetChanged();
+        viewPager.setAdapter(adapterPagerView);
+        if(!flag){viewPager.setCurrentItem(1);flag = true;}
+        else {viewPager.setCurrentItem(2);}
         progressDialog.dismiss();
     }
 
@@ -344,32 +304,26 @@ public class MainActivity extends AppCompatActivity
     public void loadUserClassList(ArrayList<ClassObject> classObjectsList,
                                   ArrayList<String> userAttendanceList) {
         CURRENT_ADMIN_CLASS_LIST = classObjectsList;
-        userClassListAdapter = new AdapterClassList(classObjectsList,
-                userAttendanceList, this);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerViewClassList.setLayoutManager(llm);
-        recyclerViewClassList.setAdapter(userClassListAdapter);
-        userClassListAdapter.notifyDataSetChanged();
+        viewPager.setAdapter(adapterPagerView);
+        if(!flag){viewPager.setCurrentItem(1);flag = true;}
+        else {viewPager.setCurrentItem(2);}
         progressDialog.dismiss();
     }
 
     @Override
     public void addUserClassSuccess() {
-        addClassDialog.dismiss();
         Toast.makeText(MainActivity.this,"Success",Toast.LENGTH_SHORT).show();
         presenter.performUserClassListDownload();
     }
 
     @Override
     public void addUserClassFailed() {
-        addClassDialog.dismiss();
         Toast.makeText(MainActivity.this,"Class Add Failed", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void addCollab(int index, String email) {
-        presenter.addCollab(index,email);
+        presenter.addCollab(index,email,true);
     }
 
     @Override
@@ -402,36 +356,4 @@ public class MainActivity extends AppCompatActivity
         Toast.makeText(this, "Connection List Load Failed",Toast.LENGTH_SHORT).show();
     }
 
-    private void sessionDatePick(final EditText editText){
-        final Calendar myCalendar = Calendar.getInstance();
-
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-                String myFormat = "MM/dd/yy"; //In which you need put here
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-                editText.setText(sdf.format(myCalendar.getTime()));
-            }
-
-        };
-
-        editText.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                new DatePickerDialog(MainActivity.this, date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
-
-    }
 }

@@ -12,8 +12,12 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 
 import com.pistudiosofficial.myclass.R;
+import com.pistudiosofficial.myclass.presenter.MainPresenter;
 
 public class SplashActivity extends AppCompatActivity {
+
+    MainPresenter presenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,7 @@ public class SplashActivity extends AppCompatActivity {
     public void timer(){
 
         if (haveNetworkConnection()){
+            initializeData();
             new CountDownTimer(1500,100){
                 @Override
                 public void onTick(long millisUntilFinished) {
@@ -71,5 +76,14 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
+    private void initializeData(){
 
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
 }

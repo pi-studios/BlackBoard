@@ -33,6 +33,7 @@ import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST_ID;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_USER;
 import static com.pistudiosofficial.myclass.Common.LOG;
+import static com.pistudiosofficial.myclass.Common.mAUTH;
 import static com.pistudiosofficial.myclass.Common.mREF_admin_classList;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
 import static com.pistudiosofficial.myclass.Common.mREF_oldRecords;
@@ -46,19 +47,18 @@ public class MainModel {
     ArrayList<String> adminList;
     ArrayList<UserObject> userObjectsList;
     ClassObject classObject;
-    String temp;String collabUID = "";
+    String temp;String collabUID = "",collabName = "";
     int roll,flag =0;
-    ArrayList<String> adminclasslistTemp;
+    ArrayList<String> adminIndex;
     DatabaseReference fromPath;
     DatabaseReference toPath;
-    AdminClassObject adminClassObject;
-    ValueEventListener tempListener, tempListener2,tempListener3;
-    ValueEventListener tempListener4;
+    ChildEventListener childListener;
+    ValueEventListener tempListener, tempListener2;
     ValueEventListener valueEventListener;
     ArrayList<StudentClassObject> studentClassObjectArrayList;
     StudentClassObject studentClassObject;
     ArrayList<String> userAttendancePercentList;// Attendance to show top user side
-
+    ValueEventListener valueEventListenerCollab,valueEventListenerCollab2;
     public MainModel(MainPresenterInterface presenter) {
         this.presenter = presenter;
     }
@@ -66,7 +66,7 @@ public class MainModel {
     public void performDataDownload(){
 
         //CURRENT USER
-        mREF_users.addValueEventListener(new ValueEventListener() {
+        mREF_users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Common.CURRENT_USER = dataSnapshot.child(FIREBASE_USER.getUid()).getValue(UserObject.class);
@@ -96,7 +96,6 @@ public class MainModel {
                     classObjectArrayList.add(classObject);
                 }
                 presenter.adminClassListDownloadSuccess(classObjectArrayList);
-                mREF_classList.removeEventListener(tempListener2);
             }
 
             @Override
@@ -107,14 +106,11 @@ public class MainModel {
         tempListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                CURRENT_CLASS_ID_LIST.clear();
                 for (DataSnapshot s : dataSnapshot.getChildren()){
-                    adminClassObject = s.getValue(AdminClassObject.class);
-                    if(adminClassObject.adminUID.equals(CURRENT_USER.UID)){
-                        CURRENT_CLASS_ID_LIST.add(adminClassObject.classKey);
-                    }
+                    CURRENT_CLASS_ID_LIST.add(s.getKey());
                 }
-                mREF_classList.addValueEventListener(tempListener2);
-                mREF_admin_classList.removeEventListener(tempListener);
+                mREF_classList.addListenerForSingleValueEvent(tempListener2);
             }
 
             @Override
@@ -124,7 +120,7 @@ public class MainModel {
         };
 
 
-        mREF_admin_classList.addValueEventListener(tempListener);
+        mREF_admin_classList.addListenerForSingleValueEvent(tempListener);
     }
 
     public void performAdminAddClass(final ClassObject classObject){
@@ -149,7 +145,7 @@ public class MainModel {
                             .setValue(new NotificationStoreObj(classObject.className,
                                     "Class Created: \n"+currentDateTimeString,simpleTime));
                     AdminClassObject obj = new AdminClassObject(CURRENT_USER.UID, newID);
-                    mREF_admin_classList.push().setValue(obj);
+                    mREF_admin_classList.child(newID).setValue(obj);
                     presenter.addAdminClassSuccess();
                 }
                 else{
@@ -157,6 +153,7 @@ public class MainModel {
                 }
             }
         });
+        mREF_classList.child(newID).child("admin_index").child(FIREBASE_USER.getUid()).setValue(FIREBASE_USER.getUid());
 
     }
 
@@ -165,7 +162,6 @@ public class MainModel {
             fromPath = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(index));
             toPath = mREF_oldRecords;
             deleteIndex(CURRENT_CLASS_ID_LIST.get(index));
-            moveRecord(fromPath,toPath);
         }
         if(CURRENT_USER.AdminLevel.equals("user")){
             DatabaseReference fromPath = mREF_student_classList.child(CURRENT_USER_CLASS_LIST_ID.get(index));
@@ -209,12 +205,9 @@ public class MainModel {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 studentClassObject = dataSnapshot.getValue(StudentClassObject.class);
-                if (studentClassObject.studentUID.equals(CURRENT_USER.UID)){
                     studentClassObjectArrayList.add(studentClassObject);
                     CURRENT_USER_CLASS_LIST_ID.add(dataSnapshot.getKey());
                     CURRENT_CLASS_ID_LIST.add(studentClassObject.classKey);
-                }
-
             }
 
             @Override
@@ -240,25 +233,27 @@ public class MainModel {
         valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                    ArrayList<String> uselessValue = new ArrayList<>();
 
                     for(int i = 0; i<studentClassObjectArrayList.size(); i++){
-                        temp = dataSnapshot.child(studentClassObjectArrayList.get(i).classKey)
+                        try{temp = dataSnapshot.child(studentClassObjectArrayList.get(i).classKey)
                                 .child("attendance_percentage")
                                 .child(Integer.toString(roll))
                                 .getValue(Double.class).toString();
-                        classObjectArrayList.add(dataSnapshot.child(studentClassObjectArrayList.get(i).classKey)
+                            classObjectArrayList.add(dataSnapshot.child(studentClassObjectArrayList.get(i).classKey)
                                 .getValue(ClassObject.class));
 
-                        userAttendancePercentList.add(temp);
-                        mREF_classList.removeEventListener(valueEventListener);
-
-                        mREF_student_classList.removeEventListener(childEventListener);
-                        presenter.userClassListDownloadSuccess(classObjectArrayList, userAttendancePercentList);
+                            userAttendancePercentList.add(temp);
+                        }
+                        catch (Exception e){
+                            uselessValue.add(studentClassObjectArrayList.get(i).classKey);
+                        }
                     }
-                    if (studentClassObjectArrayList == null || studentClassObjectArrayList.size()<1){
-                        presenter.downloadDataFailed();
-                    }
+                    mREF_classList.removeEventListener(valueEventListener);
+                    mREF_student_classList.removeEventListener(childEventListener);
+                    Common.ATTD_PERCENTAGE_LIST = userAttendancePercentList;
+                    cleanUselessStudentKey(uselessValue);
+                    presenter.userClassListDownloadSuccess(classObjectArrayList, userAttendancePercentList);
                 }
 
                 @Override
@@ -267,29 +262,31 @@ public class MainModel {
                 }
             };
         mREF_student_classList.addChildEventListener(childEventListener);
-        mREF_classList.addValueEventListener(valueEventListener);
+        mREF_classList.addListenerForSingleValueEvent(valueEventListener);
     }
 
     public void performUserAddClass(final StudentClassObject studentClassObject){
 
-        mREF_classList.addChildEventListener(new ChildEventListener() {
+        childListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 classObject = dataSnapshot.getValue(ClassObject.class);
                 if(classObject.facultyEmail.equals(studentClassObject.facultyEmail) &&
                         classObject.joinCode.equals(studentClassObject.joinCode)){
                     studentClassObject.classKey = dataSnapshot.getKey();
-                    mREF_student_classList.push().setValue(studentClassObject, new DatabaseReference.CompletionListener() {
+                    mREF_student_classList.child(studentClassObject.classKey).setValue(studentClassObject, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                            if(databaseError == null){presenter.addUserClassSuccess();}
-                            else {presenter.addUserClassFailed();}
+                            if(databaseError == null){
+                                presenter.addUserClassSuccess();
+                            }
+                            else {
+                                presenter.addUserClassFailed();
+                            }
+                            mREF_classList.removeEventListener(childListener);
                         }
                     });
                 }
-                else {
-                    presenter.addUserClassFailed();
-                }
             }
 
             @Override
@@ -311,18 +308,16 @@ public class MainModel {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+        mREF_classList.addChildEventListener(childListener);
     }
 
     public void deleteIndex(final String x){
-        adminclasslistTemp= new ArrayList<>();
-        mREF_admin_classList.addChildEventListener(new ChildEventListener() {
+        adminIndex= new ArrayList<>();
+        mREF_classList.child(x).child("admin_index").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                adminClassObject = dataSnapshot.getValue(AdminClassObject.class);
-                if(adminClassObject.classKey.equals(x)){
-                    adminclasslistTemp.add(dataSnapshot.getKey());
-                }
+                adminIndex.add(dataSnapshot.getKey());
             }
 
             @Override
@@ -345,31 +340,38 @@ public class MainModel {
 
             }
         });
-        mREF_admin_classList.addValueEventListener(new ValueEventListener() {
+        ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(int i=0; i<adminclasslistTemp.size();i++){
-                    mREF_admin_classList.child(adminclasslistTemp.get(i)).removeValue();
+                for(int i=0; i<adminIndex.size();i++){
+                    mREF_users.child(adminIndex.get(i)).child("class_list").child(x).removeValue();
                 }
+               moveRecord(fromPath,toPath);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+        mREF_classList.addListenerForSingleValueEvent(eventListener);
     }
 
-    public void addCollab(int index, final String email){
+    public void addCollab(int index, final String email,boolean isTransfer){
         final String classID = CURRENT_CLASS_ID_LIST.get(index);
-
-
         mREF_users.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 UserObject userObject = dataSnapshot.getValue(UserObject.class);
                 if(userObject.Email.equals(email)){
                     collabUID = userObject.UID;
+                    collabName = userObject.Name;
+                    if (isTransfer){mREF_classList.child(CURRENT_CLASS_ID_LIST.get(index))
+                            .child("facultyEmail").setValue(email);
+                        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(index))
+                                .child("facultyUID").setValue(collabUID);
+                        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(index))
+                                .child("facultyName").setValue(collabName);}
                 }
             }
 
@@ -393,7 +395,7 @@ public class MainModel {
 
             }
         });
-        mREF_users.addValueEventListener(new ValueEventListener() {
+        valueEventListenerCollab2 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(!collabUID.equals("")){
@@ -410,63 +412,22 @@ public class MainModel {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
-
-
+        };
+        mREF_users.addValueEventListener(valueEventListenerCollab2);
     }
 
     public void transferClass(final int index, final String email){
-            mREF_admin_classList.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    AdminClassObject adminClassObject = dataSnapshot.getValue(AdminClassObject.class);
-                    if((adminClassObject.adminUID.equals(CURRENT_USER.UID))&&
-                            (adminClassObject.classKey.equals(CURRENT_CLASS_ID_LIST.get(index)))){
-                        mREF_admin_classList.child(dataSnapshot.getKey()).removeValue();
-
-                    }
-                }
-
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-            tempListener3 = new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    mREF_admin_classList.removeEventListener(tempListener3);
-                    addCollab(index,email);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    presenter.transferCollabActionFailed();
-                }
-            };
-        mREF_admin_classList.addValueEventListener(tempListener3);
+        addCollab(index,email,true);
+        mREF_users.child(CURRENT_USER.UID).child("class_list")
+                    .child(CURRENT_CLASS_ID_LIST.get(index)).removeValue();
+        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(index)).child("admin_index")
+                    .child(CURRENT_USER.UID).removeValue();
     }
 
     public void searchAndAddCollabFinal(final AdminClassObject obj){
         flag = 0;
-
-        ValueEventListener valueEventListener = new ValueEventListener() {
+        mREF_users.removeEventListener(valueEventListenerCollab2);
+        valueEventListenerCollab = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 AdminClassObject objTemp;
@@ -477,7 +438,7 @@ public class MainModel {
                     }
                 }
                 if(flag == 0){
-                    mREF_admin_classList.push().setValue(obj);
+                    temp1(obj);
                 }
                 return;
             }
@@ -487,7 +448,7 @@ public class MainModel {
 
             }
         };
-        mREF_admin_classList.addValueEventListener(valueEventListener);
+        mREF_admin_classList.addValueEventListener(valueEventListenerCollab);
     }
 
     public void performConnectionDownload(){
@@ -548,5 +509,16 @@ public class MainModel {
 
     }
 
+    private void temp1(AdminClassObject obj){
+        mREF_admin_classList.removeEventListener(valueEventListenerCollab);
+        mREF_users.child(collabUID).child("class_list").child(obj.classKey).setValue(obj);
+        mREF_classList.child(obj.classKey).child("admin_index").child(collabUID).setValue(collabUID);
+    }
+
+    private void cleanUselessStudentKey(ArrayList<String> arrayList){
+        for (int i = 0; i<arrayList.size();i++){
+            mREF_users.child(CURRENT_USER.UID).child("class_list").child(arrayList.get(i)).removeValue();
+        }
+    }
 
 }

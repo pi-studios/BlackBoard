@@ -96,6 +96,12 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
                 Button addCollabButton = dialog.findViewById(R.id.bt_faculty_add_collab);
                 Button transferClass = dialog.findViewById(R.id.bt_faculty_transfer);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                if(CURRENT_USER.AdminLevel.equals("user")){
+                    addCollabButton.setVisibility(View.GONE);
+                    transferClass.setVisibility(View.GONE);
+                }
+
                 dialog.show();
                 final Dialog subDialog = new Dialog(view.getContext());
                 addCollabButton.setOnClickListener(new View.OnClickListener() {

@@ -43,8 +43,8 @@ public class MainPresenter implements MainPresenterInterface {
         model.performEndSession(index);
     }
 
-    public void addCollab(int index, String email){
-        model.addCollab(index,email);
+    public void addCollab(int index, String email,boolean isTransfer){
+        model.addCollab(index,email,isTransfer);
     }
 
     public void transferClass(int index, String email){
@@ -102,13 +102,7 @@ public class MainPresenter implements MainPresenterInterface {
     @Override
     public void userClassListDownloadSuccess(ArrayList<ClassObject> classObjectArrayList,
                                              ArrayList<String> userPercentageList) {
-        if (classObjectArrayList != null && classObjectArrayList.size()>0){
-            view.loadUserClassList(classObjectArrayList, userPercentageList);
-        }
-        else {
-
-            view.downloadDataFailed();
-        }
+        view.loadUserClassList(classObjectArrayList, userPercentageList);
     }
 
     @Override
