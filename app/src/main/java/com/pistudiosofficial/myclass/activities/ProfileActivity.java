@@ -77,6 +77,9 @@ public class ProfileActivity extends AppCompatActivity implements ProfileActivit
                 startActivity(new Intent(ProfileActivity.this,MainActivity.class));
             }
         });
+
+
+
     }
 
     @Override

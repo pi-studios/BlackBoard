@@ -21,7 +21,9 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.pistudiosofficial.myclass.AdapterCheckAttendanceList;
+import com.pistudiosofficial.myclass.AdapterConnectionList;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.activities.CreatePollActivity;
 import com.pistudiosofficial.myclass.activities.NewAttendenceAcitivity;
@@ -38,12 +40,11 @@ import static com.pistudiosofficial.myclass.Common.SHARED_PREFERENCES;
 
 public class AdminCheckAttendanceFragment extends Fragment implements CheckAttendanceFragView {
     ProgressDialog progressDialog;
-    Button bt_newAttendance,bt_exportCSV, bt_notify,bt_createPoll;
-    RecyclerView recyclerView;
     CheckAttendancePresenter presenter;
-    Dialog dialog;
+    Dialog dialog,dialogAttendancePercent;
+    ArrayList<Double> admin_attendance_percent_list;
     String type = "";
-
+    FloatingActionButton fab_exportcsv,fab_create_poll,fab_new_attendance,fab_show_attendace_percent,fab_notify;
     public AdminCheckAttendanceFragment() {
     }
 
@@ -53,15 +54,16 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
 
         final View v=inflater.inflate(R.layout.admin_check_attendance, container, false);
 
-        recyclerView = v.findViewById(R.id.recyclerView_admin_checkAttendance);
-        bt_exportCSV = v.findViewById(R.id.bt_exportCSV);
-        bt_notify = v.findViewById(R.id.bt_notify_admin_checkAttendance);
+        fab_create_poll = v.findViewById(R.id.fab_create_poll);
+        fab_exportcsv = v.findViewById(R.id.fab_export_csv);
+        fab_new_attendance = v.findViewById(R.id.fab_new_attendance);
+        fab_notify = v.findViewById(R.id.fab_notify);
+        fab_show_attendace_percent = v.findViewById(R.id.fab_show_attendnace_list);
         presenter = new CheckAttendancePresenter(this);
         presenter.performAdminAttendanceDataDownload();
         progressDialog = ProgressDialog.show(getContext(), "",
                 "Loading. Please wait...", true);
-        bt_newAttendance = v.findViewById(R.id.bt_newAttendance);
-        bt_newAttendance.setOnClickListener(new View.OnClickListener() {
+        fab_new_attendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String new_attendance_taken = SHARED_PREFERENCES.getString(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX),"");
@@ -75,14 +77,13 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 }
             }
         });
-
-        bt_exportCSV.setOnClickListener(new View.OnClickListener() {
+        fab_exportcsv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 presenter.performExportCSV();
             }
         });
-        bt_notify.setOnClickListener(new View.OnClickListener() {
+        fab_notify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog = new Dialog(getContext());
@@ -145,13 +146,26 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 dialog.show();
             }
         });
-
-        bt_createPoll = v.findViewById(R.id.bt_create_poll);
-        bt_createPoll.setOnClickListener(new View.OnClickListener() {
+        fab_create_poll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), CreatePollActivity.class);
                 v.getContext().startActivity(intent);
+            }
+        });
+        fab_show_attendace_percent.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("WrongConstant")
+            @Override
+            public void onClick(View view) {
+                dialogAttendancePercent = new Dialog(getContext());
+                dialogAttendancePercent.setContentView(R.layout.connection_list_dialog);
+                LinearLayoutManager llm = new LinearLayoutManager(getContext());
+                AdapterCheckAttendanceList adapter = new AdapterCheckAttendanceList(admin_attendance_percent_list);
+                RecyclerView recyclerView = dialogAttendancePercent.findViewById(R.id.recycler_connection_list);
+                llm.setOrientation(LinearLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(llm);
+                recyclerView.setAdapter(adapter);
+                dialogAttendancePercent.show();
             }
         });
 
@@ -162,14 +176,8 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
     @SuppressLint("WrongConstant")
     @Override
     public void success(ArrayList<Double> attendancePercentageList) {
-        AdapterCheckAttendanceList adapter = new AdapterCheckAttendanceList(attendancePercentageList);
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(llm);
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        admin_attendance_percent_list = attendancePercentageList;
         progressDialog.dismiss();
-
     }
 
     @Override
