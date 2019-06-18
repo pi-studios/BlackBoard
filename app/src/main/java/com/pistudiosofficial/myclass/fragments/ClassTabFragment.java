@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.pistudiosofficial.myclass.AdapterClassList;
 import com.pistudiosofficial.myclass.ClassObject;
 import com.pistudiosofficial.myclass.Common;
@@ -37,7 +37,7 @@ public class ClassTabFragment extends Fragment {
 
     RecyclerView recyclerView;
     AdapterClassList adapterClassList;
-    FloatingActionButton floatingActionButton;
+    FloatingActionButton floatingActionButton1,floatingActionButton2;
     Dialog addClassDialog;
     public ClassTabFragment() {
 
@@ -48,7 +48,8 @@ public class ClassTabFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_myclass,container,false);
-       floatingActionButton = view.findViewById(R.id.fab_addclass);
+        floatingActionButton1 = view.findViewById(R.id.fab_addclass_sub);
+        floatingActionButton2 = view.findViewById(R.id.fab_connection_sub);
         recyclerView = view.findViewById(R.id.recyclerView_ClassList);
         if(Common.CURRENT_USER.AdminLevel.equals("admin")){
             adapterClassList = new AdapterClassList(Common.CURRENT_ADMIN_CLASS_LIST,null,(MainActivity)getActivity());
@@ -61,7 +62,11 @@ public class ClassTabFragment extends Fragment {
         recyclerView.setLayoutManager(llm);
         recyclerView.setAdapter(adapterClassList);
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        if(!CURRENT_USER.AdminLevel.equals("user")){
+            floatingActionButton2.setVisibility(View.GONE);
+        }
+
+        floatingActionButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (CURRENT_USER.AdminLevel.equals("admin")){
@@ -113,6 +118,14 @@ public class ClassTabFragment extends Fragment {
                             addClassDialog.dismiss();
                         }
                     });
+                }
+            }
+        });
+        floatingActionButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(CURRENT_USER.AdminLevel.equals("user")){
+                    MainActivity.presenter.performConnectionDownload();
                 }
             }
         });

@@ -40,9 +40,9 @@ public class AdapterConnectionList extends RecyclerView.Adapter<AdapterConnectio
         myViewHolder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dialog.dismiss();
                 Intent intent = new Intent(view.getContext(),ProfileActivity.class);
                 SELECTED_USER_PROFILE = userObjectsList.get(i);
-                dialog.dismiss();
                 view.getContext().startActivity(intent);
             }
         });

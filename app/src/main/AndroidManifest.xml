@@ -19,7 +19,6 @@
         <activity
             android:name=".activities.SignupActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"></activity>
-        <activity android:name=".activities.NotificationHistoryActivity" />
         <activity
             android:name=".activities.SplashActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">

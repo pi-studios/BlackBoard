@@ -457,7 +457,6 @@ public class MainModel {
         ValueEventListener valueEventListener1 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mREF_admin_classList.removeEventListener(valueEventListener);
                 for(int count = 0; count<adminList.size();count++) {
                     for (DataSnapshot s : dataSnapshot.getChildren()) {
                         UserObject obj = s.getValue(UserObject.class);
@@ -489,15 +488,11 @@ public class MainModel {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(int count = 0; count<CURRENT_CLASS_ID_LIST.size();count++) {
-                    for (DataSnapshot s : dataSnapshot.getChildren()) {
-                        AdminClassObject obj = s.getValue(AdminClassObject.class);
-                        if(CURRENT_CLASS_ID_LIST.get(count).equals(obj.classKey)){
-                            adminList.add(obj.adminUID);
-                        }
-                    }
+                for (DataSnapshot s : dataSnapshot.getChildren()) {
+                   if(!adminList.contains(s.getKey())){
+                       adminList.add(s.getKey());
+                   }
                 }
-                mREF_users.addValueEventListener(valueEventListener1);
             }
 
             @Override
@@ -505,8 +500,10 @@ public class MainModel {
 
             }
         };
-        mREF_admin_classList.addValueEventListener(valueEventListener);
-
+        for (int k =0; k<CURRENT_CLASS_ID_LIST.size();k++) {
+            mREF_classList.child(CURRENT_CLASS_ID_LIST.get(k)).child("admin_index").addListenerForSingleValueEvent(valueEventListener);
+        }
+        mREF_users.addValueEventListener(valueEventListener1);
     }
 
     private void temp1(AdminClassObject obj){

@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity
     TabLayout tabLayout;
     ViewPager viewPager;
     boolean flag = false;
-
+    DrawerLayout drawer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
+        drawer =  findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -146,25 +146,15 @@ public class MainActivity extends AppCompatActivity
             finish();
             return true;
         }
-        if(id == R.id.action_add_class){
-
-        }
         return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        drawer.closeDrawers();
         int id = item.getItemId();
-        Intent intent;
         if (id == R.id.nav_connections) {
-            if(CURRENT_USER.AdminLevel.equals("user")){
-                presenter.performConnectionDownload();
-            }
-        }
-        else if (id == R.id.nav_notification_history) {
-            intent = new Intent(getApplicationContext(),NotificationHistoryActivity.class);
-            startActivity(intent);
         }
         else if (id == R.id.nav_slideshow) {
 
@@ -340,9 +330,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void connectionListDownloadSuccess(ArrayList<UserObject> userList) {
         LinearLayoutManager llm = new LinearLayoutManager(this);
-        AdapterConnectionList adapterConnectionList = new AdapterConnectionList(userList,connectionListDialog);
         connectionListDialog = new Dialog(this);
         connectionListDialog.setContentView(R.layout.connection_list_dialog);
+        AdapterConnectionList adapterConnectionList = new AdapterConnectionList(userList,connectionListDialog);
         RecyclerView recyclerView = connectionListDialog.findViewById(R.id.recycler_connection_list);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
