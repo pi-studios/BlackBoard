@@ -1,5 +1,6 @@
 package com.pistudiosofficial.myclass.presenter;
 
+import com.pistudiosofficial.myclass.PostObject;
 import com.pistudiosofficial.myclass.model.CheckAttendanceModel;
 import com.pistudiosofficial.myclass.model.ExportCSVModel;
 import com.pistudiosofficial.myclass.model.PushNotificationSenderModel;
@@ -25,6 +26,14 @@ public class CheckAttendancePresenter implements CheckAttendancePresenterInterfa
     public CheckAttendancePresenter(CheckAttendanceFragView view) {
         this.view = view;
         model = new CheckAttendanceModel(this);
+    }
+
+    public void performPosting(PostObject postObject){
+        model.performPosting(postObject);
+    }
+
+    public void performPostLoad(){
+        model.performPostLoad();
     }
 
     public void performBroadcast(String type,String broadcastTitle, String broadcastMessage, String date01, String date02){
@@ -81,6 +90,26 @@ public class CheckAttendancePresenter implements CheckAttendancePresenterInterfa
     @Override
     public void broadcastFailed() {
         view.notifyFailed();
+    }
+
+    @Override
+    public void postLoadSuccess(ArrayList<PostObject> postObjectArrayList) {
+        view.postLoadSuccess(postObjectArrayList);
+    }
+
+    @Override
+    public void postLoadFailed() {
+        view.postLoadFailed();
+    }
+
+    @Override
+    public void postingSuccess() {
+        view.postingSuccess();
+    }
+
+    @Override
+    public void postingFailed() {
+        view.postingFailed();
     }
 
     public void broadcastFunctionPerform(){

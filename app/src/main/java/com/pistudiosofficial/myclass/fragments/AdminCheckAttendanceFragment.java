@@ -9,42 +9,58 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.pistudiosofficial.myclass.AdapterCheckAttendanceList;
 import com.pistudiosofficial.myclass.AdapterConnectionList;
+import com.pistudiosofficial.myclass.AdapterPostLoad;
+import com.pistudiosofficial.myclass.PostObject;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.activities.CreatePollActivity;
 import com.pistudiosofficial.myclass.activities.NewAttendenceAcitivity;
 import com.pistudiosofficial.myclass.presenter.CheckAttendancePresenter;
 import com.pistudiosofficial.myclass.view.CheckAttendanceFragView;;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
+import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
+import static com.pistudiosofficial.myclass.Common.LOG;
 import static com.pistudiosofficial.myclass.Common.SHARED_PREFERENCES;
+import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
 public class AdminCheckAttendanceFragment extends Fragment implements CheckAttendanceFragView {
     ProgressDialog progressDialog;
     CheckAttendancePresenter presenter;
-    Dialog dialog,dialogAttendancePercent;
+    Dialog dialog,dialogAttendancePercent, postDialog;
     ArrayList<Double> admin_attendance_percent_list;
     String type = "";
-    FloatingActionButton fab_exportcsv,fab_create_poll,fab_new_attendance,fab_show_attendace_percent,fab_notify;
+    RecyclerView recyclerViewPost;
+    FloatingActionButton fab_exportcsv,fab_create_poll,fab_new_attendance,
+            fab_show_attendace_percent,fab_notify,fab_createPost;
     public AdminCheckAttendanceFragment() {
     }
 
@@ -59,10 +75,13 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         fab_new_attendance = v.findViewById(R.id.fab_new_attendance);
         fab_notify = v.findViewById(R.id.fab_notify);
         fab_show_attendace_percent = v.findViewById(R.id.fab_show_attendnace_list);
+        fab_createPost = v.findViewById(R.id.fab_post);
         presenter = new CheckAttendancePresenter(this);
+        presenter.performPostLoad();
         presenter.performAdminAttendanceDataDownload();
         progressDialog = ProgressDialog.show(getContext(), "",
                 "Loading. Please wait...", true);
+        recyclerViewPost = v.findViewById(R.id.recyclerView_check_attendance_post);
         fab_new_attendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -168,6 +187,13 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 dialogAttendancePercent.show();
             }
         });
+        fab_createPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createPost();
+            }
+        });
+
 
         return v;
     }
@@ -216,6 +242,39 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         dialog.dismiss();
     }
 
+    @SuppressLint("WrongConstant")
+    @Override
+    public void postLoadSuccess(ArrayList<PostObject> postObjectArrayList) {
+
+        AdapterPostLoad adapterPostLoad = new AdapterPostLoad(postObjectArrayList);
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewPost.getContext(),
+                llm.getOrientation());
+        recyclerViewPost.addItemDecoration(dividerItemDecoration);
+        recyclerViewPost.setLayoutManager(llm);
+        recyclerViewPost.setAdapter(adapterPostLoad);
+
+
+    }
+
+    @Override
+    public void postLoadFailed() {
+        Toast.makeText(getActivity(),"Failed To Load Post !",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void postingSuccess() {
+        postDialog.dismiss();
+        Toast.makeText(getActivity(),"Posted !", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void postingFailed() {
+        Toast.makeText(getActivity(),"Posted !",Toast.LENGTH_SHORT).show();
+        postDialog.dismiss();
+    }
+
     private void sessionDatePick(final EditText editText){
         final Calendar myCalendar = Calendar.getInstance();
 
@@ -243,6 +302,40 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 new DatePickerDialog(getActivity(), date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+    }
+
+    private void createPost(){
+        postDialog = new Dialog(getContext());
+        postDialog.setContentView(R.layout.create_post_dialog);
+        Button postDone = postDialog.findViewById(R.id.bt_create_post);
+        ImageView img1,img2,img3;
+        img1 = postDialog.findViewById(R.id.img_create_post_01);
+        img2 = postDialog.findViewById(R.id.img_create_post_02);
+        img3 = postDialog.findViewById(R.id.img_create_post_03);
+        EditText et_post_content = postDialog.findViewById(R.id.et_create_post_body);
+        postDialog.show();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+        String simpleTime = simpleDateFormat.format(new Date());
+        postDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!et_post_content.getText().toString().equals("") && et_post_content.getText().toString() != null){
+                    // NEED TO INCLUDE IMAGE UPLOAD OPTION
+
+                    PostObject postObject = new PostObject(
+                            CURRENT_USER.Name,simpleTime,
+                            et_post_content.getText().toString(),null,null,
+                            "simple_class_post"
+                    );
+                    presenter.performPosting(postObject);
+                }
+                else{
+                    Toast.makeText(getActivity(),"Cannot Have Empty Post !",Toast.LENGTH_SHORT).show();
+                    postDialog.dismiss();
+                }
             }
         });
 

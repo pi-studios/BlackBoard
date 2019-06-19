@@ -1,13 +1,17 @@
 package com.pistudiosofficial.myclass.model;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.pistudiosofficial.myclass.Common;
+import com.pistudiosofficial.myclass.PostObject;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.CheckAttendancePresenterInterface;
 
 import java.util.ArrayList;
@@ -58,4 +62,41 @@ public class CheckAttendanceModel {
         mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("attendance_percentage")
                 .addValueEventListener(valueEventListener);
     }
+
+    public void performPosting(PostObject postObject){
+        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
+                .child("post").push().setValue(postObject, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if(databaseError != null){
+                    presenter.postingSuccess();
+                }
+                else {
+                    presenter.postingFailed();
+                }
+            }
+        });
+
+    }
+
+    public void performPostLoad(){
+        ArrayList<PostObject> postObjectArrayList = new ArrayList<>();
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot s : dataSnapshot.getChildren()){
+                    postObjectArrayList.add(s.getValue(PostObject.class));
+                }
+                presenter.postLoadSuccess(postObjectArrayList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                presenter.postLoadFailed();
+            }
+        };
+        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
+                .child("post").addListenerForSingleValueEvent(valueEventListener);
+    }
+
 }

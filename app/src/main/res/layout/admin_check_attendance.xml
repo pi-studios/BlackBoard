@@ -64,14 +64,38 @@
         app:fab_icon="@drawable/ic_add_pink"
         app:fab_size="mini"
         app:fab_title="New Attendance" />
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_show_attendnace_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/white"
-            app:fab_colorPressed="@color/white_pressed"
-            app:fab_icon="@drawable/ic_add_pink"
-            app:fab_size="mini"
-            app:fab_title="Show Attendance" />
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_show_attendnace_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fab_colorNormal="@color/white"
+        app:fab_colorPressed="@color/white_pressed"
+        app:fab_icon="@drawable/ic_add_pink"
+        app:fab_size="mini"
+        app:fab_title="Show Attendance" />
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fab_colorNormal="@color/white"
+        app:fab_colorPressed="@color/white_pressed"
+        app:fab_icon="@drawable/ic_add_pink"
+        app:fab_size="mini"
+        app:fab_title="Post" />
+
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_check_attendance_post"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

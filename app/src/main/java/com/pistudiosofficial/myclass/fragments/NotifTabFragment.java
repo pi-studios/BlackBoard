@@ -47,7 +47,6 @@ public class NotifTabFragment extends Fragment implements NotificationHistoryVie
 
 
         adapter = new AdapterNotificationHistory(title,body);
-        Log.i("TAG",title.size()+" "+body.size());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
         llm.scrollToPosition(title.size()-1);

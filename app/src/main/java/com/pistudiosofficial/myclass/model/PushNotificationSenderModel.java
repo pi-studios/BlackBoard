@@ -117,9 +117,7 @@ public class PushNotificationSenderModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot s : dataSnapshot.getChildren()){
-                    if (s.getValue(StudentClassObject.class).classKey.equals(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))){
-                        studentUID.add(s.getValue(StudentClassObject.class).studentUID);
-                    }
+                    studentUID.add(s.getKey());
                 }
                 finishUpload(obj);
                 return;
@@ -130,11 +128,12 @@ public class PushNotificationSenderModel {
 
             }
         };
-        mREF_student_classList.addValueEventListener(valueEventListener);
+        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
+                .child("student_index").addValueEventListener(valueEventListener);
     }
 
     public void finishUpload(NotificationStoreObj obj){
-        mREF_student_classList.removeEventListener(valueEventListener);
+        mREF_classList.removeEventListener(valueEventListener);
         for (String str : studentUID){
             mREF_users.child(str).child("notification").push().setValue(obj);
         }

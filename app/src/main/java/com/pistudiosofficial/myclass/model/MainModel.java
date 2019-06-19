@@ -266,7 +266,6 @@ public class MainModel {
     }
 
     public void performUserAddClass(final StudentClassObject studentClassObject){
-
         childListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -278,6 +277,9 @@ public class MainModel {
                         @Override
                         public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                             if(databaseError == null){
+                                mREF_classList.child(studentClassObject.classKey)
+                                        .child("student_index").child(studentClassObject.studentUID)
+                                        .setValue(studentClassObject.studentUID);
                                 presenter.addUserClassSuccess();
                             }
                             else {
