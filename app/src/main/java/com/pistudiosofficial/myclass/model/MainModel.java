@@ -536,8 +536,10 @@ public class MainModel {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         };
-        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
-                .child("post").addListenerForSingleValueEvent(valueEventListener);
+            if (CURRENT_CLASS_ID_LIST.size()!=0) {
+                mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
+                        .child("post").addListenerForSingleValueEvent(valueEventListener);
+            }
     }
 
 }

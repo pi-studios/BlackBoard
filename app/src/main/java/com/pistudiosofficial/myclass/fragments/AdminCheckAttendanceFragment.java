@@ -320,6 +320,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         });
 
     }
+
     @SuppressLint("WrongConstant")
     private void loadPost() {
 
