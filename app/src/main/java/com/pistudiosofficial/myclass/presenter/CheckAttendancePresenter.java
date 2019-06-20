@@ -32,10 +32,6 @@ public class CheckAttendancePresenter implements CheckAttendancePresenterInterfa
         model.performPosting(postObject);
     }
 
-    public void performPostLoad(){
-        model.performPostLoad();
-    }
-
     public void performBroadcast(String type,String broadcastTitle, String broadcastMessage, String date01, String date02){
         String currentTime = DateFormat.getDateTimeInstance().format(new Date());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
@@ -90,16 +86,6 @@ public class CheckAttendancePresenter implements CheckAttendancePresenterInterfa
     @Override
     public void broadcastFailed() {
         view.notifyFailed();
-    }
-
-    @Override
-    public void postLoadSuccess(ArrayList<PostObject> postObjectArrayList) {
-        view.postLoadSuccess(postObjectArrayList);
-    }
-
-    @Override
-    public void postLoadFailed() {
-        view.postLoadFailed();
     }
 
     @Override

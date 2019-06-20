@@ -44,6 +44,7 @@ import com.pistudiosofficial.myclass.ClassObject;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.StudentClassObject;
 import com.pistudiosofficial.myclass.UserObject;
+import com.pistudiosofficial.myclass.presenter.CheckAttendancePresenter;
 import com.pistudiosofficial.myclass.presenter.MainPresenter;
 import com.pistudiosofficial.myclass.view.MainActivityView;
 
@@ -61,6 +62,7 @@ import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST_ID;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_DATABASE;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_USER;
+import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
 import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
 import static com.pistudiosofficial.myclass.Common.SHARED_PREFERENCES;
 import static com.pistudiosofficial.myclass.Common.TEMP01_LIST;
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainActivityView {
 
     public static MainPresenter presenter;
+    CheckAttendancePresenter checkAttendancePresenter;
     NavigationView navigationView;
     ProgressDialog progressDialog;
     View headerView;
@@ -203,7 +206,7 @@ public class MainActivity extends AppCompatActivity
         ROLL_LIST = new ArrayList<>();
         CURRENT_USER_CLASS_LIST = new ArrayList<>();
         CURRENT_USER_CLASS_LIST_ID = new ArrayList<>();
-
+        POST_OBJECT_LIST = new ArrayList<>();
         //Logged in Check and perform DataLoad
         FIREBASE_USER = mAUTH.getCurrentUser();
         FirebaseUser currentUser = mAUTH.getCurrentUser();
@@ -283,6 +286,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void loadAdminClassList(ArrayList<ClassObject> classObjectArrayList) {
         CURRENT_ADMIN_CLASS_LIST = classObjectArrayList;
+        presenter.performPostLoad();
         viewPager.setAdapter(adapterPagerView);
         if(!flag){viewPager.setCurrentItem(1);flag = true;}
         else {viewPager.setCurrentItem(2);}
@@ -294,6 +298,7 @@ public class MainActivity extends AppCompatActivity
     public void loadUserClassList(ArrayList<ClassObject> classObjectsList,
                                   ArrayList<String> userAttendanceList) {
         CURRENT_ADMIN_CLASS_LIST = classObjectsList;
+        presenter.performPostLoad();
         viewPager.setAdapter(adapterPagerView);
         if(!flag){viewPager.setCurrentItem(1);flag = true;}
         else {viewPager.setCurrentItem(2);}

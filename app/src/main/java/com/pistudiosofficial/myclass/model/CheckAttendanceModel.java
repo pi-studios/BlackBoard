@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import static com.pistudiosofficial.myclass.Common.ATTD_PERCENTAGE_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
+import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
 import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
 import static com.pistudiosofficial.myclass.Common.TEMP01_LIST;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
@@ -77,26 +78,6 @@ public class CheckAttendanceModel {
             }
         });
 
-    }
-
-    public void performPostLoad(){
-        ArrayList<PostObject> postObjectArrayList = new ArrayList<>();
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot s : dataSnapshot.getChildren()){
-                    postObjectArrayList.add(s.getValue(PostObject.class));
-                }
-                presenter.postLoadSuccess(postObjectArrayList);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                presenter.postLoadFailed();
-            }
-        };
-        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
-                .child("post").addListenerForSingleValueEvent(valueEventListener);
     }
 
 }

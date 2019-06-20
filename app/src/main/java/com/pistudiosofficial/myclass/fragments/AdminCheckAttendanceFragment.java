@@ -49,6 +49,7 @@ import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
 import static com.pistudiosofficial.myclass.Common.LOG;
+import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
 import static com.pistudiosofficial.myclass.Common.SHARED_PREFERENCES;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
@@ -77,7 +78,6 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         fab_show_attendace_percent = v.findViewById(R.id.fab_show_attendnace_list);
         fab_createPost = v.findViewById(R.id.fab_post);
         presenter = new CheckAttendancePresenter(this);
-        presenter.performPostLoad();
         presenter.performAdminAttendanceDataDownload();
         progressDialog = ProgressDialog.show(getContext(), "",
                 "Loading. Please wait...", true);
@@ -193,7 +193,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 createPost();
             }
         });
-
+        loadPost();
 
         return v;
     }
@@ -242,26 +242,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         dialog.dismiss();
     }
 
-    @SuppressLint("WrongConstant")
-    @Override
-    public void postLoadSuccess(ArrayList<PostObject> postObjectArrayList) {
 
-        AdapterPostLoad adapterPostLoad = new AdapterPostLoad(postObjectArrayList);
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewPost.getContext(),
-                llm.getOrientation());
-        recyclerViewPost.addItemDecoration(dividerItemDecoration);
-        recyclerViewPost.setLayoutManager(llm);
-        recyclerViewPost.setAdapter(adapterPostLoad);
-
-
-    }
-
-    @Override
-    public void postLoadFailed() {
-        Toast.makeText(getActivity(),"Failed To Load Post !",Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void postingSuccess() {
@@ -340,5 +321,19 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         });
 
     }
+    @SuppressLint("WrongConstant")
+    private void loadPost() {
 
+        AdapterPostLoad adapterPostLoad = new AdapterPostLoad(POST_OBJECT_LIST);
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewPost.getContext(),
+                llm.getOrientation());
+        recyclerViewPost.addItemDecoration(dividerItemDecoration);
+        recyclerViewPost.setLayoutManager(llm);
+        llm.scrollToPosition(POST_OBJECT_LIST.size()-1);
+        recyclerViewPost.setAdapter(adapterPostLoad);
+
+
+    }
 }

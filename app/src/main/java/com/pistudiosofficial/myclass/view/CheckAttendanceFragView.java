@@ -15,9 +15,6 @@ public interface CheckAttendanceFragView {
     void notifySuccess();
     void notifyFailed();
 
-    void postLoadSuccess(ArrayList<PostObject> postObjectArrayList);
-    void postLoadFailed();
-
     void postingSuccess();
     void postingFailed();
 

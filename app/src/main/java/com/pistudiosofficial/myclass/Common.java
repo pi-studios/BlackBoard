@@ -33,6 +33,8 @@ public class Common {
     public static ArrayList<String> ROLL_LIST = null;
     public static ArrayList<StudentClassObject> CURRENT_USER_CLASS_LIST = null;
     public static ArrayList<String> CURRENT_USER_CLASS_LIST_ID = null;
+    public static ArrayList<PostObject> POST_OBJECT_LIST = null;
+
 
     public static SharedPreferences SHARED_PREFERENCES;
 

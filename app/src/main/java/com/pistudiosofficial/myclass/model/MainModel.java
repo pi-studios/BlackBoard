@@ -16,6 +16,7 @@ import com.pistudiosofficial.myclass.AdminClassObject;
 import com.pistudiosofficial.myclass.ClassObject;
 import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.NotificationStoreObj;
+import com.pistudiosofficial.myclass.PostObject;
 import com.pistudiosofficial.myclass.StudentClassObject;
 import com.pistudiosofficial.myclass.UserObject;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.MainPresenterInterface;
@@ -28,11 +29,13 @@ import java.util.Date;
 import static android.content.ContentValues.TAG;
 import static com.pistudiosofficial.myclass.Common.CURRENT_ADMIN_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
+import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST_ID;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_USER;
 import static com.pistudiosofficial.myclass.Common.LOG;
+import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
 import static com.pistudiosofficial.myclass.Common.mAUTH;
 import static com.pistudiosofficial.myclass.Common.mREF_admin_classList;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
@@ -518,6 +521,23 @@ public class MainModel {
         for (int i = 0; i<arrayList.size();i++){
             mREF_users.child(CURRENT_USER.UID).child("class_list").child(arrayList.get(i)).removeValue();
         }
+    }
+
+    public void performPostLoad(){
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot s : dataSnapshot.getChildren()){
+                    POST_OBJECT_LIST.add(s.getValue(PostObject.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        };
+        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
+                .child("post").addListenerForSingleValueEvent(valueEventListener);
     }
 
 }

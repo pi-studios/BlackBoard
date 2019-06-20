@@ -15,8 +15,6 @@ public interface CheckAttendancePresenterInterface {
     void broadcastSuccess();
     void broadcastFailed();
 
-    void postLoadSuccess(ArrayList<PostObject> postObjectArrayList);
-    void postLoadFailed();
     void postingSuccess();
     void postingFailed();
 

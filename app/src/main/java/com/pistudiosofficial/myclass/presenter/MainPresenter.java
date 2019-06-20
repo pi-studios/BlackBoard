@@ -59,6 +59,10 @@ public class MainPresenter implements MainPresenterInterface {
         model.performConnectionDownload();
     }
 
+    public void performPostLoad(){
+        model.performPostLoad();
+    }
+
     @Override
     public void downloadDataSuccess() {
         view.downloadDataSuccess();
