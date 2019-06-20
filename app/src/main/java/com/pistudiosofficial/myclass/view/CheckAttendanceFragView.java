@@ -18,4 +18,6 @@ public interface CheckAttendanceFragView {
     void postingSuccess();
     void postingFailed();
 
+    void checkAttendanceReturn(boolean b);
+
 }

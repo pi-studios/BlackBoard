@@ -28,6 +28,10 @@ public class CheckAttendancePresenter implements CheckAttendancePresenterInterfa
         model = new CheckAttendanceModel(this);
     }
 
+    public void performMultipleAttendanceCheck(){
+        model.checkMultipleAttendance();
+    }
+
     public void performPosting(PostObject postObject){
         model.performPosting(postObject);
     }
@@ -96,6 +100,11 @@ public class CheckAttendancePresenter implements CheckAttendancePresenterInterfa
     @Override
     public void postingFailed() {
         view.postingFailed();
+    }
+
+    @Override
+    public void checkMultipleAttendanceReturn(boolean b) {
+        view.checkAttendanceReturn(b);
     }
 
     public void broadcastFunctionPerform(){

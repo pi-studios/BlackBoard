@@ -67,8 +67,11 @@ public class NewAttendenceModel {
             double roundOff = Math.round(temp01 * 100.0) / 100.0;
             refAttdPercentage.child(ROLL_LIST.get(i)).setValue(roundOff * 100);
         }
-            SHARED_PREFERENCES.edit().putString(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX), "true").apply();
-            SHARED_PREFERENCES.edit().putString("day", todayString).apply();
+        Date todayDate = Calendar.getInstance().getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String todayString = formatter.format(todayDate);
+        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
+                .child("last_attendance_date").setValue(todayString);
             presenter.success();
 
     }

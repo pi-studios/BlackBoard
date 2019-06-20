@@ -220,17 +220,6 @@ public class MainActivity extends AppCompatActivity
 
             SHARED_PREFERENCES = getSharedPreferences("", Context.MODE_PRIVATE);
 
-            //Check for Double attendance (for Admin Level)
-            Date todayDate = Calendar.getInstance().getTime();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            String todayString = formatter.format(todayDate);
-            String day = SHARED_PREFERENCES.getString("day","");
-            if(!todayString.equals(day)){
-                for(int i=0; i<CURRENT_CLASS_ID_LIST.size();i++){
-                    SHARED_PREFERENCES.edit().putString(CURRENT_CLASS_ID_LIST.get(i), "false").apply();
-                }
-            }
-
 
             presenter = new MainPresenter(this);
             progressDialog = ProgressDialog.show(MainActivity.this, "",

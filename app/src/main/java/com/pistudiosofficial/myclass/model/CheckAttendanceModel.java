@@ -14,7 +14,10 @@ import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.PostObject;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.CheckAttendancePresenterInterface;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import static com.pistudiosofficial.myclass.Common.ATTD_PERCENTAGE_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
@@ -28,6 +31,7 @@ public class CheckAttendanceModel {
     CheckAttendancePresenterInterface presenter;
     ArrayList<Double> checkAttendanceList;
     ValueEventListener valueEventListener;
+    String retrivedDate;
     public CheckAttendanceModel(CheckAttendancePresenterInterface presenter) {
         this.presenter = presenter;
     }
@@ -78,6 +82,35 @@ public class CheckAttendanceModel {
             }
         });
 
+    }
+
+    public void checkMultipleAttendance(){
+        Date todayDate = Calendar.getInstance().getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String todayString = formatter.format(todayDate);
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                retrivedDate = dataSnapshot.getValue(String.class);
+                if(retrivedDate != null) {
+                    if (retrivedDate.equals(todayString)) {
+                        presenter.checkMultipleAttendanceReturn(false);
+                    }
+                    else {
+                        presenter.checkMultipleAttendanceReturn(true);
+                    }
+                }
+                else {
+                    presenter.checkMultipleAttendanceReturn(true);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        };
+        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
+                .child("last_attendance_date").addListenerForSingleValueEvent(valueEventListener);
     }
 
 }

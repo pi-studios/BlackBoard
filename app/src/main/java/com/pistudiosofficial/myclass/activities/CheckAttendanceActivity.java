@@ -9,6 +9,7 @@ import android.widget.Button;
 import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.fragments.AdminCheckAttendanceFragment;
+import com.pistudiosofficial.myclass.fragments.UserCheckAttendanceFragment;
 
 public class CheckAttendanceActivity extends AppCompatActivity {
 
@@ -21,6 +22,10 @@ public class CheckAttendanceActivity extends AppCompatActivity {
 
         if(Common.CURRENT_USER.AdminLevel.equals("admin")){
             fragment = new AdminCheckAttendanceFragment();
+            getFragmentManager().beginTransaction().replace(R.id.frame_layout_CheckAttendance,fragment).commit();
+        }
+        if(Common.CURRENT_USER.AdminLevel.equals("user")){
+            fragment = new UserCheckAttendanceFragment();
             getFragmentManager().beginTransaction().replace(R.id.frame_layout_CheckAttendance,fragment).commit();
         }
     }

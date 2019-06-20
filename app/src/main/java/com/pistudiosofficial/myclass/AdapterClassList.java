@@ -81,10 +81,9 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
         myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(adminLevel==1){Common.CURRENT_INDEX = i;
-                    Intent intent = new Intent(view.getContext(), CheckAttendanceActivity.class);
-                    view.getContext().startActivity(intent);
-                }
+                Common.CURRENT_INDEX = i;
+                Intent intent = new Intent(view.getContext(), CheckAttendanceActivity.class);
+                view.getContext().startActivity(intent);
             }
         });
         myViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {

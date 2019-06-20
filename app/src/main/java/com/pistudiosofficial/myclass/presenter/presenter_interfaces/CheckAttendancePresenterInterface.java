@@ -18,4 +18,6 @@ public interface CheckAttendancePresenterInterface {
     void postingSuccess();
     void postingFailed();
 
+    void checkMultipleAttendanceReturn(boolean b);
+
 }

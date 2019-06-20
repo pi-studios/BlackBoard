@@ -9,7 +9,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,16 +20,15 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.pistudiosofficial.myclass.AdapterCheckAttendanceList;
-import com.pistudiosofficial.myclass.AdapterConnectionList;
 import com.pistudiosofficial.myclass.AdapterPostLoad;
 import com.pistudiosofficial.myclass.PostObject;
 import com.pistudiosofficial.myclass.R;
@@ -38,7 +36,6 @@ import com.pistudiosofficial.myclass.activities.CreatePollActivity;
 import com.pistudiosofficial.myclass.activities.NewAttendenceAcitivity;
 import com.pistudiosofficial.myclass.presenter.CheckAttendancePresenter;
 import com.pistudiosofficial.myclass.view.CheckAttendanceFragView;;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,9 +45,7 @@ import java.util.Locale;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
-import static com.pistudiosofficial.myclass.Common.LOG;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
-import static com.pistudiosofficial.myclass.Common.SHARED_PREFERENCES;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
 public class AdminCheckAttendanceFragment extends Fragment implements CheckAttendanceFragView {
@@ -58,6 +53,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
     CheckAttendancePresenter presenter;
     Dialog dialog,dialogAttendancePercent, postDialog;
     ArrayList<Double> admin_attendance_percent_list;
+    boolean notMultipleAttendance = false;
     String type = "";
     RecyclerView recyclerViewPost;
     FloatingActionButton fab_exportcsv,fab_create_poll,fab_new_attendance,
@@ -81,12 +77,12 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         presenter.performAdminAttendanceDataDownload();
         progressDialog = ProgressDialog.show(getContext(), "",
                 "Loading. Please wait...", true);
+        presenter.performMultipleAttendanceCheck();
         recyclerViewPost = v.findViewById(R.id.recyclerView_check_attendance_post);
         fab_new_attendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String new_attendance_taken = SHARED_PREFERENCES.getString(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX),"");
-                if(!new_attendance_taken.equals("true")){
+                if(notMultipleAttendance){
                     Intent intent = new Intent(v.getContext(), NewAttendenceAcitivity.class);
                     startActivity(intent);
                     getActivity().finish();
@@ -242,8 +238,6 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         dialog.dismiss();
     }
 
-
-
     @Override
     public void postingSuccess() {
         postDialog.dismiss();
@@ -254,6 +248,11 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
     public void postingFailed() {
         Toast.makeText(getActivity(),"Posted !",Toast.LENGTH_SHORT).show();
         postDialog.dismiss();
+    }
+
+    @Override
+    public void checkAttendanceReturn(boolean b) {
+        notMultipleAttendance = b;
     }
 
     private void sessionDatePick(final EditText editText){
@@ -336,4 +335,5 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
 
 
     }
+
 }
