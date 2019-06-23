@@ -37,8 +37,8 @@ public class CreatePollModel {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
         String simpleTime = simpleDateFormat.format(new Date());
         PushNotificationSenderModel notifModel = new PushNotificationSenderModel("Poll",
-                "Respond To The Poll Soon!",Common.CURRENT_CLASS_ID_LIST.get(Common.CURRENT_INDEX),
-                simpleTime,Common.CURRENT_ADMIN_CLASS_LIST.get(Common.CURRENT_INDEX).className,simpleTime);
+                "Respond To The Poll Soon!",Common.CURRENT_ADMIN_CLASS_LIST.get(Common.CURRENT_INDEX).className,
+                simpleTime,Common.CURRENT_CLASS_ID_LIST.get(Common.CURRENT_INDEX),simpleTime);
         notifModel.performBroadcast();
 
     }

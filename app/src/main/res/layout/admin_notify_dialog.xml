@@ -18,7 +18,7 @@
     <EditText
         android:id="@+id/et_broadcast_message"
         android:layout_width="match_parent"
-        android:layout_height="162dp"
+        android:layout_height="79dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
         android:gravity="center_horizontal"
@@ -71,9 +71,10 @@
 
         <RadioButton
             android:id="@+id/rb_classCancel"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:padding="3dp"
             android:text="Class Cancel" />
     </RadioGroup>
 
