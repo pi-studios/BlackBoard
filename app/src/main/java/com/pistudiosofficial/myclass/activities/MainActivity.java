@@ -37,6 +37,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 import com.pistudiosofficial.myclass.AdapterClassList;
 import com.pistudiosofficial.myclass.AdapterConnectionList;
 import com.pistudiosofficial.myclass.AdapterPagerView;
@@ -52,6 +53,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 import static com.pistudiosofficial.myclass.Common.ATTD_PERCENTAGE_LIST;
@@ -62,7 +64,10 @@ import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST_ID;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_DATABASE;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_USER;
+import static com.pistudiosofficial.myclass.Common.POST_LIKE_LIST;
+import static com.pistudiosofficial.myclass.Common.POST_OBJECT_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
+import static com.pistudiosofficial.myclass.Common.POST_POLL_OPTIONS;
 import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
 import static com.pistudiosofficial.myclass.Common.SHARED_PREFERENCES;
 import static com.pistudiosofficial.myclass.Common.TEMP01_LIST;
@@ -73,6 +78,7 @@ import static com.pistudiosofficial.myclass.Common.mREF_connections;
 import static com.pistudiosofficial.myclass.Common.mREF_oldRecords;
 import static com.pistudiosofficial.myclass.Common.mREF_student_classList;
 import static com.pistudiosofficial.myclass.Common.mREF_users;
+import static com.pistudiosofficial.myclass.Common.mSTOR_REF_classPost;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainActivityView {
@@ -196,6 +202,7 @@ public class MainActivity extends AppCompatActivity
         mREF_connections = FIREBASE_DATABASE.getReference("connections");
         mREF_classList = FIREBASE_DATABASE.getReference("class_list");
         mREF_oldRecords = FIREBASE_DATABASE.getReference("old_records");
+        mSTOR_REF_classPost = FirebaseStorage.getInstance().getReference("class_post");
         mREF_users.keepSynced(true);
         mREF_classList.keepSynced(true);
         mREF_connections.keepSynced(true);
@@ -207,6 +214,9 @@ public class MainActivity extends AppCompatActivity
         CURRENT_USER_CLASS_LIST = new ArrayList<>();
         CURRENT_USER_CLASS_LIST_ID = new ArrayList<>();
         POST_OBJECT_LIST = new ArrayList<>();
+        POST_OBJECT_ID_LIST = new ArrayList<>();
+        POST_POLL_OPTIONS = new HashMap<>();
+        POST_LIKE_LIST = new ArrayList<>();
         //Logged in Check and perform DataLoad
         FIREBASE_USER = mAUTH.getCurrentUser();
         FirebaseUser currentUser = mAUTH.getCurrentUser();
@@ -307,7 +317,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void addCollab(int index, String email) {
-        presenter.addCollab(index,email,true);
+        presenter.addCollab(index,email,false);
     }
 
     @Override
@@ -323,16 +333,21 @@ public class MainActivity extends AppCompatActivity
     @SuppressLint("WrongConstant")
     @Override
     public void connectionListDownloadSuccess(ArrayList<UserObject> userList) {
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        connectionListDialog = new Dialog(this);
-        connectionListDialog.setContentView(R.layout.connection_list_dialog);
-        AdapterConnectionList adapterConnectionList = new AdapterConnectionList(userList,connectionListDialog);
-        RecyclerView recyclerView = connectionListDialog.findViewById(R.id.recycler_connection_list);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(llm);
-        recyclerView.setAdapter(adapterConnectionList);
-        adapterConnectionList.notifyDataSetChanged();
-        connectionListDialog.show();
+        if(userList.size() != 0){
+            LinearLayoutManager llm = new LinearLayoutManager(this);
+            connectionListDialog = new Dialog(this);
+            connectionListDialog.setContentView(R.layout.connection_list_dialog);
+            AdapterConnectionList adapterConnectionList = new AdapterConnectionList(userList,connectionListDialog);
+            RecyclerView recyclerView = connectionListDialog.findViewById(R.id.recycler_connection_list);
+            llm.setOrientation(LinearLayoutManager.VERTICAL);
+            recyclerView.setLayoutManager(llm);
+            recyclerView.setAdapter(adapterConnectionList);
+            adapterConnectionList.notifyDataSetChanged();
+            connectionListDialog.show();
+        }
+        else{
+            Toast.makeText(MainActivity.this,"Add Class First",Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

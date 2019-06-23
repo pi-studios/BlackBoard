@@ -6,12 +6,15 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -35,16 +38,20 @@ import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.activities.CreatePollActivity;
 import com.pistudiosofficial.myclass.activities.NewAttendenceAcitivity;
 import com.pistudiosofficial.myclass.presenter.CheckAttendancePresenter;
-import com.pistudiosofficial.myclass.view.CheckAttendanceFragView;;
+import com.pistudiosofficial.myclass.view.CheckAttendanceFragView;
+import com.squareup.picasso.Picasso;;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
+import static com.pistudiosofficial.myclass.Common.POST_LIKE_LIST;
+import static com.pistudiosofficial.myclass.Common.POST_OBJECT_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
@@ -55,6 +62,11 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
     ArrayList<Double> admin_attendance_percent_list;
     boolean notMultipleAttendance = false;
     String type = "";
+    Uri imgURI01,imgURI02,imgURI03;
+    ImageView img1,img2,img3;
+
+    private static final int PICK_IMAGE_REQUEST01 = 1,PICK_IMAGE_REQUEST02 = 2, PICK_IMAGE_REQUEST03 = 3;
+
     RecyclerView recyclerViewPost;
     FloatingActionButton fab_exportcsv,fab_create_poll,fab_new_attendance,
             fab_show_attendace_percent,fab_notify,fab_createPost;
@@ -246,7 +258,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
 
     @Override
     public void postingFailed() {
-        Toast.makeText(getActivity(),"Posted !",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(),"Posting Failed",Toast.LENGTH_SHORT).show();
         postDialog.dismiss();
     }
 
@@ -288,10 +300,11 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
     }
 
     private void createPost(){
+
+
         postDialog = new Dialog(getContext());
         postDialog.setContentView(R.layout.create_post_dialog);
         Button postDone = postDialog.findViewById(R.id.bt_create_post);
-        ImageView img1,img2,img3;
         img1 = postDialog.findViewById(R.id.img_create_post_01);
         img2 = postDialog.findViewById(R.id.img_create_post_02);
         img3 = postDialog.findViewById(R.id.img_create_post_03);
@@ -299,18 +312,45 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         postDialog.show();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
         String simpleTime = simpleDateFormat.format(new Date());
+        img1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFileChooser(PICK_IMAGE_REQUEST01);
+            }
+        });
+        img2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFileChooser(PICK_IMAGE_REQUEST02);
+            }
+        });
+        img3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFileChooser(PICK_IMAGE_REQUEST03);
+            }
+        });
+
         postDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!et_post_content.getText().toString().equals("") && et_post_content.getText().toString() != null){
                     // NEED TO INCLUDE IMAGE UPLOAD OPTION
-
+                    ArrayList<Uri> imgURILIST = new ArrayList<>();
+                    ArrayList<String> extensionList = new ArrayList<>();
+                    if (imgURI01 != null){imgURILIST.add(imgURI01); extensionList.add(getExtension(imgURI01));}
+                    if (imgURI02 != null){imgURILIST.add(imgURI02); extensionList.add(getExtension(imgURI02));}
+                    if (imgURI03 != null){imgURILIST.add(imgURI03); extensionList.add(getExtension(imgURI03));}
                     PostObject postObject = new PostObject(
                             CURRENT_USER.Name,simpleTime,
-                            et_post_content.getText().toString(),null,null,
+                            et_post_content.getText().toString(),null,
                             "simple_class_post"
                     );
-                    presenter.performPosting(postObject);
+                    if (imgURILIST.size()>0){
+                        presenter.performPosting(postObject,imgURILIST,extensionList);
+                    }else{
+                        presenter.performPosting(postObject,null,null);
+                    }
                 }
                 else{
                     Toast.makeText(getActivity(),"Cannot Have Empty Post !",Toast.LENGTH_SHORT).show();
@@ -323,18 +363,50 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
 
     @SuppressLint("WrongConstant")
     private void loadPost() {
-
-        AdapterPostLoad adapterPostLoad = new AdapterPostLoad(POST_OBJECT_LIST);
+        Collections.reverse(POST_OBJECT_LIST);
+        Collections.reverse(POST_OBJECT_ID_LIST);
+        Collections.reverse(POST_LIKE_LIST);
+        ArrayList<PostObject> postlist = POST_OBJECT_LIST;
+        AdapterPostLoad adapterPostLoad = new AdapterPostLoad(postlist,getContext());
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewPost.getContext(),
                 llm.getOrientation());
         recyclerViewPost.addItemDecoration(dividerItemDecoration);
         recyclerViewPost.setLayoutManager(llm);
-        llm.scrollToPosition(POST_OBJECT_LIST.size()-1);
+       // llm.scrollToPosition(POST_OBJECT_LIST.size()-1);
         recyclerViewPost.setAdapter(adapterPostLoad);
 
 
     }
 
+    private void openFileChooser(int imgRQST){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent,imgRQST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST01 && resultCode == -1 && data != null && data.getData() != null){
+            imgURI01 = data.getData();
+            Picasso.with(getContext()).load(imgURI01).into(img1);
+        }
+        if (requestCode == PICK_IMAGE_REQUEST02 && resultCode == -1 && data != null && data.getData() != null){
+            imgURI02 = data.getData();
+            Picasso.with(getContext()).load(imgURI02).into(img2);
+        }
+        if (requestCode == PICK_IMAGE_REQUEST03 && resultCode == -1 && data != null && data.getData() != null){
+            imgURI03 = data.getData();
+            Picasso.with(getContext()).load(imgURI03).into(img3);
+        }
+    }
+
+    private String getExtension(Uri uri){
+        ContentResolver cr = getActivity().getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cr.getType(uri));
+    }
 }

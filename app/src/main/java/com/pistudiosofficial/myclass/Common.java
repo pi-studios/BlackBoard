@@ -7,8 +7,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Common {
 
@@ -25,6 +27,7 @@ public class Common {
     public static DatabaseReference mREF_oldRecords = null;
     public static DatabaseReference mREF_student_classList = null;
     public static DatabaseReference mREF_admin_classList = null;
+    public static StorageReference mSTOR_REF_classPost = null;
 
     public static ArrayList<ClassObject> CURRENT_ADMIN_CLASS_LIST = null;
     public static ArrayList<String> CURRENT_CLASS_ID_LIST = null;
@@ -33,8 +36,12 @@ public class Common {
     public static ArrayList<String> ROLL_LIST = null;
     public static ArrayList<StudentClassObject> CURRENT_USER_CLASS_LIST = null;
     public static ArrayList<String> CURRENT_USER_CLASS_LIST_ID = null;
-    public static ArrayList<PostObject> POST_OBJECT_LIST = null;
 
+    //Post Related Common
+    public static ArrayList<PostObject> POST_OBJECT_LIST = null;
+    public static ArrayList<String> POST_OBJECT_ID_LIST = null;
+    public static HashMap<String,PollOptionValueLikeObject> POST_POLL_OPTIONS = null;
+    public static ArrayList<String> POST_LIKE_LIST = null;
 
     public static SharedPreferences SHARED_PREFERENCES;
 

@@ -1,5 +1,7 @@
 package com.pistudiosofficial.myclass.presenter;
 
+import android.net.Uri;
+
 import com.pistudiosofficial.myclass.PostObject;
 import com.pistudiosofficial.myclass.model.CheckAttendanceModel;
 import com.pistudiosofficial.myclass.model.ExportCSVModel;
@@ -32,8 +34,8 @@ public class CheckAttendancePresenter implements CheckAttendancePresenterInterfa
         model.checkMultipleAttendance();
     }
 
-    public void performPosting(PostObject postObject){
-        model.performPosting(postObject);
+    public void performPosting(PostObject postObject, ArrayList<Uri> imgURI, ArrayList<String> extensionList){
+        model.performPosting(postObject,imgURI,extensionList);
     }
 
     public void performBroadcast(String type,String broadcastTitle, String broadcastMessage, String date01, String date02){

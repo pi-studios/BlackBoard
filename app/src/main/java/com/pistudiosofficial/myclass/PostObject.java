@@ -6,18 +6,17 @@ import java.util.ArrayList;
 public class PostObject {
     private String creatorName, creationDate, body, postType;
     private ArrayList<Comments> comments;
-    private ArrayList<Bitmap> graphics;
 
     public PostObject() {
     }
 
     public PostObject(String creatorName, String creationDate, String body,
-                      ArrayList<Comments> comments, ArrayList<Bitmap> graphics, String postType) {
+                      ArrayList<Comments> comments, String postType
+                    ) {
         this.creatorName = creatorName;
         this.creationDate = creationDate;
         this.body = body;
         this.comments = comments;
-        this.graphics = graphics;
         this.postType = postType;
     }
 
@@ -59,14 +58,6 @@ public class PostObject {
 
     public void setComments(ArrayList<Comments> comments) {
         this.comments = comments;
-    }
-
-    public ArrayList<Bitmap> getGraphics() {
-        return graphics;
-    }
-
-    public void setGraphics(ArrayList<Bitmap> graphics) {
-        this.graphics = graphics;
     }
 
     private class Comments{

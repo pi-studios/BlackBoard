@@ -20,6 +20,7 @@ import com.pistudiosofficial.myclass.presenter.NotificationHistoryPresenter;
 import com.pistudiosofficial.myclass.view.NotificationHistoryView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class NotifTabFragment extends Fragment implements NotificationHistoryView {
     RecyclerView recyclerView;
@@ -45,11 +46,11 @@ public class NotifTabFragment extends Fragment implements NotificationHistoryVie
     @Override
     public void loadRecyclerSuccess(ArrayList<String> title, ArrayList<String> body) {
 
-
+        Collections.reverse(title);Collections.reverse(body);
         adapter = new AdapterNotificationHistory(title,body);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
-        llm.scrollToPosition(title.size()-1);
+        //llm.scrollToPosition(title.size()-1);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }

@@ -64,6 +64,20 @@ public class PushNotificationSenderModel {
 
     }
 
+    //Create Poll
+    public PushNotificationSenderModel(String broadcastTitle, String broadcastBody,
+                                       String className, String creationTime, String classID,
+                                       String simpleTime) {
+        this.broadcastTitle = broadcastTitle;
+        this.broadcastBody = broadcastBody;
+        this.className = className;
+        this.creationTime = creationTime;
+        this.classID = classID;
+        this.simpleTime = simpleTime;
+
+    }
+
+
     public void performBroadcast(){
         broadcastTitle = broadcastTitle+"("+className+")";
         broadcastBody = broadcastBody+"- Created: "+creationTime;
@@ -74,10 +88,14 @@ public class PushNotificationSenderModel {
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 if(databaseError==null){
                     fcmMasterNotificationList(obj);
-                    presenter.broadcastSuccess();
+                    if (presenter != null){
+                        presenter.broadcastSuccess();
+                    }
                     return;}
                 else{
-                    presenter.broadcastFailed();
+                    if(presenter != null){
+                        presenter.broadcastFailed();
+                    }
                 }
             }
         });

@@ -16,6 +16,7 @@ import com.pistudiosofficial.myclass.AdminClassObject;
 import com.pistudiosofficial.myclass.ClassObject;
 import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.NotificationStoreObj;
+import com.pistudiosofficial.myclass.PollOptionValueLikeObject;
 import com.pistudiosofficial.myclass.PostObject;
 import com.pistudiosofficial.myclass.StudentClassObject;
 import com.pistudiosofficial.myclass.UserObject;
@@ -35,7 +36,10 @@ import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST_ID;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_USER;
 import static com.pistudiosofficial.myclass.Common.LOG;
+import static com.pistudiosofficial.myclass.Common.POST_LIKE_LIST;
+import static com.pistudiosofficial.myclass.Common.POST_OBJECT_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
+import static com.pistudiosofficial.myclass.Common.POST_POLL_OPTIONS;
 import static com.pistudiosofficial.myclass.Common.mAUTH;
 import static com.pistudiosofficial.myclass.Common.mREF_admin_classList;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
@@ -60,7 +64,7 @@ public class MainModel {
     ValueEventListener valueEventListener;
     ArrayList<StudentClassObject> studentClassObjectArrayList;
     StudentClassObject studentClassObject;
-    ArrayList<String> userAttendancePercentList;// Attendance to show top user side
+    ArrayList<String> userAttendancePercentList;
     ValueEventListener valueEventListenerCollab,valueEventListenerCollab2;
     public MainModel(MainPresenterInterface presenter) {
         this.presenter = presenter;
@@ -528,8 +532,11 @@ public class MainModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot s : dataSnapshot.getChildren()){
-                    POST_OBJECT_LIST.add(s.getValue(PostObject.class));
+                        POST_OBJECT_LIST.add(s.getValue(PostObject.class));
+                        POST_OBJECT_ID_LIST.add(s.getKey());
+                        likeLoad(s.getKey());
                 }
+                performPostMetaDataLoad();
             }
 
             @Override
@@ -541,5 +548,59 @@ public class MainModel {
                         .child("post").addListenerForSingleValueEvent(valueEventListener);
             }
     }
+
+    private void performPostMetaDataLoad(){
+        for (int i = 0; i<POST_OBJECT_LIST.size(); i++){
+            if(POST_OBJECT_LIST.get(i).getPostType().equals("admin_poll")){
+                metaDataTemp(POST_OBJECT_ID_LIST.get(i));
+            }
+        }
+    }
+
+    private void metaDataTemp(String postId){
+        PollOptionValueLikeObject postmetaOBJ = new PollOptionValueLikeObject();
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot s : dataSnapshot.getChildren()){
+                    if(!s.getKey().equals("poll_clicked_user")) {
+                        postmetaOBJ.optionList.add(s.getKey());
+                        postmetaOBJ.votesCountList.add(s.getValue().toString());
+                    }
+                }
+                POST_POLL_OPTIONS.put(postId,postmetaOBJ);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
+                .child("post").child(postId).child("options").addListenerForSingleValueEvent(valueEventListener);
+
+
+    }
+
+    private void likeLoad(String postId){
+         ValueEventListener valueEventListener1 = new ValueEventListener() {
+             @Override
+             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                 if (dataSnapshot.getValue() != null){
+                     POST_LIKE_LIST.add(dataSnapshot.getValue().toString());
+                 }else{
+                     POST_LIKE_LIST.add("0");
+                 }
+
+             }
+             @Override
+             public void onCancelled(@NonNull DatabaseError databaseError) {
+
+             }
+         };
+         mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("post").child(postId)
+                 .child("like").child("like_count").addListenerForSingleValueEvent(valueEventListener1);
+     }
+
 
 }
