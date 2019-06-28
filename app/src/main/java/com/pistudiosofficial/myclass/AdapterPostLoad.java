@@ -1,6 +1,7 @@
 package com.pistudiosofficial.myclass;
 
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.pistudiosofficial.myclass.model.PostInteractionModel;
 
 import java.util.ArrayList;
@@ -24,6 +27,9 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
     ArrayList<PostObject> postObjectArrayList;
     PostInteractionModel model;
     Context context;
+    int k;
+    ArrayList<String> url;
+
     public AdapterPostLoad(ArrayList<PostObject> postObjectArrayList,Context context) {
         this.postObjectArrayList = postObjectArrayList;
         this.context = context;
@@ -76,6 +82,29 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
                     });
                     myViewHolder.listView.addView(tv);
                 }
+        }
+        else{
+            if (Common.POST_URL_LIST.containsKey(Common.POST_OBJECT_ID_LIST.get(i))){
+                url = Common.POST_URL_LIST.get(Common.POST_OBJECT_ID_LIST.get(i));
+                for (k = 0; k<url.size(); k++) {
+                    ImageView img = new ImageView(context);
+                    img.setId(k);
+                    Glide.with(context).load(url.get(k)).apply(new RequestOptions().override(480, 250)).into(img);
+                    img.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT));
+                    img.setPadding(5, 3, 0, 3);
+                    img.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                        /*    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view,null,
+                                    ((BitmapDrawable)imgview.getDrawable()).getBitmap());*/
+
+                        }
+                    });
+                    myViewHolder.listView.addView(img);
+                }
+
+            }
         }
         // Need To add postYpe/photos/comment/like/share
     }

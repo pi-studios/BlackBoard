@@ -39,7 +39,6 @@ import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
 import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
 import static com.pistudiosofficial.myclass.Common.TEMP01_LIST;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
-import static com.pistudiosofficial.myclass.Common.mSTOR_REF_classPost;
 
 public class CheckAttendanceModel {
     CheckAttendancePresenterInterface presenter;
@@ -48,9 +47,13 @@ public class CheckAttendanceModel {
     String retrivedDate;
     ArrayList<Uri> imgURI; ArrayList<String> extensionList; String key;
     ArrayList<String> storageURL;
-    int failcount = 0;
+    FirebaseStorage firebaseStorage;
+    StorageReference storageReference;
     public CheckAttendanceModel(CheckAttendancePresenterInterface presenter) {
         this.presenter = presenter;
+        storageURL = new ArrayList<>();
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
     }
 
     public void performCheckAttendanceDownload(){
@@ -93,13 +96,12 @@ public class CheckAttendanceModel {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 if(databaseError == null){
-                    if(imgURI != null && extensionList != null)
-                    {
-                       // uploadInit(imgURI,extensionList,key);
-                    }else {
-
+                    if(imgURI != null && extensionList != null) {
+                       uploadInit(imgURI,extensionList,key);
                     }
-                    presenter.postingSuccess();
+                    else{
+                        presenter.postingSuccess();
+                    }
                 }
                 else {
                     presenter.postingFailed();
@@ -140,21 +142,109 @@ public class CheckAttendanceModel {
 
     private void uploadInit(ArrayList<Uri> imgURI, ArrayList<String> extensionList, String key){
         this.imgURI = imgURI; this.extensionList = extensionList; this.key = key;
+        StorageReference img01REF = storageReference
+                .child("post/"+key+"/"+System.currentTimeMillis()+"."+extensionList.get(0));
+        UploadTask uploadTask = img01REF.putFile(imgURI.get(0));
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
 
-
-
+                // Continue with the task to get the download URL
+                return img01REF.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    storageURL.add(downloadUri.toString());
+                    if (imgURI.size()>1){
+                        upload02();
+                    }
+                    else {
+                        uploadMetaData();
+                    }
+                } else {
+                    // Handle failures
+                    // ...
+                }
+            }
+        });
 
     }
-
     private void upload02(){
+        StorageReference img02REF = storageReference
+                .child("post/"+key+"/"+System.currentTimeMillis()+"."+extensionList.get(1));
+        UploadTask uploadTask = img02REF.putFile(imgURI.get(1));
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
 
+                // Continue with the task to get the download URL
+                return img02REF.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    storageURL.add(downloadUri.toString());
+                    if (imgURI.size()==3){
+                        upload03();
+                    }
+                    else {
+                        uploadMetaData();
+                    }
+                } else {
+                    // Handle failures
+                    // ...
+                }
+            }
+        });
     }
     private void upload03(){
+        StorageReference img03REF = storageReference
+                .child("post/"+key+"/"+System.currentTimeMillis()+"."+extensionList.get(2));
+        UploadTask uploadTask = img03REF.putFile(imgURI.get(2));
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
 
+                // Continue with the task to get the download URL
+                return img03REF.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    storageURL.add(downloadUri.toString());
+                    uploadMetaData();
+
+                } else {
+                    // Handle failures
+                    // ...
+                }
+            }
+        });
     }
 
     private void uploadMetaData(){
-
+        for (int i = 0; i<storageURL.size(); i++){
+            mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
+                    .child("post").child(key).child("meta_data").child(Integer.toString(i))
+                    .setValue(storageURL.get(i));
+        }
+        presenter.postingSuccess();
     }
 
  }

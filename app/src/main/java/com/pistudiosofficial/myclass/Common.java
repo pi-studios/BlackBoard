@@ -27,7 +27,6 @@ public class Common {
     public static DatabaseReference mREF_oldRecords = null;
     public static DatabaseReference mREF_student_classList = null;
     public static DatabaseReference mREF_admin_classList = null;
-    public static StorageReference mSTOR_REF_classPost = null;
 
     public static ArrayList<ClassObject> CURRENT_ADMIN_CLASS_LIST = null;
     public static ArrayList<String> CURRENT_CLASS_ID_LIST = null;
@@ -42,6 +41,7 @@ public class Common {
     public static ArrayList<String> POST_OBJECT_ID_LIST = null;
     public static HashMap<String,PollOptionValueLikeObject> POST_POLL_OPTIONS = null;
     public static ArrayList<String> POST_LIKE_LIST = null;
+    public static HashMap<String, ArrayList<String>> POST_URL_LIST = null;
 
     public static SharedPreferences SHARED_PREFERENCES;
 

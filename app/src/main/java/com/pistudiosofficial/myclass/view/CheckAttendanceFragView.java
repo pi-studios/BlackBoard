@@ -20,4 +20,5 @@ public interface CheckAttendanceFragView {
 
     void checkAttendanceReturn(boolean b);
 
+
 }

@@ -68,6 +68,7 @@ import static com.pistudiosofficial.myclass.Common.POST_LIKE_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_POLL_OPTIONS;
+import static com.pistudiosofficial.myclass.Common.POST_URL_LIST;
 import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
 import static com.pistudiosofficial.myclass.Common.SHARED_PREFERENCES;
 import static com.pistudiosofficial.myclass.Common.TEMP01_LIST;
@@ -78,7 +79,6 @@ import static com.pistudiosofficial.myclass.Common.mREF_connections;
 import static com.pistudiosofficial.myclass.Common.mREF_oldRecords;
 import static com.pistudiosofficial.myclass.Common.mREF_student_classList;
 import static com.pistudiosofficial.myclass.Common.mREF_users;
-import static com.pistudiosofficial.myclass.Common.mSTOR_REF_classPost;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainActivityView {
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity
         headerView.findViewById(R.id.headerImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
+                Intent intent = new Intent(getApplicationContext(),ProfileNewActivity.class);
                 startActivity(intent);
             }
         });
@@ -202,7 +202,6 @@ public class MainActivity extends AppCompatActivity
         mREF_connections = FIREBASE_DATABASE.getReference("connections");
         mREF_classList = FIREBASE_DATABASE.getReference("class_list");
         mREF_oldRecords = FIREBASE_DATABASE.getReference("old_records");
-        mSTOR_REF_classPost = FirebaseStorage.getInstance().getReference("class_post");
         mREF_users.keepSynced(true);
         mREF_classList.keepSynced(true);
         mREF_connections.keepSynced(true);
@@ -217,6 +216,8 @@ public class MainActivity extends AppCompatActivity
         POST_OBJECT_ID_LIST = new ArrayList<>();
         POST_POLL_OPTIONS = new HashMap<>();
         POST_LIKE_LIST = new ArrayList<>();
+        POST_URL_LIST = new HashMap<>();
+
         //Logged in Check and perform DataLoad
         FIREBASE_USER = mAUTH.getCurrentUser();
         FirebaseUser currentUser = mAUTH.getCurrentUser();

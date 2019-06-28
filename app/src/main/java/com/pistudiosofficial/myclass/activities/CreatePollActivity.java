@@ -66,6 +66,7 @@ public class CreatePollActivity extends AppCompatActivity implements CreatePollV
 
     @Override
     public void createPollSuccess() {
+        Toast.makeText(this, "Poll Created !", Toast.LENGTH_SHORT).show();
         finish();
     }
 

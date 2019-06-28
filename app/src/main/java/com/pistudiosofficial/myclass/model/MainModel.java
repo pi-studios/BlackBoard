@@ -26,6 +26,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import static android.content.ContentValues.TAG;
 import static com.pistudiosofficial.myclass.Common.CURRENT_ADMIN_CLASS_LIST;
@@ -40,6 +41,7 @@ import static com.pistudiosofficial.myclass.Common.POST_LIKE_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_POLL_OPTIONS;
+import static com.pistudiosofficial.myclass.Common.POST_URL_LIST;
 import static com.pistudiosofficial.myclass.Common.mAUTH;
 import static com.pistudiosofficial.myclass.Common.mREF_admin_classList;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
@@ -535,6 +537,7 @@ public class MainModel {
                         POST_OBJECT_LIST.add(s.getValue(PostObject.class));
                         POST_OBJECT_ID_LIST.add(s.getKey());
                         likeLoad(s.getKey());
+                        urlLoad(s.getKey());
                 }
                 performPostMetaDataLoad();
             }
@@ -602,5 +605,28 @@ public class MainModel {
                  .child("like").child("like_count").addListenerForSingleValueEvent(valueEventListener1);
      }
 
+    private void urlLoad(String postId){
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null){
+                    if(dataSnapshot.getChildren() != null){
+                        ArrayList<String> url = new ArrayList<>();
+                        for (DataSnapshot s : dataSnapshot.getChildren()){
+                            url.add(s.getValue().toString());
+                        }
+                        POST_URL_LIST.put(postId,url);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("post").child(postId)
+                .child("meta_data").addListenerForSingleValueEvent(valueEventListener);
+    }
 
 }

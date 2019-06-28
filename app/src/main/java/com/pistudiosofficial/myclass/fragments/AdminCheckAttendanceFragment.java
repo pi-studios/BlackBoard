@@ -56,7 +56,7 @@ import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
 public class AdminCheckAttendanceFragment extends Fragment implements CheckAttendanceFragView {
-    ProgressDialog progressDialog;
+    ProgressDialog progressDialog,progressDialogPosting;
     CheckAttendancePresenter presenter;
     Dialog dialog,dialogAttendancePercent, postDialog;
     ArrayList<Double> admin_attendance_percent_list;
@@ -253,6 +253,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
     @Override
     public void postingSuccess() {
         postDialog.dismiss();
+        progressDialogPosting.dismiss();
         Toast.makeText(getActivity(),"Posted !", Toast.LENGTH_SHORT).show();
     }
 
@@ -260,6 +261,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
     public void postingFailed() {
         Toast.makeText(getActivity(),"Posting Failed",Toast.LENGTH_SHORT).show();
         postDialog.dismiss();
+        progressDialogPosting.dismiss();
     }
 
     @Override
@@ -338,6 +340,8 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                     // NEED TO INCLUDE IMAGE UPLOAD OPTION
                     ArrayList<Uri> imgURILIST = new ArrayList<>();
                     ArrayList<String> extensionList = new ArrayList<>();
+                    imgURILIST.clear();
+                    extensionList.clear();
                     if (imgURI01 != null){imgURILIST.add(imgURI01); extensionList.add(getExtension(imgURI01));}
                     if (imgURI02 != null){imgURILIST.add(imgURI02); extensionList.add(getExtension(imgURI02));}
                     if (imgURI03 != null){imgURILIST.add(imgURI03); extensionList.add(getExtension(imgURI03));}
@@ -346,6 +350,8 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                             et_post_content.getText().toString(),null,
                             "simple_class_post"
                     );
+                    progressDialogPosting = ProgressDialog.show(getContext(), "",
+                            "Posting. Please wait...", true);
                     if (imgURILIST.size()>0){
                         presenter.performPosting(postObject,imgURILIST,extensionList);
                     }else{
