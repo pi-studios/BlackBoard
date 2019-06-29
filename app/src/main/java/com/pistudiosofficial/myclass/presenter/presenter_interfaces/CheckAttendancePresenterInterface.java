@@ -20,4 +20,6 @@ public interface CheckAttendancePresenterInterface {
 
     void checkMultipleAttendanceReturn(boolean b);
 
+    void fileUploadLink(String link);
+
 }

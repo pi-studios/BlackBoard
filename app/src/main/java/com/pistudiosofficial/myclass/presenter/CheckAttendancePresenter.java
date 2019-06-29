@@ -34,6 +34,10 @@ public class CheckAttendancePresenter implements CheckAttendancePresenterInterfa
         model.checkMultipleAttendance();
     }
 
+    public void performPostFileUpload(Uri fileURI, String extension){
+        model.performPostFileUpload(fileURI,extension);
+    }
+
     public void performPosting(PostObject postObject, ArrayList<Uri> imgURI, ArrayList<String> extensionList){
         model.performPosting(postObject,imgURI,extensionList);
     }
@@ -107,6 +111,11 @@ public class CheckAttendancePresenter implements CheckAttendancePresenterInterfa
     @Override
     public void checkMultipleAttendanceReturn(boolean b) {
         view.checkAttendanceReturn(b);
+    }
+
+    @Override
+    public void fileUploadLink(String link) {
+        view.fileUploadDone(link);
     }
 
     public void broadcastFunctionPerform(){

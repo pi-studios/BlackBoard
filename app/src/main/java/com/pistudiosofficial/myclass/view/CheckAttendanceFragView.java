@@ -1,7 +1,5 @@
 package com.pistudiosofficial.myclass.view;
 
-import com.pistudiosofficial.myclass.PostObject;
-
 import java.util.ArrayList;
 
 public interface CheckAttendanceFragView {
@@ -19,6 +17,6 @@ public interface CheckAttendanceFragView {
     void postingFailed();
 
     void checkAttendanceReturn(boolean b);
-
+    void fileUploadDone(String link);
 
 }

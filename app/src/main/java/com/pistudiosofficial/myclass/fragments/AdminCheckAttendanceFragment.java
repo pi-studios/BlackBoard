@@ -40,6 +40,7 @@ import com.pistudiosofficial.myclass.activities.NewAttendenceAcitivity;
 import com.pistudiosofficial.myclass.presenter.CheckAttendancePresenter;
 import com.pistudiosofficial.myclass.view.CheckAttendanceFragView;
 import com.squareup.picasso.Picasso;;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,14 +59,16 @@ import static com.pistudiosofficial.myclass.Common.mREF_classList;
 public class AdminCheckAttendanceFragment extends Fragment implements CheckAttendanceFragView {
     ProgressDialog progressDialog,progressDialogPosting;
     CheckAttendancePresenter presenter;
-    Dialog dialog,dialogAttendancePercent, postDialog;
+    Dialog dialog,dialogAttendancePercent, postDialog, uploadFileDialog;
     ArrayList<Double> admin_attendance_percent_list;
     boolean notMultipleAttendance = false;
     String type = "";
-    Uri imgURI01,imgURI02,imgURI03;
+    Uri imgURI01,imgURI02,imgURI03, fileURI;
+    Button uploadFile;
     ImageView img1,img2,img3;
-
-    private static final int PICK_IMAGE_REQUEST01 = 1,PICK_IMAGE_REQUEST02 = 2, PICK_IMAGE_REQUEST03 = 3;
+    String fileUploadLink = "";
+    private static final int PICK_IMAGE_REQUEST01 = 1,PICK_IMAGE_REQUEST02 = 2, PICK_IMAGE_REQUEST03 = 3,
+                        PICK_FILE_REQUEST = 4;
 
     RecyclerView recyclerViewPost;
     FloatingActionButton fab_exportcsv,fab_create_poll,fab_new_attendance,
@@ -269,6 +272,14 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         notMultipleAttendance = b;
     }
 
+    @Override
+    public void fileUploadDone(String link) {
+        uploadFileDialog.dismiss();
+        fileUploadLink = link;
+        uploadFile.setText("Uploaded");
+        uploadFile.setEnabled(false);
+    }
+
     private void sessionDatePick(final EditText editText){
         final Calendar myCalendar = Calendar.getInstance();
 
@@ -307,6 +318,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         postDialog = new Dialog(getContext());
         postDialog.setContentView(R.layout.create_post_dialog);
         Button postDone = postDialog.findViewById(R.id.bt_create_post);
+        uploadFile = postDialog.findViewById(R.id.bt_create_post_upload_file);
         img1 = postDialog.findViewById(R.id.img_create_post_01);
         img2 = postDialog.findViewById(R.id.img_create_post_02);
         img3 = postDialog.findViewById(R.id.img_create_post_03);
@@ -332,7 +344,14 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 openFileChooser(PICK_IMAGE_REQUEST03);
             }
         });
-
+        uploadFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uploadFileDialog = ProgressDialog.show(getContext(), "",
+                        "Uploading. Please wait...", true);
+                openFileChooser(PICK_FILE_REQUEST);
+            }
+        });
         postDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -342,14 +361,22 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                     ArrayList<String> extensionList = new ArrayList<>();
                     imgURILIST.clear();
                     extensionList.clear();
+                    PostObject postObject;
                     if (imgURI01 != null){imgURILIST.add(imgURI01); extensionList.add(getExtension(imgURI01));}
                     if (imgURI02 != null){imgURILIST.add(imgURI02); extensionList.add(getExtension(imgURI02));}
                     if (imgURI03 != null){imgURILIST.add(imgURI03); extensionList.add(getExtension(imgURI03));}
-                    PostObject postObject = new PostObject(
-                            CURRENT_USER.Name,simpleTime,
-                            et_post_content.getText().toString(),null,
-                            "simple_class_post"
-                    );
+                    if(fileUploadLink.equals("")){
+                        postObject = new PostObject(
+                                CURRENT_USER.Name,simpleTime,
+                                et_post_content.getText().toString(),null,
+                                "simple_class_post");
+                    }
+                    else {
+                        postObject = new PostObject(
+                                CURRENT_USER.Name,simpleTime,
+                                et_post_content.getText().toString()+". Link: "+fileUploadLink,null,
+                                "simple_class_post");
+                    }
                     progressDialogPosting = ProgressDialog.show(getContext(), "",
                             "Posting. Please wait...", true);
                     if (imgURILIST.size()>0){
@@ -388,9 +415,17 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
 
     private void openFileChooser(int imgRQST){
         Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent,imgRQST);
+        if (imgRQST == PICK_FILE_REQUEST){
+            intent.setType("application/pdf");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(intent,imgRQST);
+        }
+        else {
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(intent,imgRQST);
+        }
+
     }
 
     @Override
@@ -407,6 +442,10 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         if (requestCode == PICK_IMAGE_REQUEST03 && resultCode == -1 && data != null && data.getData() != null){
             imgURI03 = data.getData();
             Picasso.with(getContext()).load(imgURI03).into(img3);
+        }
+        if (requestCode == PICK_FILE_REQUEST && resultCode == -1 && data != null && data.getData() != null){
+            fileURI = data.getData();
+            presenter.performPostFileUpload(fileURI,getExtension(fileURI));
         }
     }
 

@@ -88,6 +88,35 @@ public class CheckAttendanceModel {
                 .addValueEventListener(valueEventListener);
     }
 
+    public void performPostFileUpload(Uri fileURI, String extension){
+        StorageReference fileREF = storageReference
+                .child("post_file/"+ CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)
+                        +"/"+System.currentTimeMillis()+"."+extension);
+        UploadTask uploadTask = fileREF.putFile(fileURI);
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continue with the task to get the download URL
+                return fileREF.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    presenter.fileUploadLink(downloadUri.toString());
+                } else {
+                    // Handle failures
+                    // ...
+                }
+            }
+        });
+    }
+
     public void performPosting(PostObject postObject, ArrayList<Uri> imgURI, ArrayList<String> extensionList){
         String key = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
                 .child("post").push().getKey();
@@ -143,7 +172,8 @@ public class CheckAttendanceModel {
     private void uploadInit(ArrayList<Uri> imgURI, ArrayList<String> extensionList, String key){
         this.imgURI = imgURI; this.extensionList = extensionList; this.key = key;
         StorageReference img01REF = storageReference
-                .child("post/"+key+"/"+System.currentTimeMillis()+"."+extensionList.get(0));
+                .child("post/"+CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)
+                        +"/"+key+"/"+System.currentTimeMillis()+"."+extensionList.get(0));
         UploadTask uploadTask = img01REF.putFile(imgURI.get(0));
         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
@@ -177,7 +207,8 @@ public class CheckAttendanceModel {
     }
     private void upload02(){
         StorageReference img02REF = storageReference
-                .child("post/"+key+"/"+System.currentTimeMillis()+"."+extensionList.get(1));
+                .child("post/"+CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)
+                        +"/"+key+"/"+System.currentTimeMillis()+"."+extensionList.get(1));
         UploadTask uploadTask = img02REF.putFile(imgURI.get(1));
         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
@@ -210,7 +241,8 @@ public class CheckAttendanceModel {
     }
     private void upload03(){
         StorageReference img03REF = storageReference
-                .child("post/"+key+"/"+System.currentTimeMillis()+"."+extensionList.get(2));
+                .child("post/"+CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)
+                        +"/"+key+"/"+System.currentTimeMillis()+"."+extensionList.get(2));
         UploadTask uploadTask = img03REF.putFile(imgURI.get(2));
         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override

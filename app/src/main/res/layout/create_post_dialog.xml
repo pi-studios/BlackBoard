@@ -6,8 +6,7 @@
     android:background="@color/blue_semi_transparent_pressed"
     android:padding="20dp">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -16,7 +15,7 @@
         <EditText
             android:id="@+id/et_create_post_body"
             android:layout_width="match_parent"
-            android:layout_height="123dp"
+            android:layout_height="105dp"
             android:ems="10"
             android:gravity="start|top"
             android:hint="Post Text Here !"
@@ -24,39 +23,47 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:orientation="vertical">
+            android:layout_height="112dp"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/img_create_post_01"
                 android:layout_width="83dp"
                 android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
-                app:srcCompat="@android:drawable/star_off"
-                android:layout_gravity="center_horizontal"/>
+                app:srcCompat="@android:drawable/star_off" />
 
             <ImageView
                 android:id="@+id/img_create_post_02"
                 android:layout_width="83dp"
                 android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
-                app:srcCompat="@android:drawable/star_off"
-                android:layout_gravity="center_horizontal"/>
+                app:srcCompat="@android:drawable/star_off" />
 
             <ImageView
                 android:id="@+id/img_create_post_03"
                 android:layout_width="83dp"
                 android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
-                app:srcCompat="@android:drawable/star_off"
-                android:layout_gravity="center_horizontal"/>
+                app:srcCompat="@android:drawable/star_off" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/bt_create_post_upload_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Upload File" />
 
         <Button
             android:id="@+id/bt_create_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Post" />
+            android:text="Post"
+            android:layout_marginTop="10dp"/>
     </LinearLayout>
 </RelativeLayout>

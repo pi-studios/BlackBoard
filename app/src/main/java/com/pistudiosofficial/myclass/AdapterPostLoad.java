@@ -50,6 +50,19 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
         myViewHolder.tv_creatIon_time.setText(postObjectArrayList.get(i).getCreationDate());
         myViewHolder.tv_post_content.setText(postObjectArrayList.get(i).getBody());
         myViewHolder.bt_like.setText("Like:"+Common.POST_LIKE_LIST.get(i));
+        /*myViewHolder.tv_post_content.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextView textView = (TextView)view;
+                if(textView.getMaxLines()==3){
+                    textView.setMaxLines(Integer.MAX_VALUE);
+                }
+                else {
+                    textView.setMaxLines(3);
+                }
+            }
+        });*/
+
         myViewHolder.bt_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,23 +103,26 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
                     ImageView img = new ImageView(context);
                     img.setId(k);
                     Glide.with(context).load(url.get(k)).apply(new RequestOptions().override(480, 250)).into(img);
-                    img.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT));
+                    img.setLayoutParams(new ViewGroup.LayoutParams(300,
+                            200));
+                    myViewHolder.listView.setOrientation(LinearLayout.HORIZONTAL);
                     img.setPadding(5, 3, 0, 3);
                     img.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                        /*    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view,null,
-                                    ((BitmapDrawable)imgview.getDrawable()).getBitmap());*/
+                            ImageView imgView = (ImageView) view;
+                            String url = Common.POST_URL_LIST
+                                            .get(Common.POST_OBJECT_ID_LIST
+                                            .get(i)).get(imgView.getId());
+                            new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view,url , null);
 
                         }
                     });
                     myViewHolder.listView.addView(img);
                 }
-
             }
         }
-        // Need To add postYpe/photos/comment/like/share
+        // Need To add comment/share
     }
 
     @Override
