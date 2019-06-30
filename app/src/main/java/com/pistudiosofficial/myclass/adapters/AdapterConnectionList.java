@@ -1,4 +1,4 @@
-package com.pistudiosofficial.myclass;
+package com.pistudiosofficial.myclass.adapters;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -9,7 +9,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.activities.ProfileActivity;
+import com.pistudiosofficial.myclass.objects.UserObject;
 
 import java.util.ArrayList;
 

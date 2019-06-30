@@ -1,4 +1,4 @@
-package com.pistudiosofficial.myclass;
+package com.pistudiosofficial.myclass.adapters;
 
 import android.graphics.Color;
 
@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.pistudiosofficial.myclass.R;
 
 import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
 import static com.pistudiosofficial.myclass.Common.TEMP01_LIST;

@@ -2,22 +2,16 @@ package com.pistudiosofficial.myclass.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,24 +31,17 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.pistudiosofficial.myclass.AdapterClassList;
-import com.pistudiosofficial.myclass.AdapterConnectionList;
-import com.pistudiosofficial.myclass.AdapterPagerView;
-import com.pistudiosofficial.myclass.ClassObject;
+import com.pistudiosofficial.myclass.adapters.AdapterConnectionList;
+import com.pistudiosofficial.myclass.adapters.AdapterPagerView;
+import com.pistudiosofficial.myclass.objects.ClassObject;
 import com.pistudiosofficial.myclass.R;
-import com.pistudiosofficial.myclass.StudentClassObject;
-import com.pistudiosofficial.myclass.UserObject;
+import com.pistudiosofficial.myclass.objects.UserObject;
 import com.pistudiosofficial.myclass.presenter.CheckAttendancePresenter;
 import com.pistudiosofficial.myclass.presenter.MainPresenter;
 import com.pistudiosofficial.myclass.view.MainActivityView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 
 import static com.pistudiosofficial.myclass.Common.ATTD_PERCENTAGE_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_ADMIN_CLASS_LIST;
@@ -70,6 +57,7 @@ import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_POLL_OPTIONS;
 import static com.pistudiosofficial.myclass.Common.POST_URL_LIST;
 import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
+import static com.pistudiosofficial.myclass.Common.SELECTED_PROFILE_UID;
 import static com.pistudiosofficial.myclass.Common.SHARED_PREFERENCES;
 import static com.pistudiosofficial.myclass.Common.TEMP01_LIST;
 import static com.pistudiosofficial.myclass.Common.mAUTH;
@@ -114,6 +102,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(),ProfileNewActivity.class);
+                SELECTED_PROFILE_UID = CURRENT_USER.UID;
                 startActivity(intent);
             }
         });

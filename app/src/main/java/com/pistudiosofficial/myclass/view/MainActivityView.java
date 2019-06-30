@@ -1,7 +1,7 @@
 package com.pistudiosofficial.myclass.view;
 
-import com.pistudiosofficial.myclass.ClassObject;
-import com.pistudiosofficial.myclass.UserObject;
+import com.pistudiosofficial.myclass.objects.ClassObject;
+import com.pistudiosofficial.myclass.objects.UserObject;
 
 import java.util.ArrayList;
 

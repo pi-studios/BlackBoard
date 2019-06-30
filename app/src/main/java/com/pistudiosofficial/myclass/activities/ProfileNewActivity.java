@@ -2,28 +2,33 @@ package com.pistudiosofficial.myclass.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.presenter.ProfileNewPresenter;
-import com.pistudiosofficial.myclass.presenter.presenter_interfaces.ProfileNewPresenterInterface;
 import com.pistudiosofficial.myclass.view.ProfileNewView;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
+import static com.pistudiosofficial.myclass.Common.SELECTED_PROFILE_UID;
 
 public class ProfileNewActivity extends AppCompatActivity implements ProfileNewView {
 
     CircleImageView img_profile;
     int PICK_PROFILE_IMG_REQUEST = 101;
     Uri uriProfilePic;
-
+    Button bt_hello, bt_chat;
     ProfileNewPresenter presenter;
 
     @Override
@@ -32,13 +37,26 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
         setContentView(R.layout.activity_new_profile);
 
         img_profile = findViewById(R.id.img_profile_pic);
-
         img_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openFileChooser(PICK_PROFILE_IMG_REQUEST);
             }
         });
+
+        bt_chat = findViewById(R.id.bt_profile_msg);
+        bt_hello = findViewById(R.id.bt_profile_hello);
+        if (SELECTED_PROFILE_UID.equals(CURRENT_USER.UID)){
+            bt_hello.setVisibility(View.GONE);
+            bt_chat.setVisibility(View.GONE);
+        }
+        bt_hello.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.performSendHello(SELECTED_PROFILE_UID);
+            }
+        });
+
 
     }
 
@@ -61,6 +79,18 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
         if (requestCode == PICK_PROFILE_IMG_REQUEST && resultCode == -1 && data != null && data.getData() != null){
             uriProfilePic = data.getData();
             Picasso.with(this).load(uriProfilePic).into(img_profile);
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Profile Picture")
+                    .setMessage("Do you want to change your profile Picture?\nNote: Profile Pictire are always Public.")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            presenter.performImageUpload(uriProfilePic,
+                                    "profile_picture",
+                                    getExtension(uriProfilePic));
+                        }
+                    }).setNegativeButton("No",null).show();
             presenter.performImageUpload(uriProfilePic,"profile_pic",getExtension(uriProfilePic));
         }
     }
@@ -73,12 +103,23 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
 
     @Override
     public void profilePicUploadSuccess() {
+        Picasso.with(this).load(uriProfilePic).into(img_profile);
         Toast.makeText(this,"Profile Photo Changed",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void profilePicUploadFailed() {
         Toast.makeText(this,"Failed", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void helloSendSuccess() {
+        bt_hello.setEnabled(false);
+    }
+
+    @Override
+    public void helloSendFailed() {
+        Toast.makeText(this,"Failed",Toast.LENGTH_SHORT).show();
     }
 
 

@@ -1,9 +1,9 @@
 package com.pistudiosofficial.myclass.presenter;
 
 
-import com.pistudiosofficial.myclass.ClassObject;
-import com.pistudiosofficial.myclass.StudentClassObject;
-import com.pistudiosofficial.myclass.UserObject;
+import com.pistudiosofficial.myclass.objects.ClassObject;
+import com.pistudiosofficial.myclass.objects.StudentClassObject;
+import com.pistudiosofficial.myclass.objects.UserObject;
 import com.pistudiosofficial.myclass.model.MainModel;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.MainPresenterInterface;
 import com.pistudiosofficial.myclass.view.MainActivityView;

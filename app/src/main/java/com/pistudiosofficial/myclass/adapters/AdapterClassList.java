@@ -1,4 +1,4 @@
-package com.pistudiosofficial.myclass;
+package com.pistudiosofficial.myclass.adapters;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -16,7 +16,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.pistudiosofficial.myclass.Common;
+import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.activities.CheckAttendanceActivity;
+import com.pistudiosofficial.myclass.objects.ClassObject;
 import com.pistudiosofficial.myclass.view.MainActivityView;
 
 import java.util.ArrayList;

@@ -2,14 +2,63 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="308dp"
-        android:layout_height="101dp"
+    <EditText
+        android:id="@+id/et_search_main"
+        android:layout_width="287dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="327dp"
-        android:text="MyClassMate"
-        android:textSize="36sp" />
+        android:layout_marginStart="53dp"
+        android:layout_marginEnd="71dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/rounded_edit_text"
+        android:focusableInTouchMode="true"
+        android:hint="@android:string/search_go"
+        android:inputType="textPersonName"
+        android:paddingStart="10dp"
+        android:textSize="18sp"
+        android:imeOptions="actionDone"
+        />
+
+    <Button
+        android:id="@+id/bt_search_main"
+        android:layout_width="50dp"
+        android:layout_height="55dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="347dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="6dp"
+        android:foreground="@android:drawable/ic_menu_search" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_main_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/et_search_main"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="6dp"
+        android:elevation="5dp"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout_mainFrag"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/et_search_main"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="6dp">
+
+    </FrameLayout>
+
 </RelativeLayout>

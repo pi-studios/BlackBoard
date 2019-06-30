@@ -1,7 +1,7 @@
 package com.pistudiosofficial.myclass.model;
 
 import com.pistudiosofficial.myclass.Common;
-import com.pistudiosofficial.myclass.PostObject;
+import com.pistudiosofficial.myclass.objects.PostObject;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.CreatePollPresenterInterface;
 
 import java.text.SimpleDateFormat;

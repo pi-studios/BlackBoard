@@ -22,25 +22,20 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-import com.pistudiosofficial.myclass.AdapterCheckAttendanceList;
-import com.pistudiosofficial.myclass.AdapterPostLoad;
-import com.pistudiosofficial.myclass.PostObject;
+import com.pistudiosofficial.myclass.adapters.AdapterCheckAttendanceList;
+import com.pistudiosofficial.myclass.adapters.AdapterPostLoad;
+import com.pistudiosofficial.myclass.objects.PostObject;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.activities.CreatePollActivity;
 import com.pistudiosofficial.myclass.activities.NewAttendenceAcitivity;
 import com.pistudiosofficial.myclass.presenter.CheckAttendancePresenter;
 import com.pistudiosofficial.myclass.view.CheckAttendanceFragView;
 import com.squareup.picasso.Picasso;;
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,13 +43,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 
-import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
-import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
 import static com.pistudiosofficial.myclass.Common.POST_LIKE_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
-import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
 public class AdminCheckAttendanceFragment extends Fragment implements CheckAttendanceFragView {
     ProgressDialog progressDialog,progressDialogPosting;

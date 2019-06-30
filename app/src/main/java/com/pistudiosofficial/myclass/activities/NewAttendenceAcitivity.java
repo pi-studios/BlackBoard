@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.pistudiosofficial.myclass.AdapterNewAttendenceList;
+import com.pistudiosofficial.myclass.adapters.AdapterNewAttendenceList;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.presenter.NewAttendencePresenter;
 import com.pistudiosofficial.myclass.view.NewAttendenceView;

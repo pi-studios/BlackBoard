@@ -1,15 +1,12 @@
 package com.pistudiosofficial.myclass.model;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.pistudiosofficial.myclass.ConnectionObject;
-import com.pistudiosofficial.myclass.UserObject;
-import com.pistudiosofficial.myclass.presenter.SignUpPresenter;
+import com.pistudiosofficial.myclass.objects.UserObject;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.SignUpPresenterInterface;
 
 import static com.pistudiosofficial.myclass.Common.FIREBASE_USER;

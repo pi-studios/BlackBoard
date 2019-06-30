@@ -1,4 +1,4 @@
-package com.pistudiosofficial.myclass;
+package com.pistudiosofficial.myclass.objects;
 
 public class StudentClassObject {
 

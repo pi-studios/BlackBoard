@@ -1,6 +1,5 @@
 package com.pistudiosofficial.myclass.presenter;
 
-import com.pistudiosofficial.myclass.UserObject;
 import com.pistudiosofficial.myclass.model.LoginModel;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.LoginPresenterInterface;
 import com.pistudiosofficial.myclass.view.LoginActivityView;

@@ -18,6 +18,10 @@ public class ProfileNewPresenter implements ProfileNewPresenterInterface {
         model.performImageUpload(imgURI,uploadType,ext);
     }
 
+    public void performSendHello(String UID){
+        model.performSendHello(UID);
+    }
+
     @Override
     public void profilePicUploadSuccess() {
         view.profilePicUploadSuccess();
@@ -28,6 +32,15 @@ public class ProfileNewPresenter implements ProfileNewPresenterInterface {
         view.profilePicUploadFailed();
     }
 
+    @Override
+    public void helloSendSuccess() {
+        view.helloSendSuccess();
+    }
+
+    @Override
+    public void helloSendFailed() {
+        view.helloSendFailed();
+    }
 
 
 }

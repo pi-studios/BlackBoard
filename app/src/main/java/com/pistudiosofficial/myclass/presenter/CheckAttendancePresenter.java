@@ -2,7 +2,7 @@ package com.pistudiosofficial.myclass.presenter;
 
 import android.net.Uri;
 
-import com.pistudiosofficial.myclass.PostObject;
+import com.pistudiosofficial.myclass.objects.PostObject;
 import com.pistudiosofficial.myclass.model.CheckAttendanceModel;
 import com.pistudiosofficial.myclass.model.ExportCSVModel;
 import com.pistudiosofficial.myclass.model.PushNotificationSenderModel;

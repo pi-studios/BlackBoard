@@ -1,6 +1,6 @@
 package com.pistudiosofficial.myclass.presenter;
 
-import com.pistudiosofficial.myclass.UserObject;
+import com.pistudiosofficial.myclass.objects.UserObject;
 import com.pistudiosofficial.myclass.model.SignUpModel;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.SignUpPresenterInterface;
 import com.pistudiosofficial.myclass.view.SignUpView;

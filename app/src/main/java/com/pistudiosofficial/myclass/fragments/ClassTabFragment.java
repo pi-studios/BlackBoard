@@ -20,11 +20,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.pistudiosofficial.myclass.AdapterClassList;
-import com.pistudiosofficial.myclass.ClassObject;
+import com.pistudiosofficial.myclass.adapters.AdapterClassList;
+import com.pistudiosofficial.myclass.objects.ClassObject;
 import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.R;
-import com.pistudiosofficial.myclass.StudentClassObject;
+import com.pistudiosofficial.myclass.objects.StudentClassObject;
 import com.pistudiosofficial.myclass.activities.MainActivity;
 
 import java.text.SimpleDateFormat;

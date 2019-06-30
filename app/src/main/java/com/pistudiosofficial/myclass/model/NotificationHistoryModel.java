@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.pistudiosofficial.myclass.NotificationStoreObj;
+import com.pistudiosofficial.myclass.objects.NotificationStoreObj;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.NotificationHistoryPresenterInterface;
 
 import java.util.ArrayList;

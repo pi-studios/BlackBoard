@@ -1,7 +1,5 @@
 package com.pistudiosofficial.myclass.presenter.presenter_interfaces;
 
-import com.pistudiosofficial.myclass.PostObject;
-
 import java.util.ArrayList;
 
 public interface CheckAttendancePresenterInterface {

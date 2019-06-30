@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.pistudiosofficial.myclass.AdapterPostLoad;
+import com.pistudiosofficial.myclass.adapters.AdapterPostLoad;
 import com.pistudiosofficial.myclass.R;
 
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package com.pistudiosofficial.myclass;
+package com.pistudiosofficial.myclass.objects;
 
 public class UserObject {
 
@@ -8,6 +8,8 @@ public class UserObject {
     public String Name;
     public String AdminLevel;
     public String Roll;
+    public String Bio;
+    public String profilePicLink;
 
     public UserObject(String email, String phone, String name, String adminLevel, String roll) {
         Email = email;
@@ -19,4 +21,6 @@ public class UserObject {
 
     public UserObject() {
     }
+
+
 }

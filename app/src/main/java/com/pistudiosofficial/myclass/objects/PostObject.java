@@ -1,4 +1,4 @@
-package com.pistudiosofficial.myclass;
+package com.pistudiosofficial.myclass.objects;
 
 import android.graphics.Bitmap;
 import java.util.ArrayList;

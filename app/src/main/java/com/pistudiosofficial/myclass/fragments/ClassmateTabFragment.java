@@ -1,29 +1,155 @@
 package com.pistudiosofficial.myclass.fragments;
 
+import android.annotation.SuppressLint;
+import android.app.Service;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.pistudiosofficial.myclass.R;
+import com.pistudiosofficial.myclass.objects.UserObject;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.pistudiosofficial.myclass.Common.LOG;
+import static com.pistudiosofficial.myclass.Common.mREF_users;
 
 public class ClassmateTabFragment extends Fragment {
 
+    Button bt_search;
+    EditText et_search;
+    RecyclerView recyclerViewSearch;
+    DatabaseReference mUserRef;
+    FrameLayout frameLayout;
     public ClassmateTabFragment() {
     }
 
+    @SuppressLint("WrongConstant")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_myclassmate,container,false);
+        View v = inflater.inflate(R.layout.fragment_myclassmate,container,false);
+        bt_search = v.findViewById(R.id.bt_search_main);
+        et_search = v.findViewById(R.id.et_search_main);
+        recyclerViewSearch = v.findViewById(R.id.recycler_view_main_search);
+        frameLayout = v.findViewById(R.id.frameLayout_mainFrag);
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewSearch.getContext(),
+                llm.getOrientation());
+        recyclerViewSearch.addItemDecoration(dividerItemDecoration);
+        recyclerViewSearch.setLayoutManager(llm);
+        mUserRef = FirebaseDatabase.getInstance().getReference("users");
+        bt_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!et_search.getText().toString().isEmpty() && !et_search.getText().toString().equals("")){
+                    recyclerViewSearch.setVisibility(View.VISIBLE);
+                    firebaseUserSearch(et_search.getText().toString());
+                    et_search.clearFocus();
+                }
+            }
+        });
+        bt_search.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                recyclerViewSearch.setVisibility(View.GONE);
+                return true;
+            }
+        });
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
+        et_search.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if(actionId == EditorInfo.IME_ACTION_DONE
+                        || actionId == EditorInfo.IME_ACTION_DONE
+                        || keyEvent.getAction() == keyEvent.ACTION_DOWN
+                        || keyEvent.getAction() == keyEvent.KEYCODE_ENTER) {
+                    recyclerViewSearch.setVisibility(View.VISIBLE);
+                    firebaseUserSearch(et_search.getText().toString());
+                    et_search.clearFocus();
+                    return true;
+
+                }
+                return false;
+            }
+        });
+        return v;
     }
 
+    private void firebaseUserSearch(String searchText) {
+        Query firebaseSearchQuery = mREF_users.orderByChild("Name").startAt(searchText).endAt(searchText+"\uf8ff");
+        FirebaseRecyclerOptions<UserObject> options =
+                new FirebaseRecyclerOptions.Builder<UserObject>()
+                        .setQuery(firebaseSearchQuery, UserObject.class)
+                        .build();
+        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<UserObject, UserViewHolder>(options) {
+            @Override
+            public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                // Create a new instance of the ViewHolder, in this case we are using a custom
+                // layout called R.layout.message for each item
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.search_main_row, parent, false);
+
+                return new UserViewHolder(view);
+            }
+
+            @Override
+            protected void onBindViewHolder(UserViewHolder holder, int position, UserObject model) {
+                if (model.Name != null){
+                    holder.tv_name.setText(model.Name);
+                }
+                if (model.Bio != null){
+                    holder.tv_bio.setText(model.Bio);
+                }
+                if (model.profilePicLink != null){
+                    Glide.with(getContext()).load(model.profilePicLink).into(holder.circleImageView);
+                }
+            }
+        };
+        adapter.startListening();
+        adapter.notifyDataSetChanged();
+        recyclerViewSearch.setAdapter(adapter);
+
+    }
+    public class UserViewHolder extends RecyclerView.ViewHolder {
+
+        TextView tv_name, tv_bio;
+        CircleImageView circleImageView;
+        public UserViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tv_name = itemView.findViewById(R.id.tv_username_search);
+            tv_bio = itemView.findViewById(R.id.tv_bio_search);
+            circleImageView = itemView.findViewById(R.id.profile_image_search);
+        }
 
 
+
+
+    }
 
 
 }

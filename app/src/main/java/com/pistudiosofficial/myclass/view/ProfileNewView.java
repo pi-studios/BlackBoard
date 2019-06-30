@@ -5,4 +5,7 @@ public interface ProfileNewView {
     void profilePicUploadSuccess();
     void profilePicUploadFailed();
 
+    void helloSendSuccess();
+    void helloSendFailed();
+
 }

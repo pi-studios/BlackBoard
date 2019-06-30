@@ -2,8 +2,6 @@ package com.pistudiosofficial.myclass.model;
 
 // This model Sends Notification to all student user
 
-import android.widget.ArrayAdapter;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -11,8 +9,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.pistudiosofficial.myclass.NotificationStoreObj;
-import com.pistudiosofficial.myclass.StudentClassObject;
+import com.pistudiosofficial.myclass.objects.NotificationStoreObj;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.CheckAttendancePresenterInterface;
 
 import java.util.ArrayList;
@@ -20,7 +17,6 @@ import java.util.ArrayList;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
-import static com.pistudiosofficial.myclass.Common.mREF_student_classList;
 import static com.pistudiosofficial.myclass.Common.mREF_users;
 
 public class PushNotificationSenderModel {

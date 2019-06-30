@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.pistudiosofficial.myclass.AdapterCourseItem;
+import com.pistudiosofficial.myclass.adapters.AdapterCourseItem;
 import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.presenter.ProfilePresenter;

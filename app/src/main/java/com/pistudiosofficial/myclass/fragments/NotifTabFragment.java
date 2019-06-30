@@ -2,7 +2,6 @@ package com.pistudiosofficial.myclass.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.pistudiosofficial.myclass.AdapterNotificationHistory;
+import com.pistudiosofficial.myclass.adapters.AdapterNotificationHistory;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.presenter.NotificationHistoryPresenter;
 import com.pistudiosofficial.myclass.view.NotificationHistoryView;

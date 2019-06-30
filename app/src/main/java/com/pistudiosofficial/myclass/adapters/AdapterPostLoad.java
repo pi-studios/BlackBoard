@@ -1,16 +1,12 @@
-package com.pistudiosofficial.myclass;
+package com.pistudiosofficial.myclass.adapters;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,7 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.pistudiosofficial.myclass.Common;
+import com.pistudiosofficial.myclass.PhotoFullPopupWindow;
+import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.model.PostInteractionModel;
+import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
+import com.pistudiosofficial.myclass.objects.PostObject;
 
 import java.util.ArrayList;
 
@@ -49,20 +50,7 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
         myViewHolder.tv_title.setText(postObjectArrayList.get(i).getCreatorName());
         myViewHolder.tv_creatIon_time.setText(postObjectArrayList.get(i).getCreationDate());
         myViewHolder.tv_post_content.setText(postObjectArrayList.get(i).getBody());
-        myViewHolder.bt_like.setText("Like:"+Common.POST_LIKE_LIST.get(i));
-        /*myViewHolder.tv_post_content.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TextView textView = (TextView)view;
-                if(textView.getMaxLines()==3){
-                    textView.setMaxLines(Integer.MAX_VALUE);
-                }
-                else {
-                    textView.setMaxLines(3);
-                }
-            }
-        });*/
-
+        myViewHolder.bt_like.setText("Like:"+ Common.POST_LIKE_LIST.get(i));
         myViewHolder.bt_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,6 +59,7 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
         });
         if (postObjectArrayList.get(i).getPostType().equals("admin_poll")){
             PollOptionValueLikeObject obj = Common.POST_POLL_OPTIONS.get(Common.POST_OBJECT_ID_LIST.get(i));
+            myViewHolder.listView.removeAllViews();
             for (int j=0;j<obj.optionList.size();j++){
                     Button tv = new Button(context);
                     tv.setId(j);

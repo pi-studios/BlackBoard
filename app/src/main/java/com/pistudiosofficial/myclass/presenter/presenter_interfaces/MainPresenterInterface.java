@@ -1,8 +1,8 @@
 package com.pistudiosofficial.myclass.presenter.presenter_interfaces;
 
-import com.pistudiosofficial.myclass.ClassObject;
+import com.pistudiosofficial.myclass.objects.ClassObject;
 
-import com.pistudiosofficial.myclass.UserObject;
+import com.pistudiosofficial.myclass.objects.UserObject;
 
 import java.util.ArrayList;
 

@@ -1,20 +1,13 @@
 package com.pistudiosofficial.myclass.presenter;
 
 import android.os.Build;
-import android.util.Log;
 
-import com.pistudiosofficial.myclass.NotificationStoreObj;
+import com.pistudiosofficial.myclass.objects.NotificationStoreObj;
 import com.pistudiosofficial.myclass.model.NotificationHistoryModel;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.NotificationHistoryPresenterInterface;
 import com.pistudiosofficial.myclass.view.NotificationHistoryView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class NotificationHistoryPresenter implements NotificationHistoryPresenterInterface {
     NotificationHistoryView view;

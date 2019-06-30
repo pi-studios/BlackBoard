@@ -13,7 +13,7 @@ import com.google.firebase.storage.UploadTask;
 import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.ProfileNewPresenterInterface;
 
-import java.io.File;
+
 
 public class ProfileNewModel {
     ProfileNewPresenterInterface presenter;
@@ -49,6 +49,8 @@ public class ProfileNewModel {
 
     }
 
-
+    public void performSendHello(String UID){
+        // Need TO Work
+    }
 
 }
