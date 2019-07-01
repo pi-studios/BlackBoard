@@ -63,6 +63,10 @@ public class MainPresenter implements MainPresenterInterface {
         model.performPostLoad();
     }
 
+    public void loadHelloRequest(){
+        model.loadHelloRequest();
+    }
+
     @Override
     public void downloadDataSuccess() {
         view.downloadDataSuccess();
@@ -132,6 +136,16 @@ public class MainPresenter implements MainPresenterInterface {
     @Override
     public void connectionListDownloadFailed() {
         view.connectionListDownloadFailed();
+    }
+
+    @Override
+    public void loadHelloSuccess() {
+        view.loadHelloSuccess();
+    }
+
+    @Override
+    public void loadHelloFailed() {
+        view.loadHelloFailed();
     }
 
 }

@@ -2,6 +2,7 @@ package com.pistudiosofficial.myclass.presenter;
 
 import android.net.Uri;
 
+import com.pistudiosofficial.myclass.model.HelloRequestModel;
 import com.pistudiosofficial.myclass.model.ProfileNewModel;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.ProfileNewPresenterInterface;
 import com.pistudiosofficial.myclass.view.ProfileNewView;
@@ -14,12 +15,25 @@ public class ProfileNewPresenter implements ProfileNewPresenterInterface {
         model = new ProfileNewModel(this);
     }
 
+    public void performHelloRequestRespond(String UID, boolean hello){
+        HelloRequestModel helloRequestModel = new HelloRequestModel(null);
+        helloRequestModel.performHelloRequestRespond(UID,hello);
+    }
+
     public void performImageUpload(Uri imgURI, String uploadType, String ext){
         model.performImageUpload(imgURI,uploadType,ext);
     }
 
     public void performSendHello(String UID){
         model.performSendHello(UID);
+    }
+
+    public void performProfilePictureLoad(String UID){
+        model.performProfilePictureLoad(UID);
+    }
+
+    public void performHelloStatusCheck(String UID){
+        model.performHelloStatusCheck(UID);
     }
 
     @Override
@@ -40,6 +54,21 @@ public class ProfileNewPresenter implements ProfileNewPresenterInterface {
     @Override
     public void helloSendFailed() {
         view.helloSendFailed();
+    }
+
+    @Override
+    public void profilePictureLoadSuccess(String link) {
+        view.profilePictureLoadSuccess(link);
+    }
+
+    @Override
+    public void profilePictureLoadFailed() {
+        view.profilePictureLoadFailed();
+    }
+
+    @Override
+    public void helloStatusCheckSuccess(int hello) {
+        view.helloStatusCheckSuccess(hello);
     }
 
 

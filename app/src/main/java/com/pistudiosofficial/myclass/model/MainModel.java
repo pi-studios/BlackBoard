@@ -15,6 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.pistudiosofficial.myclass.objects.AdminClassObject;
 import com.pistudiosofficial.myclass.objects.ClassObject;
 import com.pistudiosofficial.myclass.Common;
+import com.pistudiosofficial.myclass.objects.HelloListObject;
 import com.pistudiosofficial.myclass.objects.NotificationStoreObj;
 import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
 import com.pistudiosofficial.myclass.objects.PostObject;
@@ -26,6 +27,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import static android.content.ContentValues.TAG;
 import static com.pistudiosofficial.myclass.Common.CURRENT_ADMIN_CLASS_LIST;
@@ -34,6 +36,7 @@ import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST_ID;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_USER;
+import static com.pistudiosofficial.myclass.Common.HELLO_USERS;
 import static com.pistudiosofficial.myclass.Common.POST_LIKE_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
@@ -623,6 +626,45 @@ public class MainModel {
         };
         mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("post").child(postId)
                 .child("meta_data").addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    public void loadHelloRequest(){
+        HashMap<String, HelloListObject> tempHashMap = new HashMap<>();
+
+        ValueEventListener valueEventListener1 = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for ( String key : tempHashMap.keySet() ) {
+                    UserObject userObject = dataSnapshot.child(key).getValue(UserObject.class);
+                    HelloListObject object = new HelloListObject(userObject,tempHashMap.get(key).hello);
+                    tempHashMap.put(key,object);
+                }
+                HELLO_USERS = tempHashMap;
+                presenter.loadHelloSuccess();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                presenter.loadHelloFailed();
+            }
+        };
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot s: dataSnapshot.getChildren()){
+                    Log.i("TAG",s.getValue().toString());
+                    HelloListObject obj = new HelloListObject(null,Integer.parseInt(s.getValue().toString()));
+                    tempHashMap.put(s.getKey(), obj);
+                }
+                mREF_users.addListenerForSingleValueEvent(valueEventListener1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        mREF_users.child(CURRENT_USER.UID).child("hello").addValueEventListener(valueEventListener);
     }
 
 }

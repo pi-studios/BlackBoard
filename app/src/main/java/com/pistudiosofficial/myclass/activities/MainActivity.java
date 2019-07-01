@@ -51,6 +51,7 @@ import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST_ID;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_DATABASE;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_USER;
+import static com.pistudiosofficial.myclass.Common.HELLO_USERS;
 import static com.pistudiosofficial.myclass.Common.POST_LIKE_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
@@ -62,6 +63,7 @@ import static com.pistudiosofficial.myclass.Common.SHARED_PREFERENCES;
 import static com.pistudiosofficial.myclass.Common.TEMP01_LIST;
 import static com.pistudiosofficial.myclass.Common.mAUTH;
 import static com.pistudiosofficial.myclass.Common.mREF_admin_classList;
+import static com.pistudiosofficial.myclass.Common.mREF_chat;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
 import static com.pistudiosofficial.myclass.Common.mREF_connections;
 import static com.pistudiosofficial.myclass.Common.mREF_oldRecords;
@@ -93,6 +95,7 @@ public class MainActivity extends AppCompatActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
+        closeDrawer();
         toggle.syncState();
 
         navigationView = findViewById(R.id.nav_view);
@@ -104,6 +107,8 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = new Intent(getApplicationContext(),ProfileNewActivity.class);
                 SELECTED_PROFILE_UID = CURRENT_USER.UID;
                 startActivity(intent);
+                closeDrawer();
+                finish();
             }
         });
 
@@ -111,18 +116,13 @@ public class MainActivity extends AppCompatActivity
         adapterPagerView = new AdapterPagerView(getSupportFragmentManager());
         tabLayout = findViewById(R.id.tabbar);
         tabLayout.setupWithViewPager(viewPager);
-
     }
 
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        closeDrawer();
+        super.onBackPressed();
     }
 
     @Override
@@ -152,10 +152,15 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         drawer.closeDrawers();
         int id = item.getItemId();
-        if (id == R.id.nav_connections) {
+        if (id == R.id.nav_hello_request) {
+            Intent intent = new Intent(getApplicationContext(), HelloRequestActivity.class);
+            startActivity(intent);
+            navigationView.getMenu().getItem(0).setChecked(false);
         }
-        else if (id == R.id.nav_slideshow) {
-
+        else if (id == R.id.nav_hello_list) {
+            Intent intent = new Intent(getApplicationContext(),HelloListActivity.class);
+            startActivity(intent);
+            navigationView.getMenu().getItem(1).setChecked(false);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
@@ -191,6 +196,7 @@ public class MainActivity extends AppCompatActivity
         mREF_connections = FIREBASE_DATABASE.getReference("connections");
         mREF_classList = FIREBASE_DATABASE.getReference("class_list");
         mREF_oldRecords = FIREBASE_DATABASE.getReference("old_records");
+        mREF_chat = FIREBASE_DATABASE.getReference("chat");
         mREF_users.keepSynced(true);
         mREF_classList.keepSynced(true);
         mREF_connections.keepSynced(true);
@@ -206,7 +212,7 @@ public class MainActivity extends AppCompatActivity
         POST_POLL_OPTIONS = new HashMap<>();
         POST_LIKE_LIST = new ArrayList<>();
         POST_URL_LIST = new HashMap<>();
-
+        HELLO_USERS = new HashMap<>();
         //Logged in Check and perform DataLoad
         FIREBASE_USER = mAUTH.getCurrentUser();
         FirebaseUser currentUser = mAUTH.getCurrentUser();
@@ -231,22 +237,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void downloadDataSuccess() {
         Menu menu = navigationView.getMenu();
-        MenuItem nav_connections = menu.findItem(R.id.nav_connections);
-            if(CURRENT_USER.AdminLevel.equals("admin")){
-                nav_connections.setTitle("Students");
-                presenter.performAdminClassListDownload();
-            }
-            if(CURRENT_USER.AdminLevel.equals("user")){
-                nav_connections.setTitle("Faculties");
-                presenter.performUserClassListDownload();
-            }
-            if(CURRENT_USER.AdminLevel.equals("master_admin")){
-                nav_connections.setTitle("Professors");
-            }
-            TextView textViewName = headerView.findViewById(R.id.tv_header_title);
-            textViewName.setText(CURRENT_USER.Name);
-            TextView textViewEmail = headerView.findViewById(R.id.tv_header_email);
-            textViewEmail.setText(CURRENT_USER.Email);
+        TextView textViewName = headerView.findViewById(R.id.tv_header_title);
+        textViewName.setText(CURRENT_USER.Name);
+        TextView textViewEmail = headerView.findViewById(R.id.tv_header_email);
+        textViewEmail.setText(CURRENT_USER.Email);
+        if (CURRENT_USER.AdminLevel.equals("admin")){
+            presenter.performAdminClassListDownload();
+        }
+        if (CURRENT_USER.AdminLevel.equals("user")){
+            presenter.performUserClassListDownload();
+        }
+        loadNewHelloRequest();
     }
 
     @Override
@@ -277,8 +278,9 @@ public class MainActivity extends AppCompatActivity
         CURRENT_ADMIN_CLASS_LIST = classObjectArrayList;
         presenter.performPostLoad();
         viewPager.setAdapter(adapterPagerView);
-        if(!flag){viewPager.setCurrentItem(1);flag = true;}
-        else {viewPager.setCurrentItem(2);}
+        viewPager.setCurrentItem(1);
+        /*if(!flag){viewPager.setCurrentItem(1);flag = true;}
+        else {viewPager.setCurrentItem(2);}*/
         progressDialog.dismiss();
     }
 
@@ -289,8 +291,9 @@ public class MainActivity extends AppCompatActivity
         CURRENT_ADMIN_CLASS_LIST = classObjectsList;
         presenter.performPostLoad();
         viewPager.setAdapter(adapterPagerView);
-        if(!flag){viewPager.setCurrentItem(1);flag = true;}
-        else {viewPager.setCurrentItem(2);}
+        viewPager.setCurrentItem(1);
+        /*if(!flag){viewPager.setCurrentItem(1);flag = true;}
+        else {viewPager.setCurrentItem(2);}*/
         progressDialog.dismiss();
     }
 
@@ -345,4 +348,23 @@ public class MainActivity extends AppCompatActivity
         Toast.makeText(this, "Connection List Load Failed",Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void loadHelloSuccess() {
+
+    }
+
+    @Override
+    public void loadHelloFailed() {
+        Toast.makeText(this,"Failed To Load Hello Request", Toast.LENGTH_SHORT).show();
+    }
+
+    public void closeDrawer() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+    }
+
+    private void loadNewHelloRequest(){
+        presenter.loadHelloRequest();
+    }
 }

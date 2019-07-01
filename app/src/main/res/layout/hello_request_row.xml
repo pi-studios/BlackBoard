@@ -8,19 +8,20 @@
     android:paddingVertical="10dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image_search"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:id="@+id/img_hello_profile_photo"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:paddingEnd="3dp"
         android:src="@mipmap/ic_launcher" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="263dp"
         android:layout_height="match_parent"
+        android:layout_weight="3"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_username_search"
+            android:id="@+id/tv_username_hello"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="5dp"
@@ -28,13 +29,35 @@
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/tv_bio_search"
+            android:id="@+id/tv_bio_hello"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="I am a optimistic and positivie person. i Prefer to roam around"
             android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/bt_hello_accept"
+            android:layout_width="58dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:foreground="@android:drawable/ic_input_add"
+            android:paddingHorizontal="10dp" />
+
+        <Button
+            android:id="@+id/bt_hello_reject"
+            android:layout_width="58dp"
+            android:layout_height="wrap_content"
+            android:foreground="@android:drawable/ic_menu_close_clear_cancel"
+            android:paddingHorizontal="10dp"/>
+
     </LinearLayout>
 
 

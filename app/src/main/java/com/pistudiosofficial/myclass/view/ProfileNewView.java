@@ -8,4 +8,8 @@ public interface ProfileNewView {
     void helloSendSuccess();
     void helloSendFailed();
 
+    void profilePictureLoadSuccess(String link);
+    void profilePictureLoadFailed();
+
+    void helloStatusCheckSuccess(int hello);
 }

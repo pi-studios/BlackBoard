@@ -2,6 +2,7 @@ package com.pistudiosofficial.myclass.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -14,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,11 +32,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.pistudiosofficial.myclass.R;
+import com.pistudiosofficial.myclass.activities.ProfileNewActivity;
 import com.pistudiosofficial.myclass.objects.UserObject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
 import static com.pistudiosofficial.myclass.Common.LOG;
+import static com.pistudiosofficial.myclass.Common.SELECTED_PROFILE_UID;
 import static com.pistudiosofficial.myclass.Common.mREF_users;
 
 public class ClassmateTabFragment extends Fragment {
@@ -69,7 +74,6 @@ public class ClassmateTabFragment extends Fragment {
                 if (!et_search.getText().toString().isEmpty() && !et_search.getText().toString().equals("")){
                     recyclerViewSearch.setVisibility(View.VISIBLE);
                     firebaseUserSearch(et_search.getText().toString());
-                    et_search.clearFocus();
                 }
             }
         });
@@ -77,6 +81,8 @@ public class ClassmateTabFragment extends Fragment {
             @Override
             public boolean onLongClick(View view) {
                 recyclerViewSearch.setVisibility(View.GONE);
+                et_search.setText("");
+                et_search.clearFocus();
                 return true;
             }
         });
@@ -119,14 +125,27 @@ public class ClassmateTabFragment extends Fragment {
 
             @Override
             protected void onBindViewHolder(UserViewHolder holder, int position, UserObject model) {
-                if (model.Name != null){
+
+                if (model.Name != null) {
                     holder.tv_name.setText(model.Name);
+                    holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            SELECTED_PROFILE_UID = model.UID;
+                            Intent intent = new Intent(getContext(), ProfileNewActivity.class);
+                            startActivity(intent);
+                            getActivity().finish();
+                        }
+                    });
                 }
-                if (model.Bio != null){
+                if (model.Bio != null) {
                     holder.tv_bio.setText(model.Bio);
                 }
-                if (model.profilePicLink != null){
+                if (model.profilePicLink != null) {
                     Glide.with(getContext()).load(model.profilePicLink).into(holder.circleImageView);
+                }
+                if (model.UID.equals(CURRENT_USER.UID)){
+                    holder.linearLayout.setVisibility(View.GONE);
                 }
             }
         };
@@ -139,16 +158,14 @@ public class ClassmateTabFragment extends Fragment {
 
         TextView tv_name, tv_bio;
         CircleImageView circleImageView;
+        LinearLayout linearLayout;
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_name = itemView.findViewById(R.id.tv_username_search);
             tv_bio = itemView.findViewById(R.id.tv_bio_search);
             circleImageView = itemView.findViewById(R.id.profile_image_search);
+            linearLayout = itemView.findViewById(R.id.linearLayout_search_main);
         }
-
-
-
-
     }
 
 

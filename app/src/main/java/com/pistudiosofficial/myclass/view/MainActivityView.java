@@ -29,4 +29,6 @@ public interface MainActivityView {
     void connectionListDownloadSuccess(ArrayList<UserObject> userList);
     void connectionListDownloadFailed();
 
+    void loadHelloSuccess();
+    void loadHelloFailed();
 }
