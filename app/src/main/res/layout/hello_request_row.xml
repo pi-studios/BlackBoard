@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout_search_main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,56 +11,74 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_hello_profile_photo"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:paddingEnd="3dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:layout_width="263dp"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_username_hello"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="5dp"
-            android:text="Elina Joshep"
-            android:textSize="24sp" />
+    <TextView
+        android:id="@+id/tv_username_hello"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="5dp"
+        android:text="Elina Joshep"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/img_hello_profile_photo"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_bio_hello"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="I am a optimistic and positivie person. i Prefer to roam around"
-            android:textSize="18sp" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_bio_hello"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="I am a optimistic and positivie person. i Prefer to roam around"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/img_hello_profile_photo"
+        app:layout_constraintTop_toBottomOf="@+id/tv_username_hello" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_bio_hello">
 
         <Button
             android:id="@+id/bt_hello_accept"
-            android:layout_width="58dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
             android:background="@android:color/transparent"
-            android:foreground="@android:drawable/ic_input_add"
-            android:paddingHorizontal="10dp" />
+            android:drawableLeft="@drawable/ic_add_black_24dp"
+            android:paddingHorizontal="10dp"
+            android:text="Accept"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/bt_hello_reject"
-            android:layout_width="58dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:foreground="@android:drawable/ic_menu_close_clear_cancel"
-            android:paddingHorizontal="10dp"/>
+            android:layout_marginStart="5dp"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_close_black_24dp"
+            android:paddingHorizontal="10dp"
+            android:text="Reject"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

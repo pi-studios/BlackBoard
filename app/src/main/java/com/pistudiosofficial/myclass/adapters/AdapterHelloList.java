@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -75,7 +76,7 @@ public class AdapterHelloList extends RecyclerView.Adapter<AdapterHelloList.MyVi
         TextView tv_username,tv_bio;
         Button bt_hello_accept, bt_hello_reject;
         CircleImageView circleImageView;
-        LinearLayout linearLayout;
+        ConstraintLayout linearLayout;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_username = itemView.findViewById(R.id.tv_username_hello);
