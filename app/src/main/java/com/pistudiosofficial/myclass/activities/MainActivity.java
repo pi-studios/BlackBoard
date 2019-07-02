@@ -152,15 +152,10 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         drawer.closeDrawers();
         int id = item.getItemId();
-        if (id == R.id.nav_hello_request) {
-            Intent intent = new Intent(getApplicationContext(), HelloRequestActivity.class);
+        if (id == R.id.nav_hello) {
+            Intent intent = new Intent(getApplicationContext(), HelloActivity.class);
             startActivity(intent);
             navigationView.getMenu().getItem(0).setChecked(false);
-        }
-        else if (id == R.id.nav_hello_list) {
-            Intent intent = new Intent(getApplicationContext(),HelloListActivity.class);
-            startActivity(intent);
-            navigationView.getMenu().getItem(1).setChecked(false);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {

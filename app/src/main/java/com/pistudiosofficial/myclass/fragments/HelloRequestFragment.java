@@ -1,17 +1,22 @@
-package com.pistudiosofficial.myclass.activities;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.pistudiosofficial.myclass.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.pistudiosofficial.myclass.R;
+import com.pistudiosofficial.myclass.activities.MainActivity;
 import com.pistudiosofficial.myclass.adapters.AdapterHelloRequest;
-import com.pistudiosofficial.myclass.adapters.AdapterNotificationHistory;
 import com.pistudiosofficial.myclass.objects.HelloListObject;
 import com.pistudiosofficial.myclass.presenter.HelloRequestPresenter;
 import com.pistudiosofficial.myclass.view.HelloRequestView;
@@ -20,18 +25,22 @@ import java.util.ArrayList;
 
 import static com.pistudiosofficial.myclass.Common.HELLO_USERS;
 
-public class HelloRequestActivity extends AppCompatActivity implements HelloRequestView {
+public class HelloRequestFragment extends Fragment implements HelloRequestView {
 
     ArrayList<HelloListObject> helloList;
     HelloRequestPresenter presenter;
     RecyclerView recyclerView;
     AdapterHelloRequest adapterHelloRequest;
     LinearLayoutManager llm;
+
+    public HelloRequestFragment() {
+    }
+
     @SuppressLint("WrongConstant")
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hello_request);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_hello_request,container,false);
 
         helloList = new ArrayList<>();
         for ( String key : HELLO_USERS.keySet() ) {
@@ -42,47 +51,32 @@ public class HelloRequestActivity extends AppCompatActivity implements HelloRequ
                 helloList.remove(i);
             }
         }
-        llm = new LinearLayoutManager(this);
+        llm = new LinearLayoutManager(getContext());
         presenter = new HelloRequestPresenter(this);
-        adapterHelloRequest = new AdapterHelloRequest(helloList,this,presenter);
-        recyclerView = findViewById(R.id.recyclerView_helloRequestList);
+        adapterHelloRequest = new AdapterHelloRequest(helloList,getContext(),presenter);
+        recyclerView = view.findViewById(R.id.recyclerView_helloRequestList);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
         recyclerView.setAdapter(adapterHelloRequest);
         adapterHelloRequest.notifyDataSetChanged();
-
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
+        return view;
     }
 
     @Override
     public void requestAccepted(String UID) {
-        Toast.makeText(this, "Accepted", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Accepted", Toast.LENGTH_SHORT).show();
         removeItem(UID);
     }
 
     @Override
     public void requestRejected(String UID) {
-        Toast.makeText(this, "Rejected", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Rejected", Toast.LENGTH_SHORT).show();
         removeItem(UID);
     }
 
     @Override
     public void requestActionFailed() {
-        Toast.makeText(this, "Action Failed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Action Failed", Toast.LENGTH_SHORT).show();
     }
 
     private void removeItem(String UID){
