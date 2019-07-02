@@ -156,8 +156,10 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(getApplicationContext(), HelloActivity.class);
             startActivity(intent);
             navigationView.getMenu().getItem(0).setChecked(false);
-        } else if (id == R.id.nav_manage) {
-
+        } else if (id == R.id.nav_chat) {
+            Intent intent = new Intent(getApplicationContext(), ChatListActivity.class);
+            startActivity(intent);
+            navigationView.getMenu().getItem(1).setChecked(false);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

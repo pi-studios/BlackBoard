@@ -1,5 +1,7 @@
 package com.pistudiosofficial.myclass.model;
 
+import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -13,28 +15,58 @@ import com.pistudiosofficial.myclass.view.ChatView;
 
 import java.util.ArrayList;
 
+import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
 import static com.pistudiosofficial.myclass.Common.mREF_chat;
 import static com.pistudiosofficial.myclass.Common.mREF_users;
 
 public class ChatModel {
     ChatView view;
     boolean flag = false;
+    ChildEventListener childEventListener;
+    String nodeString;
     public ChatModel(ChatView view) {
         this.view = view;
     }
 
-    public void performMessageSent(ChatObject chatObject, String node){
+    public void performMessageSent(ChatObject chatObject, String node, String recieverUID){
         mREF_chat.child(node).push().setValue(chatObject);
+        mREF_users.child(CURRENT_USER.UID).child("chat_index").child(node).setValue("true");
+        mREF_users.child(recieverUID).child("chat_index").child(node).setValue("true");
+        mREF_chat.child(node).child("counts_"+recieverUID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() != null){
+                    int x = Integer.parseInt(dataSnapshot.getValue().toString());
+                    x++;
+                    mREF_chat.child(node).child("counts_"+recieverUID)
+                            .setValue(Integer.toString(x));
+                }
+                else{
+                    mREF_chat.child(node).child("counts_"+recieverUID)
+                            .setValue("1");
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void performChatLoad(String node,ArrayList<ChatObject> chatObjects){
-        mREF_chat.child(node).addChildEventListener(new ChildEventListener() {
+        this.nodeString = node;
+        childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.getValue() != null){
-                    chatObjects.add(dataSnapshot.getValue(ChatObject.class));
-                    if (flag){
-                        view.chatUpdate();
+                    try {
+                        chatObjects.add(dataSnapshot.getValue(ChatObject.class));
+                        if (flag){
+                            view.chatUpdate();
+                            mREF_chat.child(node).child("counts_"+CURRENT_USER.UID).setValue("0");
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
                 }
             }
@@ -54,8 +86,8 @@ public class ChatModel {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
-        });
-
+        };
+        mREF_chat.child(node).addChildEventListener(childEventListener);
         mREF_chat.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -82,6 +114,10 @@ public class ChatModel {
 
             }
         });
+    }
+
+    public void removeListener(){
+        mREF_chat.child(nodeString).removeEventListener(childEventListener);
     }
 
 }

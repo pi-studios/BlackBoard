@@ -56,7 +56,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
                         int compare = CURRENT_USER.UID.compareTo(SELECTED_CHAT_UID);
                         String node = "";
                         if (compare<0){
-                            node = CURRENT_USER.UID+SELECTED_PROFILE_UID;
+                            node = CURRENT_USER.UID+SELECTED_CHAT_UID;
                         }
                         else {
                             node = SELECTED_CHAT_UID+CURRENT_USER.UID;
@@ -66,7 +66,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
                                 CURRENT_USER.UID,
                                 SELECTED_CHAT_UID,
                                 time);
-                        model.performMessageSent(chatObject,node);
+                        model.performMessageSent(chatObject,node,SELECTED_CHAT_UID);
                         et_chatBox.setText("");
                     }
                 }
@@ -96,6 +96,12 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
         model.performChatLoad(node,chatObjects);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        model.removeListener();
     }
 
     @Override
