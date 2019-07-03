@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -111,9 +113,11 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 dialog = new Dialog(getContext());
                 dialog.setContentView(R.layout.admin_notify_dialog);
                 final EditText broadcastTitle,broadcast,date01,date02;
+                LinearLayout datelayout;
                 RadioGroup radioGroup = dialog.findViewById(R.id.radioGroup_admin_notify);
                 broadcast = dialog.findViewById(R.id.et_broadcast_message);
                 broadcastTitle = dialog.findViewById(R.id.et_broadcastTitle);
+                datelayout=dialog.findViewById(R.id.dateLayout);
                 date01 = dialog.findViewById(R.id.et_date01);
                 date02 = dialog.findViewById(R.id.et_date02);
                 sessionDatePick(date01);
@@ -128,30 +132,39 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                             case R.id.rb_broadcast:
                                 type = "Broadcast";
                                 broadcastTitle.setVisibility(View.VISIBLE);
+                                broadcastTitle.setEnabled(true);
+                                broadcastTitle.setText("");
+                                broadcastTitle.setHint("BroadCast Title");
                                 broadcast.setVisibility(View.VISIBLE);
-                                date01.setVisibility(View.INVISIBLE);
-                                date02.setVisibility(View.INVISIBLE);
+                                date01.setVisibility(View.GONE);
+                                date02.setVisibility(View.GONE);
                                 break;
                             case R.id.rb_classCancel:
                                 type = "Class_Cancel";
-                                broadcastTitle.setVisibility(View.INVISIBLE);
+                                broadcastTitle.setText(type);
+                                broadcastTitle.setEnabled(false);
+                                broadcastTitle.setTextColor(Color.BLACK);
+                                datelayout.setVisibility(View.VISIBLE);
                                 date01.setVisibility(View.VISIBLE);
                                 date02.setVisibility(View.VISIBLE);
-                                broadcast.setVisibility(View.INVISIBLE);
+                                broadcast.setVisibility(View.GONE);
                                 break;
                             case R.id.rb_classShift:
                                 type = "Class_Shifted";
-                                broadcastTitle.setVisibility(View.INVISIBLE);
+                                broadcastTitle.setText(type);
+                                broadcastTitle.setEnabled(false);
+                                broadcastTitle.setTextColor(Color.BLACK);
+                                datelayout.setVisibility(View.VISIBLE);
                                 date01.setVisibility(View.VISIBLE);
                                 date02.setVisibility(View.VISIBLE);
-                                broadcast.setVisibility(View.INVISIBLE);
+                                broadcast.setVisibility(View.GONE);
                                 break;
                             default:
                                 type = "Broadcast";
                                 broadcastTitle.setVisibility(View.VISIBLE);
                                 broadcast.setVisibility(View.VISIBLE);
-                                date01.setVisibility(View.INVISIBLE);
-                                date02.setVisibility(View.INVISIBLE);
+                                date01.setVisibility(View.GONE);
+                                date02.setVisibility(View.GONE);
                                 break;
                         }
 
