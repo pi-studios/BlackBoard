@@ -1,9 +1,12 @@
 package com.pistudiosofficial.myclass.view;
 
+import com.pistudiosofficial.myclass.objects.ChatListMasterObject;
+import com.pistudiosofficial.myclass.objects.ChatListObject;
 import com.pistudiosofficial.myclass.objects.ClassObject;
 import com.pistudiosofficial.myclass.objects.UserObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public interface MainActivityView {
 
@@ -31,4 +34,6 @@ public interface MainActivityView {
 
     void loadHelloSuccess();
     void loadHelloFailed();
+
+    void newChatNotif(ChatListMasterObject chatListMasterObject);
 }

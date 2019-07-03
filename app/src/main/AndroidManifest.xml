@@ -15,7 +15,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.ChatListActivity"></activity>
         <activity android:name=".activities.HelloActivity" />
         <activity android:name=".activities.ChatActivity" />
         <activity android:name=".activities.ProfileNewActivity" />

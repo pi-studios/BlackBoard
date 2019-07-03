@@ -15,10 +15,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.appcompat.widget.AppCompatImageButton;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -51,16 +53,18 @@ import static com.pistudiosofficial.myclass.Common.POST_OBJECT_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
 
 public class AdminCheckAttendanceFragment extends Fragment implements CheckAttendanceFragView {
-    ProgressDialog progressDialog,progressDialogPosting;
+    ProgressDialog progressDialog,progressDialogPosting,uploadDialog;
     CheckAttendancePresenter presenter;
-    Dialog dialog,dialogAttendancePercent, postDialog, uploadFileDialog;
+    Dialog dialog,dialogAttendancePercent, postDialog;
     ArrayList<Double> admin_attendance_percent_list;
     boolean notMultipleAttendance = false;
     String type = "";
     Uri imgURI01,imgURI02,imgURI03, fileURI;
     Button uploadFile;
+    ImageButton pickImage,pickFile;
     ImageView img1,img2,img3;
     String fileUploadLink = "";
+    int temp;
     private static final int PICK_IMAGE_REQUEST01 = 1,PICK_IMAGE_REQUEST02 = 2, PICK_IMAGE_REQUEST03 = 3,
                         PICK_FILE_REQUEST = 4;
 
@@ -262,6 +266,9 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
     public void postingSuccess() {
         postDialog.dismiss();
         progressDialogPosting.dismiss();
+        imgURI03 =null;
+        imgURI01 = null;
+        imgURI02 = null;
         Toast.makeText(getActivity(),"Posted !", Toast.LENGTH_SHORT).show();
     }
 
@@ -279,10 +286,10 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
 
     @Override
     public void fileUploadDone(String link) {
-        uploadFileDialog.dismiss();
         fileUploadLink = link;
-        uploadFile.setText("Uploaded");
-        uploadFile.setEnabled(false);
+        uploadFile.setVisibility(View.VISIBLE);
+        pickFile.setEnabled(false);
+        uploadDialog.dismiss();
     }
 
     private void sessionDatePick(final EditText editText){
@@ -318,12 +325,15 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
     }
 
     private void createPost(){
-
-
+        temp = 0;
         postDialog = new Dialog(getContext());
         postDialog.setContentView(R.layout.create_post_dialog);
         Button postDone = postDialog.findViewById(R.id.bt_create_post);
         uploadFile = postDialog.findViewById(R.id.bt_create_post_upload_file);
+
+        pickFile = postDialog.findViewById(R.id.img_uploadFile);
+        pickImage = postDialog.findViewById(R.id.img_uploadImage);
+
         img1 = postDialog.findViewById(R.id.img_create_post_01);
         img2 = postDialog.findViewById(R.id.img_create_post_02);
         img3 = postDialog.findViewById(R.id.img_create_post_03);
@@ -331,29 +341,35 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         postDialog.show();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
         String simpleTime = simpleDateFormat.format(new Date());
-        img1.setOnClickListener(new View.OnClickListener() {
+
+        pickImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openFileChooser(PICK_IMAGE_REQUEST01);
+                if (imgURI01 == null){
+                    openFileChooser(PICK_IMAGE_REQUEST01);
+                }else{
+                    if (imgURI02 == null){
+                        openFileChooser(PICK_IMAGE_REQUEST02); temp++;
+                    }else {
+                        if (imgURI03 == null){
+                            openFileChooser(PICK_IMAGE_REQUEST03); temp++;
+                        }else{
+                            imgURI03 =null;
+                            imgURI01 = null;
+                            imgURI02 = null;
+                            img1.setVisibility(View.INVISIBLE);
+                            img2.setVisibility(View.INVISIBLE);
+                            img3.setVisibility(View.INVISIBLE);
+                            Toast.makeText(getContext(),"Max 3 Image",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
             }
         });
-        img2.setOnClickListener(new View.OnClickListener() {
+        pickFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openFileChooser(PICK_IMAGE_REQUEST02);
-            }
-        });
-        img3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openFileChooser(PICK_IMAGE_REQUEST03);
-            }
-        });
-        uploadFile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uploadFileDialog = ProgressDialog.show(getContext(), "",
-                        "Uploading. Please wait...", true);
                 openFileChooser(PICK_FILE_REQUEST);
             }
         });
@@ -384,11 +400,13 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                     }
                     progressDialogPosting = ProgressDialog.show(getContext(), "",
                             "Posting. Please wait...", true);
-                    if (imgURILIST.size()>0){
-                        presenter.performPosting(postObject,imgURILIST,extensionList);
-                    }else{
-                        presenter.performPosting(postObject,null,null);
+
+                    if (imgURILIST.size() > 0) {
+                        presenter.performPosting(postObject, imgURILIST, extensionList);
+                    } else {
+                        presenter.performPosting(postObject, null, null);
                     }
+
                 }
                 else{
                     Toast.makeText(getActivity(),"Cannot Have Empty Post !",Toast.LENGTH_SHORT).show();
@@ -438,20 +456,29 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST01 && resultCode == -1 && data != null && data.getData() != null){
             imgURI01 = data.getData();
+            img1.setImageURI(imgURI01);
+            img1.setVisibility(View.VISIBLE);
             Picasso.with(getContext()).load(imgURI01).into(img1);
         }
         if (requestCode == PICK_IMAGE_REQUEST02 && resultCode == -1 && data != null && data.getData() != null){
             imgURI02 = data.getData();
+            img2.setImageURI(imgURI02);
+            img2.setVisibility(View.VISIBLE);
             Picasso.with(getContext()).load(imgURI02).into(img2);
         }
         if (requestCode == PICK_IMAGE_REQUEST03 && resultCode == -1 && data != null && data.getData() != null){
             imgURI03 = data.getData();
+            img3.setImageURI(imgURI03);
+            img3.setVisibility(View.VISIBLE);
             Picasso.with(getContext()).load(imgURI03).into(img3);
         }
         if (requestCode == PICK_FILE_REQUEST && resultCode == -1 && data != null && data.getData() != null){
             fileURI = data.getData();
+            uploadDialog = ProgressDialog.show(getContext(), "",
+                    "Uploading PDF. Please wait...", true);
             presenter.performPostFileUpload(fileURI,getExtension(fileURI));
         }
+
     }
 
     private String getExtension(Uri uri){

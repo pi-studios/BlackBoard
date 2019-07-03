@@ -5,13 +5,11 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.pistudiosofficial.myclass.ConnectionObject;
 import com.pistudiosofficial.myclass.objects.UserObject;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.SignUpPresenterInterface;
 
 import static com.pistudiosofficial.myclass.Common.FIREBASE_USER;
 import static com.pistudiosofficial.myclass.Common.mAUTH;
-import static com.pistudiosofficial.myclass.Common.mREF_connections;
 import static com.pistudiosofficial.myclass.Common.mREF_users;
 
 public class SignUpModel {
@@ -31,18 +29,7 @@ public class SignUpModel {
                             presenter.signupSuccess();
                             userObject.UID = mAUTH.getUid();
                             mREF_users.child(userObject.UID).setValue(userObject);
-                            if(userObject.AdminLevel.equals("admin")){
-                                ConnectionObject object = new ConnectionObject("","self","");
-                                mREF_connections.child(userObject.UID).setValue(object);
-                            }
-                            if(userObject.AdminLevel.equals("master_admin")){
-                                ConnectionObject object = new ConnectionObject("self","","");
-                                mREF_connections.child(userObject.UID).setValue(object);
-                            }
-                            if(userObject.AdminLevel.equals("user")){
-                                ConnectionObject object = new ConnectionObject("","","self");
-                                mREF_connections.child(userObject.UID).setValue(object);
-                            }
+                            mREF_users.child(userObject.UID).child("lower_name").setValue(userObject.Name.toLowerCase());
                         } else {
                             presenter.signupFailed();
                         }

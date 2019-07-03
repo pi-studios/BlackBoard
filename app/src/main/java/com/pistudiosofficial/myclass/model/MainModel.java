@@ -36,7 +36,7 @@ import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST_ID;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_USER;
-import static com.pistudiosofficial.myclass.Common.HELLO_USERS;
+import static com.pistudiosofficial.myclass.Common.HELLO_REQUEST_USERS;
 import static com.pistudiosofficial.myclass.Common.POST_LIKE_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
@@ -639,7 +639,7 @@ public class MainModel {
                     HelloListObject object = new HelloListObject(userObject,tempHashMap.get(key).hello);
                     tempHashMap.put(key,object);
                 }
-                HELLO_USERS = tempHashMap;
+                HELLO_REQUEST_USERS = tempHashMap;
                 presenter.loadHelloSuccess();
             }
 

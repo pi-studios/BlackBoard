@@ -185,7 +185,13 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
             // Already Friend
             bt_chat.setVisibility(View.VISIBLE);
             bt_hello.setEnabled(false);
-            bt_hello.setText("Connected");
+            bt_hello.setText("Unfriend");
+            bt_hello.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    presenter.performHelloRequestRespond(SELECTED_PROFILE_UID,false);
+                }
+            });
         }
         if (hello == 3){
             // no request sent or received and no friend

@@ -114,6 +114,10 @@ public class ChatModel {
         });
     }
 
+    public void performChatCountReset(String node){
+        mREF_users.child(CURRENT_USER.UID).child("chat_index").child(node).setValue("0");
+    }
+
     public void removeListener(){
         mREF_chat.child(nodeString).removeEventListener(childEventListener);
     }

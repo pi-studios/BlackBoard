@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,10 +23,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +37,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.pistudiosofficial.myclass.adapters.AdapterConnectionList;
 import com.pistudiosofficial.myclass.adapters.AdapterPagerView;
+import com.pistudiosofficial.myclass.fragments.ChatListDialogFragment;
+import com.pistudiosofficial.myclass.model.ChatListModel;
+import com.pistudiosofficial.myclass.objects.ChatListMasterObject;
+import com.pistudiosofficial.myclass.objects.ChatListObject;
 import com.pistudiosofficial.myclass.objects.ClassObject;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.objects.UserObject;
@@ -44,6 +52,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.pistudiosofficial.myclass.Common.ATTD_PERCENTAGE_LIST;
+import static com.pistudiosofficial.myclass.Common.CHAT_MASTER_OBJECT;
 import static com.pistudiosofficial.myclass.Common.CURRENT_ADMIN_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
@@ -51,7 +60,7 @@ import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST_ID;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_DATABASE;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_USER;
-import static com.pistudiosofficial.myclass.Common.HELLO_USERS;
+import static com.pistudiosofficial.myclass.Common.HELLO_REQUEST_USERS;
 import static com.pistudiosofficial.myclass.Common.POST_LIKE_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
@@ -82,8 +91,11 @@ public class MainActivity extends AppCompatActivity
     AdapterPagerView adapterPagerView;
     TabLayout tabLayout;
     ViewPager viewPager;
-    boolean flag = false;
+    Menu menu;
+    ChatListModel chatListModel;
     DrawerLayout drawer;
+    ChatListDialogFragment chatListDialogFragment;
+    ChatListMasterObject chatListMasterObject;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +123,6 @@ public class MainActivity extends AppCompatActivity
                 finish();
             }
         });
-
         viewPager = findViewById(R.id.fragment_container);
         adapterPagerView = new AdapterPagerView(getSupportFragmentManager());
         tabLayout = findViewById(R.id.tabbar);
@@ -128,6 +139,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        this.menu = menu;
         return true;
     }
 
@@ -144,6 +156,24 @@ public class MainActivity extends AppCompatActivity
             finish();
             return true;
         }
+        if (id == R.id.action_helloList){
+            Intent intent = new Intent(getApplicationContext(),HelloActivity.class);
+            if (HELLO_REQUEST_USERS.isEmpty()){
+                intent.putExtra("tab",0);
+            }
+            else {
+                intent.putExtra("tab",1);
+            }
+            startActivity(intent);
+        }
+        if (id == R.id.action_chatList){
+            CHAT_MASTER_OBJECT = chatListModel.getChatListMasterObject();
+            chatListDialogFragment = ChatListDialogFragment.newInstance("Chat List");
+            //chatListDialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentTheme);
+            FragmentManager fm = getSupportFragmentManager();
+            menu.getItem(1).setIcon(ContextCompat.getDrawable(this, R.drawable.chat));
+            chatListDialogFragment.show(fm, "Chat List");
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -152,15 +182,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         drawer.closeDrawers();
         int id = item.getItemId();
-        if (id == R.id.nav_hello) {
-            Intent intent = new Intent(getApplicationContext(), HelloActivity.class);
-            startActivity(intent);
-            navigationView.getMenu().getItem(0).setChecked(false);
-        } else if (id == R.id.nav_chat) {
-            Intent intent = new Intent(getApplicationContext(), ChatListActivity.class);
-            startActivity(intent);
-            navigationView.getMenu().getItem(1).setChecked(false);
-        } else if (id == R.id.nav_share) {
+        if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
@@ -209,7 +231,7 @@ public class MainActivity extends AppCompatActivity
         POST_POLL_OPTIONS = new HashMap<>();
         POST_LIKE_LIST = new ArrayList<>();
         POST_URL_LIST = new HashMap<>();
-        HELLO_USERS = new HashMap<>();
+        HELLO_REQUEST_USERS = new HashMap<>();
         //Logged in Check and perform DataLoad
         FIREBASE_USER = mAUTH.getCurrentUser();
         FirebaseUser currentUser = mAUTH.getCurrentUser();
@@ -234,6 +256,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void downloadDataSuccess() {
         Menu menu = navigationView.getMenu();
+        if(CURRENT_USER.profilePicLink != null){
+            Glide.with(this).load(CURRENT_USER.profilePicLink)
+                    .into((ImageView) headerView.findViewById(R.id.headerImage));
+        }
         TextView textViewName = headerView.findViewById(R.id.tv_header_title);
         textViewName.setText(CURRENT_USER.Name);
         TextView textViewEmail = headerView.findViewById(R.id.tv_header_email);
@@ -245,6 +271,7 @@ public class MainActivity extends AppCompatActivity
             presenter.performUserClassListDownload();
         }
         loadNewHelloRequest();
+        loadChatList();
     }
 
     @Override
@@ -347,12 +374,22 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void loadHelloSuccess() {
-
+        if (HELLO_REQUEST_USERS == null || HELLO_REQUEST_USERS.isEmpty()){
+            menu.getItem(2).setIcon(ContextCompat.getDrawable(this, R.drawable.friend));
+        }
+        else {
+            menu.getItem(2).setIcon(ContextCompat.getDrawable(this, R.drawable.friend_new));
+        }
     }
 
     @Override
     public void loadHelloFailed() {
         Toast.makeText(this,"Failed To Load Hello Request", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void newChatNotif(ChatListMasterObject chatListMasterObject) {
+        menu.getItem(1).setIcon(ContextCompat.getDrawable(this, R.drawable.chat_new));
     }
 
     public void closeDrawer() {
@@ -363,5 +400,17 @@ public class MainActivity extends AppCompatActivity
 
     private void loadNewHelloRequest(){
         presenter.loadHelloRequest();
+    }
+
+    private void loadChatList(){
+        HashMap<String, ChatListObject> chatHashMap = new HashMap<>();
+        ArrayList<UserObject> userObjects = new ArrayList<>();
+        ArrayList<String> chatindex = new ArrayList<>();
+        ArrayList<String> chatcounts = new ArrayList<>();
+        chatListMasterObject = new ChatListMasterObject(
+                chatHashMap,userObjects,chatindex,chatcounts
+        );
+        chatListModel = new ChatListModel(this,chatListMasterObject);
+        chatListModel.performChatListLoad(CURRENT_USER.UID);
     }
 }

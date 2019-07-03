@@ -13,4 +13,16 @@
         android:orderInCategory="100"
         android:title="@string/action_signout"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_chatList"
+        android:orderInCategory="100"
+        android:icon="@drawable/chat"
+        android:title="Chat"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_helloList"
+        android:orderInCategory="100"
+        android:icon="@drawable/friend"
+        android:title="Chat"
+        app:showAsAction="always" />
 </menu>

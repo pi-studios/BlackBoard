@@ -8,10 +8,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.pistudiosofficial.myclass.activities.MainActivity;
+import com.pistudiosofficial.myclass.objects.ChatListMasterObject;
 import com.pistudiosofficial.myclass.objects.ChatListObject;
 import com.pistudiosofficial.myclass.objects.ChatObject;
 import com.pistudiosofficial.myclass.objects.UserObject;
 import com.pistudiosofficial.myclass.view.ChatListView;
+import com.pistudiosofficial.myclass.view.MainActivityView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,34 +24,26 @@ import static com.pistudiosofficial.myclass.Common.mREF_users;
 
 public class ChatListModel {
 
-    ChatListView view;
-    ArrayList<String> chatIndexes, chatcounts;
-    HashMap<String, ChatListObject> chatHashMap;
-    ArrayList<UserObject> userObjects;
+    MainActivityView mainActivityView;
+    ChatListMasterObject chatListMasterObject;
+    int p;
     boolean flag = false;
-    public ChatListModel(ChatListView view, ArrayList<UserObject> userObjects,
-                         HashMap<String, ChatListObject> objectHashMap ) {
-        this.view = view;
-        this.chatHashMap = objectHashMap;
-        this.userObjects = userObjects;
-        this.chatcounts = new ArrayList<>();
-        this.chatIndexes = new ArrayList<>();
+    public ChatListModel(MainActivityView mainActivityView, ChatListMasterObject chatListMasterObject) {
+        this.mainActivityView = mainActivityView;
+        this.chatListMasterObject = chatListMasterObject;
     }
 
     public void performChatListLoad(String UID){
-        mREF_users.child(UID).child("chat_index").addListenerForSingleValueEvent(new ValueEventListener() {
+        mREF_users.child(UID).child("chat_index").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot s: dataSnapshot.getChildren()){
                     if (s.getValue() != null){
-                        chatIndexes.add(s.getKey());
-                        chatUserObject(s.getKey(),UID);
-                        chatLastText(s.getKey(),s.getValue().toString());
-                        mREF_users.child(UID).child("chat_index").child(s.getKey()).setValue("0");
+                        chatListMasterObject.chatIndex.add(s.getKey());
+                        chatListMasterObject.chatCounts.add(s.getValue().toString());
                     }
                 }
-                flag = true;
-                //view.ChatLoaded(chatHashMap,userObjects);
+                chatUserObject(UID);
             }
 
             @Override
@@ -57,38 +52,44 @@ public class ChatListModel {
             }
         });
     }
-    private void chatLastText(String key,String count){
-
-        mREF_chat.child(key).child("reference").orderByKey().limitToLast(1)
-                .addListenerForSingleValueEvent( new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i("TAG",dataSnapshot.getKey()+"  "+key);
-                if (dataSnapshot.getValue() != null){
-                    ChatObject chatObject = dataSnapshot.getValue(ChatObject.class);
-                    ChatListObject chatListObject= new ChatListObject(chatObject.message,count);
-                    chatHashMap.put(key,chatListObject);
-                    //if (flag){view.chatUpdated();}
-                    Log.i("TAG","  "+chatObject.message);
+    private void chatLastText(){
+        p=0;
+        for (String key: chatListMasterObject.chatIndex) {
+            mREF_chat.child(key).orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot s : dataSnapshot.getChildren()) {
+                        if (dataSnapshot.getValue() != null) {
+                            ChatObject chatObject = s.getValue(ChatObject.class);
+                            ChatListObject chatListObject =
+                                    new ChatListObject(chatObject.message, chatListMasterObject.chatCounts.get(p));
+                            p++;
+                            chatListMasterObject.chatHashMap.put(key, chatListObject);
+                        }
+                    }
+                    checkNewMessage();
                 }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                //Handle possible errors.
-            }
-        });
 
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    //Handle possible errors.
+                }
+            });
+        }
 
     }
-    private void chatUserObject(String key, String UID){
-        String recieverUID = key.replace(UID,"");
-        recieverUID = recieverUID.replace(":","");
-        mREF_users.child(recieverUID).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void chatUserObject(String UID){
+
+        mREF_users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue() != null){
-                    userObjects.add(dataSnapshot.getValue(UserObject.class));
-                    //if (flag){view.chatUpdated();}
+                    for (String s: chatListMasterObject.chatIndex){
+                        String recieverUID = s.replace(UID,"");
+                        recieverUID = recieverUID.replace(":","");
+                        chatListMasterObject.userObjects.add(dataSnapshot.child(recieverUID).getValue(UserObject.class));
+                    }
+                    chatLastText();
                 }
             }
 
@@ -99,4 +100,19 @@ public class ChatListModel {
         });
     }
 
+    public ChatListMasterObject getChatListMasterObject(){
+        return this.chatListMasterObject;
+    }
+
+    private void checkNewMessage(){
+        for(String s : chatListMasterObject.chatCounts){
+            if (!s.equals("0")){
+                flag = true;
+            }
+        }
+        if (flag){
+            mainActivityView.newChatNotif(chatListMasterObject);
+            flag = false;
+        }
+    }
 }

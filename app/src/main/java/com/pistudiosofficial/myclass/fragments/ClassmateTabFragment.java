@@ -95,7 +95,7 @@ public class ClassmateTabFragment extends Fragment {
                         || keyEvent.getAction() == keyEvent.ACTION_DOWN
                         || keyEvent.getAction() == keyEvent.KEYCODE_ENTER) {
                     recyclerViewSearch.setVisibility(View.VISIBLE);
-                    firebaseUserSearch(et_search.getText().toString());
+                    firebaseUserSearch(et_search.getText().toString().toLowerCase());
                     et_search.clearFocus();
                     return true;
 
@@ -107,7 +107,7 @@ public class ClassmateTabFragment extends Fragment {
     }
 
     private void firebaseUserSearch(String searchText) {
-        Query firebaseSearchQuery = mREF_users.orderByChild("Name").startAt(searchText).endAt(searchText+"\uf8ff");
+        Query firebaseSearchQuery = mREF_users.orderByChild("lower_name").startAt(searchText).endAt(searchText+"\uf8ff");
         FirebaseRecyclerOptions<UserObject> options =
                 new FirebaseRecyclerOptions.Builder<UserObject>()
                         .setQuery(firebaseSearchQuery, UserObject.class)

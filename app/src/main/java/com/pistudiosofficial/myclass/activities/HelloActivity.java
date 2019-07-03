@@ -26,6 +26,8 @@ public class HelloActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tab_bar_hello);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setAdapter(adapterPagerViewHello);
+        viewPager.setCurrentItem(getIntent().getIntExtra("tab",0));
+
     }
 
     @Override

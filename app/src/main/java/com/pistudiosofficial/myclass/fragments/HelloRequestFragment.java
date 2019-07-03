@@ -1,7 +1,6 @@
 package com.pistudiosofficial.myclass.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pistudiosofficial.myclass.R;
-import com.pistudiosofficial.myclass.activities.MainActivity;
 import com.pistudiosofficial.myclass.adapters.AdapterHelloRequest;
 import com.pistudiosofficial.myclass.objects.HelloListObject;
 import com.pistudiosofficial.myclass.presenter.HelloRequestPresenter;
@@ -23,7 +21,7 @@ import com.pistudiosofficial.myclass.view.HelloRequestView;
 
 import java.util.ArrayList;
 
-import static com.pistudiosofficial.myclass.Common.HELLO_USERS;
+import static com.pistudiosofficial.myclass.Common.HELLO_REQUEST_USERS;
 
 public class HelloRequestFragment extends Fragment implements HelloRequestView {
 
@@ -43,8 +41,8 @@ public class HelloRequestFragment extends Fragment implements HelloRequestView {
         View view = inflater.inflate(R.layout.activity_hello_request,container,false);
 
         helloList = new ArrayList<>();
-        for ( String key : HELLO_USERS.keySet() ) {
-            helloList.add(HELLO_USERS.get(key));
+        for ( String key : HELLO_REQUEST_USERS.keySet() ) {
+            helloList.add(HELLO_REQUEST_USERS.get(key));
         }
         for (int i = 0; i<helloList.size(); i++){
             if (helloList.get(i).hello == 0 || helloList.get(i).hello == 2){
