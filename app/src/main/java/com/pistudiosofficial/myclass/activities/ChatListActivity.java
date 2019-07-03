@@ -52,11 +52,12 @@ public class ChatListActivity extends AppCompatActivity implements ChatListView 
         recyclerView = findViewById(R.id.recyclerView_chatList);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
-        recyclerView.setAdapter(adapterChatList);
+
     }
 
     @Override
     public void chatUpdated() {
+        recyclerView.setAdapter(adapterChatList);
         adapterChatList.notifyDataSetChanged();
     }
 }

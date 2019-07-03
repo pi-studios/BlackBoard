@@ -40,19 +40,15 @@ public class ChatListModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot s: dataSnapshot.getChildren()){
-                    if (s.child("counts_"+UID).getValue() != null&& s.getValue() != null){
+                    if (s.getValue() != null){
                         chatIndexes.add(s.getKey());
-                        chatcounts.add(s.child("counts_"+UID).getValue().toString());
-                        mREF_users.child(UID).child("chat_index").child("counts_"+UID).setValue("0");
+                        chatUserObject(s.getKey(),UID);
+                        chatLastText(s.getKey(),s.getValue().toString());
+                        mREF_users.child(UID).child("chat_index").child(s.getKey()).setValue("0");
                     }
                 }
-                for (int i = 0; i<chatIndexes.size(); i++){
-                   chatLastText(chatIndexes.get(i),chatcounts.get(i));
-                   chatUserObject(chatIndexes.get(i),UID);
-                }
                 flag = true;
-
-                view.ChatLoaded(chatHashMap,userObjects);
+                //view.ChatLoaded(chatHashMap,userObjects);
             }
 
             @Override
@@ -63,32 +59,36 @@ public class ChatListModel {
     }
     private void chatLastText(String key,String count){
 
-        // Need to count chat in list
-        ValueEventListener valueEventListener = new ValueEventListener() {
+        mREF_chat.child(key).child("reference").orderByKey().limitToLast(1)
+                .addListenerForSingleValueEvent( new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ChatObject chatObject = dataSnapshot.getValue(ChatObject.class);
-                ChatListObject chatListObject= new ChatListObject(chatObject.message,count);
-                chatHashMap.put(key,chatListObject);
-                if (flag){view.chatUpdated();}
+                Log.i("TAG",dataSnapshot.getKey()+"  "+key);
+                if (dataSnapshot.getValue() != null){
+                    ChatObject chatObject = dataSnapshot.getValue(ChatObject.class);
+                    ChatListObject chatListObject= new ChatListObject(chatObject.message,count);
+                    chatHashMap.put(key,chatListObject);
+                    //if (flag){view.chatUpdated();}
+                    Log.i("TAG","  "+chatObject.message);
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 //Handle possible errors.
             }
-        };
-        Query lastQuery = mREF_chat.child(key).orderByKey().limitToLast(1);
-        lastQuery.addListenerForSingleValueEvent(valueEventListener);
+        });
+
+
     }
     private void chatUserObject(String key, String UID){
         String recieverUID = key.replace(UID,"");
-        Log.i("TAG",recieverUID);
+        recieverUID = recieverUID.replace(":","");
         mREF_users.child(recieverUID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue() != null){
                     userObjects.add(dataSnapshot.getValue(UserObject.class));
-                    if (flag){view.chatUpdated();}
+                    //if (flag){view.chatUpdated();}
                 }
             }
 

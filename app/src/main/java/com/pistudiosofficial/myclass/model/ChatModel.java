@@ -29,21 +29,20 @@ public class ChatModel {
     }
 
     public void performMessageSent(ChatObject chatObject, String node, String recieverUID){
-        mREF_chat.child(node).push().setValue(chatObject);
-        mREF_users.child(CURRENT_USER.UID).child("chat_index").child(node).setValue("true");
-        mREF_users.child(recieverUID).child("chat_index").child(node).setValue("true");
-        mREF_chat.child(node).child("counts_"+recieverUID).addListenerForSingleValueEvent(new ValueEventListener() {
+        String newid = mREF_chat.child(node).push().getKey();
+        mREF_chat.child(node).child(newid).setValue(chatObject);
+        mREF_chat.child(node).child(newid).child("id").setValue(newid);
+        mREF_users.child(CURRENT_USER.UID).child("chat_index").child(node).setValue("0");
+        mREF_users.child(recieverUID).child("chat_index").child(node).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue() != null){
                     int x = Integer.parseInt(dataSnapshot.getValue().toString());
                     x++;
-                    mREF_chat.child(node).child("counts_"+recieverUID)
-                            .setValue(Integer.toString(x));
+                    mREF_users.child(recieverUID).child("chat_index").child(node).setValue(x);
                 }
                 else{
-                    mREF_chat.child(node).child("counts_"+recieverUID)
-                            .setValue("1");
+                    mREF_users.child(recieverUID).child("chat_index").child(node).setValue("1");
                 }
             }
             @Override
@@ -63,8 +62,7 @@ public class ChatModel {
                         chatObjects.add(dataSnapshot.getValue(ChatObject.class));
                         if (flag){
                             view.chatUpdate();
-                            mREF_chat.child(node).child("counts_"+CURRENT_USER.UID).setValue("0");
-                        }
+                            mREF_users.child(CURRENT_USER.UID).child("chat_index").child(node).setValue("0");                        }
                     }catch (Exception e){
                         e.printStackTrace();
                     }

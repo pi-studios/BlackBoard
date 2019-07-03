@@ -652,9 +652,10 @@ public class MainModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot s: dataSnapshot.getChildren()){
-                    Log.i("TAG",s.getValue().toString());
+                    if (s.getValue().toString().equals("1")){
                     HelloListObject obj = new HelloListObject(null,Integer.parseInt(s.getValue().toString()));
                     tempHashMap.put(s.getKey(), obj);
+                    }
                 }
                 mREF_users.addListenerForSingleValueEvent(valueEventListener1);
             }

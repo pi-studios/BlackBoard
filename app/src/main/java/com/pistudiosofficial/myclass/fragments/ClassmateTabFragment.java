@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
+import androidx.appcompat.widget.AppCompatImageButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -44,7 +44,7 @@ import static com.pistudiosofficial.myclass.Common.mREF_users;
 
 public class ClassmateTabFragment extends Fragment {
 
-    Button bt_search;
+    AppCompatImageButton bt_search;
     EditText et_search;
     RecyclerView recyclerViewSearch;
     DatabaseReference mUserRef;

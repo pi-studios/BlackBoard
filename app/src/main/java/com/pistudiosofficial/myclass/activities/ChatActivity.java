@@ -56,10 +56,10 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
                         int compare = CURRENT_USER.UID.compareTo(SELECTED_CHAT_UID);
                         String node = "";
                         if (compare<0){
-                            node = CURRENT_USER.UID+SELECTED_CHAT_UID;
+                            node = CURRENT_USER.UID+":"+SELECTED_CHAT_UID;
                         }
                         else {
-                            node = SELECTED_CHAT_UID+CURRENT_USER.UID;
+                            node = SELECTED_CHAT_UID+":"+CURRENT_USER.UID;
                         }
                         ChatObject chatObject = new ChatObject(
                                 et_chatBox.getText().toString(),
@@ -83,10 +83,10 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
         int compare = CURRENT_USER.UID.compareTo(SELECTED_CHAT_UID);
         node = "";
         if (compare<0){
-            node = CURRENT_USER.UID+SELECTED_PROFILE_UID;
+            node = CURRENT_USER.UID+":"+SELECTED_PROFILE_UID;
         }
         else {
-            node = SELECTED_CHAT_UID + CURRENT_USER.UID;
+            node = SELECTED_CHAT_UID +":"+CURRENT_USER.UID;
         }
         model = new ChatModel(this);
         model.performChatUserDataLoad(SELECTED_CHAT_UID);

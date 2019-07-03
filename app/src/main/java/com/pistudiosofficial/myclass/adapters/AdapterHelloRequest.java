@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
+import androidx.constraintlayout.widget.ConstraintLayout;
 import com.bumptech.glide.Glide;
 import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.R;
@@ -85,7 +85,7 @@ public class AdapterHelloRequest extends RecyclerView.Adapter<AdapterHelloReques
         TextView tv_username,tv_bio;
         Button bt_hello_accept, bt_hello_reject;
         CircleImageView circleImageView;
-        LinearLayout linearLayout;
+        ConstraintLayout linearLayout;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_username = itemView.findViewById(R.id.tv_username_hello);
