@@ -2,6 +2,7 @@ package com.pistudiosofficial.myclass.presenter;
 
 import android.net.Uri;
 
+import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
 import com.pistudiosofficial.myclass.objects.PostObject;
 import com.pistudiosofficial.myclass.model.CheckAttendanceModel;
 import com.pistudiosofficial.myclass.model.ExportCSVModel;
@@ -13,6 +14,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import static com.pistudiosofficial.myclass.Common.CURRENT_ADMIN_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
@@ -32,6 +34,10 @@ public class CheckAttendancePresenter implements CheckAttendancePresenterInterfa
 
     public void performMultipleAttendanceCheck(){
         model.checkMultipleAttendance();
+    }
+
+    public void performLoadPost(String classID){
+        model.performLoadPost(classID);
     }
 
     public void performPostFileUpload(Uri fileURI, String extension){
@@ -116,6 +122,14 @@ public class CheckAttendancePresenter implements CheckAttendancePresenterInterfa
     @Override
     public void fileUploadLink(String link) {
         view.fileUploadDone(link);
+    }
+
+    @Override
+    public void loadPostSuccess(ArrayList<PostObject> postObjects, HashMap<String,
+            PollOptionValueLikeObject> post_poll_option, ArrayList<String> post_like_list,
+                                HashMap<String, ArrayList<String>> post_url_list,
+                                ArrayList<String> comment_count) {
+        view.loadPostSuccess(postObjects,post_poll_option,post_like_list,post_url_list,comment_count);
     }
 
     public void broadcastFunctionPerform(){

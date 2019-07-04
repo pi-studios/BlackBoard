@@ -4,20 +4,45 @@ import android.graphics.Bitmap;
 import java.util.ArrayList;
 
 public class PostObject {
-    private String creatorName, creationDate, body, postType;
-    private ArrayList<Comments> comments;
+    private String creatorName, creationDate, body, postType, creatorUID,creatorProPickLink, postID;
 
     public PostObject() {
     }
 
+    public String getCreatorUID() {
+        return creatorUID;
+    }
+
+    public void setCreatorUID(String creatorUID) {
+        this.creatorUID = creatorUID;
+    }
+
+    public String getCreatorProPickLink() {
+        return creatorProPickLink;
+    }
+
+    public void setCreatorProPickLink(String creatorProPickLink) {
+        this.creatorProPickLink = creatorProPickLink;
+    }
+
     public PostObject(String creatorName, String creationDate, String body,
-                      ArrayList<Comments> comments, String postType
+                      String postType, String creatorUID, String creatorProPickLink, String postID
                     ) {
+        this.postID = postID;
         this.creatorName = creatorName;
         this.creationDate = creationDate;
         this.body = body;
-        this.comments = comments;
         this.postType = postType;
+        this.creatorProPickLink = creatorProPickLink;
+        this.creatorUID = creatorUID;
+    }
+
+    public String getPostID() {
+        return postID;
+    }
+
+    public void setPostID(String postID) {
+        this.postID = postID;
     }
 
     public String getPostType() {
@@ -50,14 +75,6 @@ public class PostObject {
 
     public void setBody(String body) {
         this.body = body;
-    }
-
-    public ArrayList<Comments> getComments() {
-        return comments;
-    }
-
-    public void setComments(ArrayList<Comments> comments) {
-        this.comments = comments;
     }
 
     private class Comments{

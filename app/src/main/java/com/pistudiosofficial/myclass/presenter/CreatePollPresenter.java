@@ -18,6 +18,7 @@ public class CreatePollPresenter implements CreatePollPresenterInterface {
         model.performCreatePoll(title,optionList);
     }
 
+
     @Override
     public void createPollSuccess() {
         view.createPollSuccess();

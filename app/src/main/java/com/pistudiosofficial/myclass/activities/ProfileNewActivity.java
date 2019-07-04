@@ -215,7 +215,4 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
         }
     }
 
-
-
-
 }

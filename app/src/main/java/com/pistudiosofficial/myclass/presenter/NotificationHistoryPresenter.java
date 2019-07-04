@@ -29,8 +29,6 @@ public class NotificationHistoryPresenter implements NotificationHistoryPresente
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             objArrayList.sort((o1, o2) -> o1.dateCreated.compareTo(o2.dateCreated));
         }
-
-
         for (NotificationStoreObj obj : objArrayList){
                 title.add(obj.Title);
                 body.add(obj.Body);

@@ -10,6 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.pistudiosofficial.myclass.objects.ChatListMasterObject;
 import com.pistudiosofficial.myclass.objects.ClassObject;
 import com.pistudiosofficial.myclass.objects.HelloListObject;
+import com.pistudiosofficial.myclass.objects.MasterPostObject;
 import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
 import com.pistudiosofficial.myclass.objects.PostObject;
 import com.pistudiosofficial.myclass.objects.StudentClassObject;
@@ -44,12 +45,11 @@ public class Common {
     public static ArrayList<String> CURRENT_USER_CLASS_LIST_ID = null;
     public static HashMap<String, HelloListObject> HELLO_REQUEST_USERS = null;
 
-    //Post Related Common
-    public static ArrayList<PostObject> POST_OBJECT_LIST = null;
-    public static ArrayList<String> POST_OBJECT_ID_LIST = null;
-    public static HashMap<String, PollOptionValueLikeObject> POST_POLL_OPTIONS = null;
-    public static ArrayList<String> POST_LIKE_LIST = null;
-    public static HashMap<String, ArrayList<String>> POST_URL_LIST = null;
+
+
+    public static DatabaseReference mREF_COMMENT_LOAD = null;
+
+    public static PostObject COMMENT_LOAD_POST_OBJECT = null;
 
 
     //Profile Related Common
@@ -57,7 +57,7 @@ public class Common {
 
     //Chat Related Common
     public static String SELECTED_CHAT_UID = "";
-    public static ChatListMasterObject CHAT_MASTER_OBJECT = null;
+    public static HashMap<String,ChatListMasterObject> CHAT_LIST_HASH_MAP = null;
 
     public static SharedPreferences SHARED_PREFERENCES;
 

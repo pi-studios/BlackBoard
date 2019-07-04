@@ -2,11 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingHorizontal="10dp"
-    android:paddingVertical="10dp"
-    >
+    android:paddingVertical="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,49 +62,34 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"></LinearLayout>
 
+    <View
+        style="@style/Divider.Horizontal"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/recyclerView_commentList_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingStart="20dp"
-        android:weightSum="3">
+        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/bt_like_post_row"
+        <EditText
+            android:id="@+id/et_commetInput_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@null"
-            android:drawableLeft="@drawable/like_new"
-            android:text="Like"
-            android:textAlignment="viewStart" />
+            android:ems="10"
+            android:hint="Comment"
+            android:inputType="textPersonName" />
 
-        <!--<ImageButton-->
-        <!--android:id="@+id/imageButton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:scaleType="fitStart"-->
-        <!--android:layout_weight="1"-->
-        <!--app:srcCompat="@drawable/ic_thumb_up_black_24dp" />-->
-
-        <Button
-            android:id="@+id/bt_comment_post_row"
+        <ImageButton
+            android:id="@+id/bt_commentSend_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@null"
-            android:drawableLeft="@drawable/ic_chat_bubble_outline_black_24dp"
-            android:text="Comment"
-            android:textAlignment="viewStart"/>
-
-        <Button
-            android:id="@+id/bt_share_post_row"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@null"
-            android:drawableLeft="@drawable/ic_share_black_24dp"
-            android:text="Share"
-            android:textAlignment="textStart" />
+            android:src="@drawable/chat" />
     </LinearLayout>
 </LinearLayout>

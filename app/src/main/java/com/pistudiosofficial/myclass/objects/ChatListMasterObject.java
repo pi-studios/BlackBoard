@@ -5,16 +5,13 @@ import java.util.HashMap;
 
 public class ChatListMasterObject {
 
-    public HashMap<String, ChatListObject> chatHashMap;
-    public ArrayList<UserObject> userObjects;
-    public ArrayList<String> chatIndex;
-    public ArrayList<String>chatCounts;
+    public String lastText;
+    public UserObject userObjects;
+    public String chatCounts;
 
-    public ChatListMasterObject(HashMap<String, ChatListObject> chatHashMap
-            , ArrayList<UserObject> userObjects, ArrayList<String> chatIndex, ArrayList<String> chatCounts) {
-        this.chatHashMap = chatHashMap;
+    public ChatListMasterObject(String lastText,UserObject userObjects, String chatCounts) {
+        this.lastText = lastText;
         this.userObjects = userObjects;
-        this.chatIndex = chatIndex;
         this.chatCounts = chatCounts;
     }
 

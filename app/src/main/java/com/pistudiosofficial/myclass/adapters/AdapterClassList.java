@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +21,16 @@ import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.activities.CheckAttendanceActivity;
 import com.pistudiosofficial.myclass.objects.ClassObject;
+import com.pistudiosofficial.myclass.objects.MasterPostObject;
+import com.pistudiosofficial.myclass.objects.PostObject;
 import com.pistudiosofficial.myclass.view.MainActivityView;
 
 import java.util.ArrayList;
 
+import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
+import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
+
 
 public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyViewHolder> {
 
@@ -58,9 +64,6 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
         }
         if(adminLevel == 0) {
             view = inflater.inflate(R.layout.user_class_list_row, viewGroup,false);
-        }
-        else{
-
         }
         return new MyViewHolder(view);
     }
@@ -186,6 +189,7 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
             }
         }
     }
+
 
 
 }

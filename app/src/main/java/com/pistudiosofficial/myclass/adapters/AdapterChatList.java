@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.activities.ChatActivity;
 import com.pistudiosofficial.myclass.activities.ProfileNewActivity;
+import com.pistudiosofficial.myclass.objects.ChatListMasterObject;
 import com.pistudiosofficial.myclass.objects.ChatListObject;
 import com.pistudiosofficial.myclass.objects.UserObject;
 
@@ -33,19 +34,17 @@ import static com.pistudiosofficial.myclass.Common.SELECTED_PROFILE_UID;
 
 public class AdapterChatList extends RecyclerView.Adapter<AdapterChatList.MyViewHolder> {
 
-    HashMap<String, ChatListObject> hashMap;
-    ArrayList<UserObject> userObjects;
-    ArrayList<String> chatindex, chatcounts;
+    HashMap<String, ChatListMasterObject> hashMap;
+    ArrayList<String> chatindex;
     Context context;
 
-    public AdapterChatList(HashMap<String, ChatListObject> hashMap,ArrayList<UserObject> userObjects,
-            ArrayList<String> chatindex, ArrayList<String> chatcounts,
-             Context context) {
+    public AdapterChatList(HashMap<String, ChatListMasterObject> hashMap,Context context) {
         this.hashMap = hashMap;
-        this.userObjects = userObjects;
         this.context = context;
-        this.chatcounts = chatcounts;
-        this.chatindex = chatindex;
+        chatindex = new ArrayList<>();
+        for (String s: hashMap.keySet()){
+            chatindex.add(s);
+        }
     }
 
     @NonNull
@@ -58,29 +57,28 @@ public class AdapterChatList extends RecyclerView.Adapter<AdapterChatList.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        myViewHolder.tv_username.setText(userObjects.get(i).Name);
-        if (userObjects.get(i).profilePicLink != null) {
-            Glide.with(context).load(userObjects.get(i).profilePicLink).into(myViewHolder.circleImageView);
+        myViewHolder.tv_username.setText(hashMap.get(chatindex.get(i)).userObjects.Name);
+        if (hashMap.get(chatindex.get(i)).userObjects.profilePicLink != null) {
+            Glide.with(context).load(hashMap.get(chatindex.get(i)).userObjects.profilePicLink).into(myViewHolder.circleImageView);
         }
         if (hashMap.get(chatindex.get(i)) != null) {
-            myViewHolder.tv_lastText.setText(Objects.requireNonNull(hashMap.get(chatindex.get(i)).lastChat));
+            myViewHolder.tv_lastText.setText(Objects.requireNonNull(hashMap.get(chatindex.get(i)).lastText));
 
-            myViewHolder.tv_count.setText(Objects.requireNonNull(hashMap.get(chatindex.get(i))).chatCount);
+            myViewHolder.tv_count.setText(Objects.requireNonNull(hashMap.get(chatindex.get(i))).chatCounts);
         }
         myViewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ChatActivity.class);
                 context.startActivity(intent);
-                SELECTED_CHAT_UID = userObjects.get(i).UID;
-                ((Activity) context).finish();
+                SELECTED_CHAT_UID = hashMap.get(chatindex.get(i)).userObjects.UID;
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return userObjects.size();
+        return chatindex.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

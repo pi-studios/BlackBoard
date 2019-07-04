@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.pistudiosofficial.myclass.R;
@@ -19,6 +20,8 @@ import com.pistudiosofficial.myclass.model.ChatModel;
 import com.pistudiosofficial.myclass.objects.ChatObject;
 import com.pistudiosofficial.myclass.objects.UserObject;
 import com.pistudiosofficial.myclass.view.ChatView;
+import com.vanniktech.emoji.EmojiEditText;
+import com.vanniktech.emoji.EmojiPopup;
 
 import java.security.Timestamp;
 import java.text.SimpleDateFormat;
@@ -31,10 +34,11 @@ import static com.pistudiosofficial.myclass.Common.SELECTED_PROFILE_UID;
 
 public class ChatActivity extends AppCompatActivity implements ChatView {
 
-    EditText et_chatBox;
+    EmojiEditText et_chatBox;
     Button bt_chatSend;
     ChatModel model;
     String node;
+    ImageButton emojiButton;
     ArrayList<ChatObject> chatObjects;
     RecyclerView recyclerView;
     LinearLayoutManager llm;
@@ -44,7 +48,8 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
+        final EmojiPopup emojiPopup = EmojiPopup.Builder.fromRootView(findViewById(R.id.root_chat_activity))
+                .build(findViewById(R.id.et_chatbox));
         et_chatBox = findViewById(R.id.et_chatbox);
         bt_chatSend = findViewById(R.id.bt_chatbox_send);
         bt_chatSend.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +77,18 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
                 }
             }
         });
-
+        emojiButton = findViewById(R.id.imgbt_emoji_chatActivity);
+        emojiButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (emojiPopup.isShowing()){
+                    emojiPopup.dismiss(); // Dismisses the Popup.
+                }
+                else{
+                    emojiPopup.toggle(); // Toggles visibility of the Popup.
+                }
+            }
+        });
 
     }
 

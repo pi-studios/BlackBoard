@@ -59,10 +59,6 @@ public class MainPresenter implements MainPresenterInterface {
         model.performConnectionDownload();
     }
 
-    public void performPostLoad(){
-        model.performPostLoad();
-    }
-
     public void loadHelloRequest(){
         model.loadHelloRequest();
     }

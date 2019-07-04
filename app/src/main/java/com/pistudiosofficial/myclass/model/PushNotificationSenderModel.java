@@ -27,6 +27,7 @@ public class PushNotificationSenderModel {
     DatabaseReference mRefNotification;
     CheckAttendancePresenterInterface presenter;
     ValueEventListener valueEventListener;
+    String pushedNotifKey;
     //Class cancel or shift
     String date01,date02,type;
 
@@ -79,7 +80,8 @@ public class PushNotificationSenderModel {
         broadcastBody = broadcastBody+"- Created: "+creationTime;
         NotificationStoreObj obj = new NotificationStoreObj(broadcastTitle,broadcastBody,simpleTime);
         mRefNotification = mREF_classList.child(classID).child("notification");
-        mRefNotification.push().setValue(obj, new DatabaseReference.CompletionListener() {
+        pushedNotifKey = mRefNotification.push().getKey();
+        mRefNotification.child(pushedNotifKey).setValue(obj, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 if(databaseError==null){
@@ -108,7 +110,8 @@ public class PushNotificationSenderModel {
         }
         NotificationStoreObj obj = new NotificationStoreObj(title,body,simpleTime);
         mRefNotification = mREF_classList.child(classID).child("notification");
-        mRefNotification.push().setValue(obj, new DatabaseReference.CompletionListener() {
+        pushedNotifKey = mRefNotification.push().getKey();
+        mRefNotification.child(pushedNotifKey).setValue(obj, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 if(databaseError == null){
@@ -149,7 +152,7 @@ public class PushNotificationSenderModel {
     public void finishUpload(NotificationStoreObj obj){
         mREF_classList.removeEventListener(valueEventListener);
         for (String str : studentUID){
-            mREF_users.child(str).child("notification").push().setValue(obj);
+            mREF_users.child(str).child("notification").child(pushedNotifKey).setValue(obj);
         }
         return;
     }

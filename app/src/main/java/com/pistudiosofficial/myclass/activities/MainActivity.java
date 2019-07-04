@@ -48,11 +48,14 @@ import com.pistudiosofficial.myclass.presenter.CheckAttendancePresenter;
 import com.pistudiosofficial.myclass.presenter.MainPresenter;
 import com.pistudiosofficial.myclass.view.MainActivityView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static com.pistudiosofficial.myclass.Common.ATTD_PERCENTAGE_LIST;
-import static com.pistudiosofficial.myclass.Common.CHAT_MASTER_OBJECT;
+import static com.pistudiosofficial.myclass.Common.CHAT_LIST_HASH_MAP;
 import static com.pistudiosofficial.myclass.Common.CURRENT_ADMIN_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
@@ -61,11 +64,6 @@ import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST_ID;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_DATABASE;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_USER;
 import static com.pistudiosofficial.myclass.Common.HELLO_REQUEST_USERS;
-import static com.pistudiosofficial.myclass.Common.POST_LIKE_LIST;
-import static com.pistudiosofficial.myclass.Common.POST_OBJECT_ID_LIST;
-import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
-import static com.pistudiosofficial.myclass.Common.POST_POLL_OPTIONS;
-import static com.pistudiosofficial.myclass.Common.POST_URL_LIST;
 import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
 import static com.pistudiosofficial.myclass.Common.SELECTED_PROFILE_UID;
 import static com.pistudiosofficial.myclass.Common.SHARED_PREFERENCES;
@@ -83,7 +81,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainActivityView {
 
     public static MainPresenter presenter;
-    CheckAttendancePresenter checkAttendancePresenter;
     NavigationView navigationView;
     ProgressDialog progressDialog;
     View headerView;
@@ -95,6 +92,7 @@ public class MainActivity extends AppCompatActivity
     ChatListModel chatListModel;
     DrawerLayout drawer;
     ChatListDialogFragment chatListDialogFragment;
+    CircleImageView circleImageView;
     ChatListMasterObject chatListMasterObject;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +165,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         }
         if (id == R.id.action_chatList){
-            CHAT_MASTER_OBJECT = chatListModel.getChatListMasterObject();
+            CHAT_LIST_HASH_MAP = chatListModel.getChatListMasterObject();
             chatListDialogFragment = ChatListDialogFragment.newInstance("Chat List");
             //chatListDialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentTheme);
             FragmentManager fm = getSupportFragmentManager();
@@ -226,11 +224,6 @@ public class MainActivity extends AppCompatActivity
         ROLL_LIST = new ArrayList<>();
         CURRENT_USER_CLASS_LIST = new ArrayList<>();
         CURRENT_USER_CLASS_LIST_ID = new ArrayList<>();
-        POST_OBJECT_LIST = new ArrayList<>();
-        POST_OBJECT_ID_LIST = new ArrayList<>();
-        POST_POLL_OPTIONS = new HashMap<>();
-        POST_LIKE_LIST = new ArrayList<>();
-        POST_URL_LIST = new HashMap<>();
         HELLO_REQUEST_USERS = new HashMap<>();
         //Logged in Check and perform DataLoad
         FIREBASE_USER = mAUTH.getCurrentUser();
@@ -255,10 +248,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void downloadDataSuccess() {
+        circleImageView = headerView.findViewById(R.id.headerImage);
         Menu menu = navigationView.getMenu();
         if(CURRENT_USER.profilePicLink != null){
             Glide.with(this).load(CURRENT_USER.profilePicLink)
-                    .into((ImageView) headerView.findViewById(R.id.headerImage));
+                    .into(circleImageView);
         }
         TextView textViewName = headerView.findViewById(R.id.tv_header_title);
         textViewName.setText(CURRENT_USER.Name);
@@ -300,7 +294,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void loadAdminClassList(ArrayList<ClassObject> classObjectArrayList) {
         CURRENT_ADMIN_CLASS_LIST = classObjectArrayList;
-        presenter.performPostLoad();
         viewPager.setAdapter(adapterPagerView);
         viewPager.setCurrentItem(1);
         /*if(!flag){viewPager.setCurrentItem(1);flag = true;}
@@ -313,7 +306,6 @@ public class MainActivity extends AppCompatActivity
     public void loadUserClassList(ArrayList<ClassObject> classObjectsList,
                                   ArrayList<String> userAttendanceList) {
         CURRENT_ADMIN_CLASS_LIST = classObjectsList;
-        presenter.performPostLoad();
         viewPager.setAdapter(adapterPagerView);
         viewPager.setCurrentItem(1);
         /*if(!flag){viewPager.setCurrentItem(1);flag = true;}
@@ -403,14 +395,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void loadChatList(){
-        HashMap<String, ChatListObject> chatHashMap = new HashMap<>();
-        ArrayList<UserObject> userObjects = new ArrayList<>();
-        ArrayList<String> chatindex = new ArrayList<>();
-        ArrayList<String> chatcounts = new ArrayList<>();
-        chatListMasterObject = new ChatListMasterObject(
-                chatHashMap,userObjects,chatindex,chatcounts
-        );
-        chatListModel = new ChatListModel(this,chatListMasterObject);
+        HashMap<String, ChatListMasterObject> chatListHashMap = new HashMap<>();
+        chatListModel = new ChatListModel(this,chatListHashMap);
         chatListModel.performChatListLoad(CURRENT_USER.UID);
     }
+
 }

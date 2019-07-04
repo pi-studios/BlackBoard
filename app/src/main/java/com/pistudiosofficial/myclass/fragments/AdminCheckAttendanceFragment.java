@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.pistudiosofficial.myclass.adapters.AdapterCheckAttendanceList;
 import com.pistudiosofficial.myclass.adapters.AdapterPostLoad;
+import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
 import com.pistudiosofficial.myclass.objects.PostObject;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.activities.CreatePollActivity;
@@ -45,12 +46,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
+import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
+import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
-import static com.pistudiosofficial.myclass.Common.POST_LIKE_LIST;
-import static com.pistudiosofficial.myclass.Common.POST_OBJECT_ID_LIST;
-import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
+
 
 public class AdminCheckAttendanceFragment extends Fragment implements CheckAttendanceFragView {
     ProgressDialog progressDialog,progressDialogPosting,uploadDialog;
@@ -88,6 +90,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         fab_createPost = v.findViewById(R.id.fab_post);
         presenter = new CheckAttendancePresenter(this);
         presenter.performAdminAttendanceDataDownload();
+        presenter.performLoadPost(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX));
         progressDialog = ProgressDialog.show(getContext(), "",
                 "Loading. Please wait...", true);
         presenter.performMultipleAttendanceCheck();
@@ -137,8 +140,6 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                                 type = "Broadcast";
                                 broadcastTitle.setVisibility(View.VISIBLE);
                                 broadcastTitle.setEnabled(true);
-                                broadcastTitle.setText("");
-                                broadcastTitle.setHint("BroadCast Title");
                                 broadcast.setVisibility(View.VISIBLE);
                                 date01.setVisibility(View.GONE);
                                 date02.setVisibility(View.GONE);
@@ -169,6 +170,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                                 broadcast.setVisibility(View.VISIBLE);
                                 date01.setVisibility(View.GONE);
                                 date02.setVisibility(View.GONE);
+                                broadcastTitle.setEnabled(true);
                                 break;
                         }
 
@@ -213,8 +215,6 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 createPost();
             }
         });
-        loadPost();
-
         return v;
     }
 
@@ -290,6 +290,31 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         uploadFile.setVisibility(View.VISIBLE);
         pickFile.setEnabled(false);
         uploadDialog.dismiss();
+    }
+
+    @SuppressLint("WrongConstant")
+    @Override
+    public void loadPostSuccess(ArrayList<PostObject> postObjects,
+                                HashMap<String, PollOptionValueLikeObject> post_poll_option,
+                                ArrayList<String> post_like_list, HashMap<String,
+            ArrayList<String>> post_url_list, ArrayList<String> comment_count) {
+        Collections.reverse(postObjects);
+        Collections.reverse(post_like_list);
+        Collections.reverse(comment_count);
+        ArrayList<PostObject> postlist = postObjects;
+        AdapterPostLoad adapterPostLoad =
+                new AdapterPostLoad(postlist,
+                        post_poll_option,
+                        post_like_list,
+                        post_url_list,comment_count,
+                        getContext());
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewPost.getContext(),
+                llm.getOrientation());
+        recyclerViewPost.addItemDecoration(dividerItemDecoration);
+        recyclerViewPost.setLayoutManager(llm);
+        recyclerViewPost.setAdapter(adapterPostLoad);
     }
 
     private void sessionDatePick(final EditText editText){
@@ -377,7 +402,6 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
             @Override
             public void onClick(View view) {
                 if(!et_post_content.getText().toString().equals("") && et_post_content.getText().toString() != null){
-                    // NEED TO INCLUDE IMAGE UPLOAD OPTION
                     ArrayList<Uri> imgURILIST = new ArrayList<>();
                     ArrayList<String> extensionList = new ArrayList<>();
                     imgURILIST.clear();
@@ -389,14 +413,14 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                     if(fileUploadLink.equals("")){
                         postObject = new PostObject(
                                 CURRENT_USER.Name,simpleTime,
-                                et_post_content.getText().toString(),null,
-                                "simple_class_post");
+                                et_post_content.getText().toString(),"simple_admin_post",
+                                CURRENT_USER.UID,CURRENT_USER.profilePicLink,null);
                     }
                     else {
                         postObject = new PostObject(
                                 CURRENT_USER.Name,simpleTime,
-                                et_post_content.getText().toString()+". Link: "+fileUploadLink,null,
-                                "simple_class_post");
+                                et_post_content.getText().toString()+". Link: "+fileUploadLink,"simple_admin_post",
+                                "simple_class_post",CURRENT_USER.UID,CURRENT_USER.profilePicLink);
                     }
                     progressDialogPosting = ProgressDialog.show(getContext(), "",
                             "Posting. Please wait...", true);
@@ -414,25 +438,6 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 }
             }
         });
-
-    }
-
-    @SuppressLint("WrongConstant")
-    private void loadPost() {
-        Collections.reverse(POST_OBJECT_LIST);
-        Collections.reverse(POST_OBJECT_ID_LIST);
-        Collections.reverse(POST_LIKE_LIST);
-        ArrayList<PostObject> postlist = POST_OBJECT_LIST;
-        AdapterPostLoad adapterPostLoad = new AdapterPostLoad(postlist,getContext());
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewPost.getContext(),
-                llm.getOrientation());
-        recyclerViewPost.addItemDecoration(dividerItemDecoration);
-        recyclerViewPost.setLayoutManager(llm);
-       // llm.scrollToPosition(POST_OBJECT_LIST.size()-1);
-        recyclerViewPost.setAdapter(adapterPostLoad);
-
 
     }
 

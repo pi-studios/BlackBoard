@@ -1,6 +1,8 @@
 package com.pistudiosofficial.myclass.model;
 
 import android.net.Uri;
+import android.os.CountDownTimer;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +18,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.pistudiosofficial.myclass.Common;
+import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
 import com.pistudiosofficial.myclass.objects.PostObject;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.CheckAttendancePresenterInterface;
 
@@ -23,10 +26,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import static com.pistudiosofficial.myclass.Common.ATTD_PERCENTAGE_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
+
 import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
 import static com.pistudiosofficial.myclass.Common.TEMP01_LIST;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
@@ -111,11 +116,13 @@ public class CheckAttendanceModel {
     public void performPosting(PostObject postObject, ArrayList<Uri> imgURI, ArrayList<String> extensionList){
         String key = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
                 .child("post").push().getKey();
+        postObject.setPostID(key);
         mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
                 .child("post").child(key).setValue(postObject, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 if(databaseError == null){
+                    updatePostRead();
                     if(imgURI != null && extensionList != null) {
                        uploadInit(imgURI,extensionList,key);
                     }
@@ -260,6 +267,33 @@ public class CheckAttendanceModel {
             }
         });
     }
+    private void updatePostRead(){
+        HashMap<String, String> readUploadHash = new HashMap<>();
+        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("post_read")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() != null){
+                            if (dataSnapshot.getChildrenCount()>0){
+                                for (DataSnapshot s: dataSnapshot.getChildren()){
+                                    int x = Integer.parseInt(s.getValue().toString());
+                                    x++;
+                                    readUploadHash.put(s.getKey(),Integer.toString(x));
+                                }
+                                for (String key : readUploadHash.keySet()){
+                                    mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("post_read")
+                                            .child(key).setValue(readUploadHash.get(key));
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
 
     private void uploadMetaData(){
         for (int i = 0; i<storageURL.size(); i++){
@@ -270,5 +304,106 @@ public class CheckAttendanceModel {
         presenter.postingSuccess();
     }
 
+
+    ArrayList<PostObject> postObjects ;
+    HashMap<String, PollOptionValueLikeObject> post_poll_option ;
+    ArrayList<String> post_like_list ;
+    HashMap<String, ArrayList<String>> post_url_list ;
+    ArrayList<String> post_comment_count;
+    public void performLoadPost(String classID){
+        postObjects = new ArrayList<>();
+        post_like_list = new ArrayList<>();
+        post_poll_option = new HashMap<>();
+        post_url_list = new HashMap<>();
+        post_comment_count = new ArrayList<>();
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount()>0) {
+                    for (DataSnapshot s : dataSnapshot.getChildren()){
+                        postObjects.add(s.getValue(PostObject.class));
+
+                    }
+                    likeLoad(postObjects,classID);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        };
+        mREF_classList.child(classID)
+                .child("post").addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    private void likeLoad(ArrayList<PostObject> postObject,String classID){
+        ValueEventListener valueEventListener1 = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (PostObject p : postObject){
+                    if (dataSnapshot.child(p.getPostID())
+                            .child("like").child("like_count").getValue() != null){
+                        post_like_list.add(dataSnapshot.child(p.getPostID())
+                                .child("like").child("like_count").getValue().toString());
+                    }
+                    if (dataSnapshot.child(p.getPostID())
+                            .child("like").child("like_count").getValue() == null){
+                        post_like_list.add("0");
+                    }
+                    if (dataSnapshot.child(p.getPostID())
+                            .child("comment").child("comment_count").getValue() != null){
+                        post_comment_count.add(dataSnapshot.child(p.getPostID())
+                                .child("comment").child("comment_count").getValue().toString());
+                    }
+                    if (dataSnapshot.child(p.getPostID())
+                            .child("comment").child("comment_count").getValue()==null){
+                        post_comment_count.add("0");
+                    }
+                }
+                metaDataLoad(postObject,classID);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        mREF_classList.child(classID).child("post").addListenerForSingleValueEvent(valueEventListener1);
+    }
+
+    private void metaDataLoad(ArrayList<PostObject> postObject,String classID){
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (PostObject p :postObject){
+                    if (!p.getPostType().equals("admin_poll")){
+                        if (dataSnapshot.child(p.getPostID())
+                                .child("meta_data").getChildrenCount() != 0){
+                            ArrayList<String> url = new ArrayList<>();
+                            for (DataSnapshot s : dataSnapshot.child(p.getPostID())
+                                    .child("meta_data").getChildren()){
+                                url.add(s.getValue().toString());
+                            }
+                            post_url_list.put(p.getPostID(),url);
+                        }
+                    }else {
+                        PollOptionValueLikeObject postmetaOBJ = new PollOptionValueLikeObject();
+                        for (DataSnapshot s:dataSnapshot.child(p.getPostID()).child("options").getChildren()){
+                            if(!s.getKey().equals("poll_clicked_user")) {
+                                postmetaOBJ.optionList.add(s.getKey());
+                                postmetaOBJ.votesCountList.add(s.getValue().toString());
+                            }
+                        }
+                        post_poll_option.put(p.getPostID(),postmetaOBJ);
+                    }
+                }
+                presenter.loadPostSuccess(postObjects,post_poll_option,post_like_list,post_url_list,post_comment_count);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        };
+        mREF_classList.child(classID).child("post").addListenerForSingleValueEvent(valueEventListener);
+    }
  }
 

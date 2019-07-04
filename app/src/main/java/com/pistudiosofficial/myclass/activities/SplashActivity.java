@@ -13,6 +13,8 @@ import android.os.CountDownTimer;
 
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.presenter.MainPresenter;
+import com.vanniktech.emoji.EmojiManager;
+import com.vanniktech.emoji.google.GoogleEmojiProvider;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -23,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
+        EmojiManager.install(new GoogleEmojiProvider());
         timer();
     }
 

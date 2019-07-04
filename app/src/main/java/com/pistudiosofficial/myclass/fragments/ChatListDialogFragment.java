@@ -21,13 +21,15 @@ import com.pistudiosofficial.myclass.adapters.AdapterChatList;
 import com.pistudiosofficial.myclass.objects.ChatListMasterObject;
 import com.pistudiosofficial.myclass.view.ChatListView;
 
-import static com.pistudiosofficial.myclass.Common.CHAT_MASTER_OBJECT;
+import java.util.HashMap;
+
+import static com.pistudiosofficial.myclass.Common.CHAT_LIST_HASH_MAP;
 
 public class ChatListDialogFragment extends DialogFragment implements ChatListView {
 
     RecyclerView recyclerView;
     LinearLayoutManager llm;
-    ChatListMasterObject chatListMasterObject;
+    HashMap<String, ChatListMasterObject> chatHashMap;
     AdapterChatList adapterChatList;
     public ChatListDialogFragment() {
         // Empty constructor is required for DialogFragment
@@ -47,11 +49,9 @@ public class ChatListDialogFragment extends DialogFragment implements ChatListVi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        this.chatListMasterObject = CHAT_MASTER_OBJECT;
+        this.chatHashMap = CHAT_LIST_HASH_MAP;
         View view = inflater.inflate(R.layout.activity_chat_list, container);
-        adapterChatList = new AdapterChatList(chatListMasterObject.chatHashMap
-                ,chatListMasterObject.userObjects,chatListMasterObject.chatIndex,
-                chatListMasterObject.chatCounts,getContext());
+        adapterChatList = new AdapterChatList(chatHashMap,getContext());
         recyclerView = view.findViewById(R.id.recyclerView_chatList);
         llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);

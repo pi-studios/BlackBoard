@@ -47,7 +47,7 @@
         android:layout_height="70dp"
         android:background="@android:color/transparent"
         android:paddingHorizontal="10dp"
-        android:text="4"
+        android:text="0"
         android:textSize="24sp"
         android:gravity="center"/>
 

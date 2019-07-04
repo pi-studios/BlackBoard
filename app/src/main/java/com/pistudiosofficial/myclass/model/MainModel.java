@@ -1,5 +1,6 @@
 package com.pistudiosofficial.myclass.model;
 
+import android.os.CountDownTimer;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.pistudiosofficial.myclass.objects.AdminClassObject;
 import com.pistudiosofficial.myclass.objects.ClassObject;
 import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.objects.HelloListObject;
+import com.pistudiosofficial.myclass.objects.MasterPostObject;
 import com.pistudiosofficial.myclass.objects.NotificationStoreObj;
 import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
 import com.pistudiosofficial.myclass.objects.PostObject;
@@ -32,16 +34,11 @@ import java.util.HashMap;
 import static android.content.ContentValues.TAG;
 import static com.pistudiosofficial.myclass.Common.CURRENT_ADMIN_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
-import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST_ID;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_USER;
 import static com.pistudiosofficial.myclass.Common.HELLO_REQUEST_USERS;
-import static com.pistudiosofficial.myclass.Common.POST_LIKE_LIST;
-import static com.pistudiosofficial.myclass.Common.POST_OBJECT_ID_LIST;
-import static com.pistudiosofficial.myclass.Common.POST_OBJECT_LIST;
-import static com.pistudiosofficial.myclass.Common.POST_POLL_OPTIONS;
-import static com.pistudiosofficial.myclass.Common.POST_URL_LIST;
+
 import static com.pistudiosofficial.myclass.Common.mREF_admin_classList;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
 import static com.pistudiosofficial.myclass.Common.mREF_oldRecords;
@@ -528,106 +525,6 @@ public class MainModel {
         }
     }
 
-    public void performPostLoad(){
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot s : dataSnapshot.getChildren()){
-                        POST_OBJECT_LIST.add(s.getValue(PostObject.class));
-                        POST_OBJECT_ID_LIST.add(s.getKey());
-                        likeLoad(s.getKey());
-                        urlLoad(s.getKey());
-                }
-                performPostMetaDataLoad();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        };
-            if (CURRENT_CLASS_ID_LIST.size()!=0) {
-                mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
-                        .child("post").addListenerForSingleValueEvent(valueEventListener);
-            }
-    }
-
-    private void performPostMetaDataLoad(){
-        for (int i = 0; i<POST_OBJECT_LIST.size(); i++){
-            if(POST_OBJECT_LIST.get(i).getPostType().equals("admin_poll")){
-                metaDataTemp(POST_OBJECT_ID_LIST.get(i));
-            }
-        }
-    }
-
-    private void metaDataTemp(String postId){
-        PollOptionValueLikeObject postmetaOBJ = new PollOptionValueLikeObject();
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot s : dataSnapshot.getChildren()){
-                    if(!s.getKey().equals("poll_clicked_user")) {
-                        postmetaOBJ.optionList.add(s.getKey());
-                        postmetaOBJ.votesCountList.add(s.getValue().toString());
-                    }
-                }
-                POST_POLL_OPTIONS.put(postId,postmetaOBJ);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
-                .child("post").child(postId).child("options").addListenerForSingleValueEvent(valueEventListener);
-
-
-    }
-
-    private void likeLoad(String postId){
-         ValueEventListener valueEventListener1 = new ValueEventListener() {
-             @Override
-             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                 if (dataSnapshot.getValue() != null){
-                     POST_LIKE_LIST.add(dataSnapshot.getValue().toString());
-                 }else{
-                     POST_LIKE_LIST.add("0");
-                 }
-
-             }
-             @Override
-             public void onCancelled(@NonNull DatabaseError databaseError) {
-
-             }
-         };
-         mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("post").child(postId)
-                 .child("like").child("like_count").addListenerForSingleValueEvent(valueEventListener1);
-     }
-
-    private void urlLoad(String postId){
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null){
-                    if(dataSnapshot.getChildren() != null){
-                        ArrayList<String> url = new ArrayList<>();
-                        for (DataSnapshot s : dataSnapshot.getChildren()){
-                            url.add(s.getValue().toString());
-                        }
-                        POST_URL_LIST.put(postId,url);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("post").child(postId)
-                .child("meta_data").addListenerForSingleValueEvent(valueEventListener);
-    }
-
     public void loadHelloRequest(){
         HashMap<String, HelloListObject> tempHashMap = new HashMap<>();
 
@@ -668,4 +565,15 @@ public class MainModel {
         mREF_users.child(CURRENT_USER.UID).child("hello").addValueEventListener(valueEventListener);
     }
 
+    //Special Post Load Section
+
+
+/*    private void checkNewPost(ArrayList<ClassObject> classObjects){
+        for (ClassObject s: classObjects){
+            setValueEventListenerForNewPost(s.);
+        }
+    }
+    private void setValueEventListenerForNewPost(String key){
+
+    }*/
 }
