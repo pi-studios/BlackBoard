@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.appcompat.widget.AppCompatImageButton;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -31,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.pistudiosofficial.myclass.activities.ResourceBucket;
 import com.pistudiosofficial.myclass.adapters.AdapterCheckAttendanceList;
 import com.pistudiosofficial.myclass.adapters.AdapterPostLoad;
 import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
@@ -52,6 +52,8 @@ import java.util.Locale;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
+import static com.pistudiosofficial.myclass.Common.mREF_RESOURCE_BUCKET;
+import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
 
 public class AdminCheckAttendanceFragment extends Fragment implements CheckAttendanceFragView {
@@ -72,7 +74,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
 
     RecyclerView recyclerViewPost;
     FloatingActionButton fab_exportcsv,fab_create_poll,fab_new_attendance,
-            fab_show_attendace_percent,fab_notify,fab_createPost;
+            fab_show_attendace_percent,fab_notify,fab_createPost,fab_show_bucket;
     public AdminCheckAttendanceFragment() {
     }
 
@@ -88,6 +90,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         fab_notify = v.findViewById(R.id.fab_notify);
         fab_show_attendace_percent = v.findViewById(R.id.fab_show_attendnace_list);
         fab_createPost = v.findViewById(R.id.fab_post);
+        fab_show_bucket = v.findViewById(R.id.fab_res_bucket);
         presenter = new CheckAttendancePresenter(this);
         presenter.performAdminAttendanceDataDownload();
         presenter.performLoadPost(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX));
@@ -215,6 +218,16 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 createPost();
             }
         });
+        fab_show_bucket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), ResourceBucket.class);
+                mREF_RESOURCE_BUCKET = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
+                        .child("resource_bucket");
+                startActivity(intent);
+            }
+        });
+
         return v;
     }
 

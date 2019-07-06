@@ -46,11 +46,12 @@ public class Common {
     public static HashMap<String, HelloListObject> HELLO_REQUEST_USERS = null;
 
 
-
+    //Comment
     public static DatabaseReference mREF_COMMENT_LOAD = null;
-
     public static PostObject COMMENT_LOAD_POST_OBJECT = null;
 
+    //ResourceBucket Common
+    public static DatabaseReference mREF_RESOURCE_BUCKET = null;
 
     //Profile Related Common
     public static String SELECTED_PROFILE_UID = "";

@@ -74,6 +74,7 @@ public class CreatePollModel {
     }
 
     private void pushNotification(){
+
         String currentTime = DateFormat.getDateTimeInstance().format(new Date());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
         String simpleTime = simpleDateFormat.format(new Date());
@@ -83,5 +84,4 @@ public class CreatePollModel {
         notifModel.performBroadcast();
 
     }
-
 }
