@@ -74,6 +74,8 @@ public class AdapterChatList extends RecyclerView.Adapter<AdapterChatList.MyView
                 SELECTED_CHAT_UID = hashMap.get(chatindex.get(i)).userObjects.UID;
             }
         });
+
+
     }
 
     @Override

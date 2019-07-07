@@ -42,18 +42,4 @@ public class AdapterPagerView extends FragmentPagerAdapter {
         return 3;
     }
 
-    @Nullable
-    @Override
-    public CharSequence getPageTitle(int position) {
-        switch (position){
-            case 0:
-                return "Notification";
-            case 1:
-                return "Home";
-            case 2:
-                return "My Class";
-            default:
-                return "Home";
-        }
-    }
 }

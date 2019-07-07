@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.pistudiosofficial.myclass.adapters.AdapterClassList;
 import com.pistudiosofficial.myclass.objects.ChatListMasterObject;
 import com.pistudiosofficial.myclass.objects.ClassObject;
 import com.pistudiosofficial.myclass.objects.HelloListObject;
@@ -44,13 +45,14 @@ public class Common {
     public static ArrayList<StudentClassObject> CURRENT_USER_CLASS_LIST = null;
     public static ArrayList<String> CURRENT_USER_CLASS_LIST_ID = null;
     public static HashMap<String, HelloListObject> HELLO_REQUEST_USERS = null;
-
+    public static AdapterClassList ADAPTER_CLASS_LIST = null;
 
     //Comment
     public static DatabaseReference mREF_COMMENT_LOAD = null;
     public static PostObject COMMENT_LOAD_POST_OBJECT = null;
-
-    //ResourceBucket Common
+    public static ArrayList<Integer> CHECK_NEW_COMMENT_POST ;
+    public static HashMap<String,Boolean> CHECK_NEW_COMMENT ;
+    //ResourceBucketActivity Common
     public static DatabaseReference mREF_RESOURCE_BUCKET = null;
 
     //Profile Related Common

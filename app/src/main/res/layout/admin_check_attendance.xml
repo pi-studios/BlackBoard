@@ -33,19 +33,19 @@
         android:layout_height="wrap_content"
         app:fab_colorNormal="@color/white"
         app:fab_colorPressed="@color/white_pressed"
-        app:fab_icon="@drawable/ic_add_pink"
+        app:fab_icon="@drawable/excel"
         app:fab_size="mini"
         app:fab_title="Export CSV" />
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_res_bucket"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/white"
-            app:fab_colorPressed="@color/white_pressed"
-            app:fab_icon="@drawable/ic_add_pink"
-            app:fab_size="mini"
-            app:fab_title="Resource Bucket" />
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_res_bucket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fab_colorNormal="@color/white"
+        app:fab_colorPressed="@color/white_pressed"
+        app:fab_icon="@drawable/bucket"
+        app:fab_size="mini"
+        app:fab_title="Resource Bucket" />
 
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_create_poll"
@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         app:fab_colorNormal="@color/white"
         app:fab_colorPressed="@color/white_pressed"
-        app:fab_icon="@drawable/ic_add_pink"
+        app:fab_icon="@drawable/ballot"
         app:fab_size="mini"
         app:fab_title="Create Poll" />
     <com.getbase.floatingactionbutton.FloatingActionButton
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         app:fab_colorNormal="@color/white"
         app:fab_colorPressed="@color/white_pressed"
-        app:fab_icon="@drawable/ic_add_pink"
+        app:fab_icon="@drawable/loud_speaker"
         app:fab_size="mini"
         app:fab_title="Notify" />
     <com.getbase.floatingactionbutton.FloatingActionButton
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         app:fab_colorNormal="@color/white"
         app:fab_colorPressed="@color/white_pressed"
-        app:fab_icon="@drawable/ic_add_pink"
+        app:fab_icon="@drawable/note"
         app:fab_size="mini"
         app:fab_title="New Attendance" />
     <com.getbase.floatingactionbutton.FloatingActionButton
@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         app:fab_colorNormal="@color/white"
         app:fab_colorPressed="@color/white_pressed"
-        app:fab_icon="@drawable/ic_add_pink"
+        app:fab_icon="@drawable/folder"
         app:fab_size="mini"
         app:fab_title="Show Attendance" />
     <com.getbase.floatingactionbutton.FloatingActionButton
@@ -89,7 +89,7 @@
         android:layout_height="wrap_content"
         app:fab_colorNormal="@color/white"
         app:fab_colorPressed="@color/white_pressed"
-        app:fab_icon="@drawable/ic_add_pink"
+        app:fab_icon="@drawable/post"
         app:fab_size="mini"
         app:fab_title="Post" />
 

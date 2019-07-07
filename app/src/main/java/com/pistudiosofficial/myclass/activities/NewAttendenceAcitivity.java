@@ -31,8 +31,7 @@ public class NewAttendenceAcitivity extends AppCompatActivity implements Adapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_new_attendence);
 
-
-
+        setTitle("Take Attendance");
         newAttendenceRecycler = findViewById(R.id.recyclerView_newAttendence);
         adapterNewAttendenceList = new AdapterNewAttendenceList(this);
         LinearLayoutManager llm = new LinearLayoutManager(this);

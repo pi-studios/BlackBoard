@@ -39,11 +39,12 @@ public class CommentActivity extends AppCompatActivity implements CommentView {
     ImageView bt_sendComment, profile_pic;
     TextView tv_title, tv_body, tv_time;
     Button bt_like;
+    String postid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
-
+        postid = getIntent().getStringExtra("post_id");
         setTitle("Comment");
         et_comment = findViewById(R.id.et_commetInput_comment);
         bt_sendComment = findViewById(R.id.bt_commentSend_comment);
@@ -56,7 +57,7 @@ public class CommentActivity extends AppCompatActivity implements CommentView {
                             CURRENT_USER.profilePicLink, et_comment.getText().toString()
                     );
                     et_comment.setText("");
-                    model.performCommentPost(commentObject,mREF_COMMENT_LOAD);
+                    model.performCommentPost(commentObject,mREF_COMMENT_LOAD,postid);
                 }
             }
         });
@@ -75,6 +76,7 @@ public class CommentActivity extends AppCompatActivity implements CommentView {
         model = new CommentModel(this);
         commentObjects = new ArrayList<>();
         model.performCommentLoad(mREF_COMMENT_LOAD,COMMENT_LOAD_POST_OBJECT,commentObjects);
+        model.performRemoveReadComment(COMMENT_LOAD_POST_OBJECT.getPostID());
     }
 
     @SuppressLint("WrongConstant")

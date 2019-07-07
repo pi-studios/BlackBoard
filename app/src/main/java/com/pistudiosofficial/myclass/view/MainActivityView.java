@@ -36,4 +36,6 @@ public interface MainActivityView {
     void loadHelloFailed();
 
     void newChatNotif(ChatListMasterObject chatListMasterObject);
+
+    void notifNewComment();
 }

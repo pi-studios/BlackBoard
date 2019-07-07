@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
@@ -16,4 +18,18 @@
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="0dp" />
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_res_bucket_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="15dp"
+        app:fab_colorNormal="@color/white"
+        app:fab_colorPressed="@color/white_pressed"
+        app:fab_icon="@drawable/bucket"
+        app:fab_size="normal"
+        app:fab_title="Resource Bucket" />
 </RelativeLayout>

@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +22,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,23 +37,24 @@ import com.pistudiosofficial.myclass.adapters.AdapterConnectionList;
 import com.pistudiosofficial.myclass.adapters.AdapterPagerView;
 import com.pistudiosofficial.myclass.fragments.ChatListDialogFragment;
 import com.pistudiosofficial.myclass.model.ChatListModel;
+import com.pistudiosofficial.myclass.model.LiveMainModel;
 import com.pistudiosofficial.myclass.objects.ChatListMasterObject;
-import com.pistudiosofficial.myclass.objects.ChatListObject;
 import com.pistudiosofficial.myclass.objects.ClassObject;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.objects.UserObject;
-import com.pistudiosofficial.myclass.presenter.CheckAttendancePresenter;
 import com.pistudiosofficial.myclass.presenter.MainPresenter;
 import com.pistudiosofficial.myclass.view.MainActivityView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.pistudiosofficial.myclass.Common.ADAPTER_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.ATTD_PERCENTAGE_LIST;
 import static com.pistudiosofficial.myclass.Common.CHAT_LIST_HASH_MAP;
+import static com.pistudiosofficial.myclass.Common.CHECK_NEW_COMMENT;
+import static com.pistudiosofficial.myclass.Common.CHECK_NEW_COMMENT_POST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_ADMIN_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
@@ -125,6 +124,7 @@ public class MainActivity extends AppCompatActivity
         adapterPagerView = new AdapterPagerView(getSupportFragmentManager());
         tabLayout = findViewById(R.id.tabbar);
         tabLayout.setupWithViewPager(viewPager);
+
     }
 
 
@@ -225,6 +225,8 @@ public class MainActivity extends AppCompatActivity
         CURRENT_USER_CLASS_LIST = new ArrayList<>();
         CURRENT_USER_CLASS_LIST_ID = new ArrayList<>();
         HELLO_REQUEST_USERS = new HashMap<>();
+        CHECK_NEW_COMMENT_POST = new ArrayList<>();
+        CHECK_NEW_COMMENT = new HashMap<>();
         //Logged in Check and perform DataLoad
         FIREBASE_USER = mAUTH.getCurrentUser();
         FirebaseUser currentUser = mAUTH.getCurrentUser();
@@ -295,7 +297,11 @@ public class MainActivity extends AppCompatActivity
     public void loadAdminClassList(ArrayList<ClassObject> classObjectArrayList) {
         CURRENT_ADMIN_CLASS_LIST = classObjectArrayList;
         viewPager.setAdapter(adapterPagerView);
+        checkNewPost(CURRENT_CLASS_ID_LIST);
         viewPager.setCurrentItem(1);
+        tabLayout.getTabAt(0).setIcon(R.drawable.bell);
+        tabLayout.getTabAt(1).setIcon(R.drawable.house);
+        tabLayout.getTabAt(2).setIcon(R.drawable.blackboard_icon);
         /*if(!flag){viewPager.setCurrentItem(1);flag = true;}
         else {viewPager.setCurrentItem(2);}*/
         progressDialog.dismiss();
@@ -308,6 +314,10 @@ public class MainActivity extends AppCompatActivity
         CURRENT_ADMIN_CLASS_LIST = classObjectsList;
         viewPager.setAdapter(adapterPagerView);
         viewPager.setCurrentItem(1);
+        tabLayout.getTabAt(0).setIcon(R.drawable.bell);
+        tabLayout.getTabAt(1).setIcon(R.drawable.house);
+        tabLayout.getTabAt(2).setIcon(R.drawable.blackboard_icon);
+        checkNewPost(CURRENT_CLASS_ID_LIST);
         /*if(!flag){viewPager.setCurrentItem(1);flag = true;}
         else {viewPager.setCurrentItem(2);}*/
         progressDialog.dismiss();
@@ -384,6 +394,14 @@ public class MainActivity extends AppCompatActivity
         menu.getItem(1).setIcon(ContextCompat.getDrawable(this, R.drawable.chat_new));
     }
 
+    @Override
+    public void notifNewComment() {
+        if (CHECK_NEW_COMMENT.size()>0){
+            tabLayout.getTabAt(2).setIcon(R.drawable.blackboard_icon_new);
+            ADAPTER_CLASS_LIST.notifyDataSetChanged();
+        }
+    }
+
     public void closeDrawer() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -398,6 +416,12 @@ public class MainActivity extends AppCompatActivity
         HashMap<String, ChatListMasterObject> chatListHashMap = new HashMap<>();
         chatListModel = new ChatListModel(this,chatListHashMap);
         chatListModel.performChatListLoad(CURRENT_USER.UID);
+    }
+
+    private void checkNewPost(ArrayList<String> classID){
+        // 1 = new post    2 = new comment   3 = new post+comment
+        LiveMainModel liveMainModel = new LiveMainModel(this);
+        liveMainModel.performCheckRead(CURRENT_USER.AdminLevel,CURRENT_USER.UID);
     }
 
 }

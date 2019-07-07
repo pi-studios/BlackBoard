@@ -40,6 +40,10 @@ public class CheckAttendancePresenter implements CheckAttendancePresenterInterfa
         model.performLoadPost(classID);
     }
 
+    public void performDeleteRead(String classid){
+        model.deleteClassRead(classid);
+    }
+
     public void performPostFileUpload(Uri fileURI, String extension){
         model.performPostFileUpload(fileURI,extension);
     }

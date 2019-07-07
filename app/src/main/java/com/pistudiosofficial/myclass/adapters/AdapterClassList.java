@@ -6,12 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,15 +21,14 @@ import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.activities.CheckAttendanceActivity;
 import com.pistudiosofficial.myclass.objects.ClassObject;
-import com.pistudiosofficial.myclass.objects.MasterPostObject;
-import com.pistudiosofficial.myclass.objects.PostObject;
 import com.pistudiosofficial.myclass.view.MainActivityView;
 
 import java.util.ArrayList;
 
+import static com.pistudiosofficial.myclass.Common.CHECK_NEW_COMMENT_POST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
-import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
+import static com.pistudiosofficial.myclass.Common.LOG;
 
 
 public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyViewHolder> {
@@ -75,13 +74,31 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
                     setText(classObjectArrayList.get(i).sessionStart + " - " + classObjectArrayList.get(i).sessionEnd);
             myViewHolder.roll.
                     setText(classObjectArrayList.get(i).startRoll + " - " + classObjectArrayList.get(i).endRoll);
+            try {
+            if (CHECK_NEW_COMMENT_POST.get(i) == 2){
+                myViewHolder.img_notif.setImageResource(R.drawable.circle_yellow);
+                myViewHolder.img_notif.setVisibility(View.VISIBLE);
+            }
+            }catch (Exception e){e.printStackTrace();}
         }
-        if(adminLevel == 0){
+        if(adminLevel == 0) {
             myViewHolder.tvclassName.setText(classObjectArrayList.get(i).className);
-            myViewHolder.faculty.setText("Prof : "+classObjectArrayList.get(i).facultyName);
+            myViewHolder.faculty.setText("Prof : " + classObjectArrayList.get(i).facultyName);
             myViewHolder.attendance.setText(percentageList.get(i));
             myViewHolder.session.setText(classObjectArrayList.get(i).
-                    sessionStart+" - "+classObjectArrayList.get(i).sessionEnd);
+                    sessionStart + " - " + classObjectArrayList.get(i).sessionEnd);
+            try {
+                if (CHECK_NEW_COMMENT_POST.get(i) == 1) {
+                    myViewHolder.img_notif.setVisibility(View.VISIBLE);
+                    myViewHolder.img_notif.setImageResource(R.drawable.circle);
+                }
+                if (CHECK_NEW_COMMENT_POST.get(i) == 2) {
+                    myViewHolder.img_notif.setVisibility(View.VISIBLE);
+                    myViewHolder.img_notif.setImageResource(R.drawable.circle_yellow);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -171,18 +188,21 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
     }
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvclassName, session, roll,attendance,faculty;
+        ImageView img_notif;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             if(adminLevel == 1){
                 tvclassName = itemView.findViewById(R.id.tv_name_faculty_main_recycler);
                 session = itemView.findViewById(R.id.tv_session_faculty_main_recycler);
                 roll = itemView.findViewById(R.id.tv_student_roll_faculty_main_recycler);
+                img_notif = itemView.findViewById(R.id.img_notif_admin_classlist_row);
             }
             if(adminLevel == 0){
                 tvclassName = itemView.findViewById(R.id.tv_user_row_className);
                 session = itemView.findViewById(R.id.tv_session_student_main_recycler_row);
                 attendance = itemView.findViewById(R.id.tv_attendance_student_main_recycler_row);
                 faculty = itemView.findViewById(R.id.tv_facultyname_student_main_recycler_row);
+                img_notif = itemView.findViewById(R.id.img_newPost_userClassList_row);
             }
             else{
 

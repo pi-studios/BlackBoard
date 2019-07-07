@@ -30,7 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.pistudiosofficial.myclass.activities.ResourceBucket;
+import com.pistudiosofficial.myclass.activities.ResourceBucketActivity;
 import com.pistudiosofficial.myclass.adapters.AdapterCheckAttendanceList;
 import com.pistudiosofficial.myclass.adapters.AdapterPostLoad;
 import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
@@ -92,6 +92,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         fab_createPost = v.findViewById(R.id.fab_post);
         fab_show_bucket = v.findViewById(R.id.fab_res_bucket);
         presenter = new CheckAttendancePresenter(this);
+        presenter.performDeleteRead(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX));
         presenter.performAdminAttendanceDataDownload();
         presenter.performLoadPost(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX));
         progressDialog = ProgressDialog.show(getContext(), "",
@@ -221,7 +222,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         fab_show_bucket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ResourceBucket.class);
+                Intent intent = new Intent(getContext(), ResourceBucketActivity.class);
                 mREF_RESOURCE_BUCKET = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
                         .child("resource_bucket");
                 startActivity(intent);

@@ -27,6 +27,7 @@ import com.pistudiosofficial.myclass.objects.PostObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.pistudiosofficial.myclass.Common.CHECK_NEW_COMMENT;
 import static com.pistudiosofficial.myclass.Common.COMMENT_LOAD_POST_OBJECT;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
@@ -83,14 +84,14 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
             if (post_like_list != null) {
                 myViewHolder.bt_like.setText("Like:" + post_like_list.get(i));
             }
-            if (comment_count != null){
-                myViewHolder.bt_comment.setText("Comment:"+comment_count.get(i));
+            if (comment_count != null) {
+                myViewHolder.bt_comment.setText("Comment:" + comment_count.get(i));
             }
             myViewHolder.bt_like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Button bt = (Button)view;
-                    bt.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_thumb_up_black_24dp, 0, 0, 0);
+                    Button bt = (Button) view;
+                    bt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_thumb_up_black_24dp, 0, 0, 0);
                     model.likeClicked(post_id.get(i), Common.CURRENT_CLASS_ID_LIST.get(Common.CURRENT_INDEX));
                 }
             });
@@ -152,6 +153,7 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
                     mREF_COMMENT_LOAD = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
                             .child("post").child(post_id.get(i)).child("comment");
                     Intent intent = new Intent(context, CommentActivity.class);
+                    intent.putExtra("post_id", post_id.get(i));
                     COMMENT_LOAD_POST_OBJECT = postObjectArrayList.get(i);
                     context.startActivity(intent);
                 }
@@ -159,6 +161,12 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
             if (postObjectArrayList.get(i).getCreatorProPickLink() != null && context != null) {
                 Glide.with(context).load(postObjectArrayList.get(i).getCreatorProPickLink()).into(myViewHolder.img_post_icon);
             }
+            try {
+                if (CHECK_NEW_COMMENT.get(post_id.get(i))) {
+                    myViewHolder.bt_comment
+                            .setCompoundDrawablesWithIntrinsicBounds(R.drawable.chat_green, 0, 0, 0);
+                }
+            }catch (Exception e){e.printStackTrace();}
         }// Need To add share
     }
 

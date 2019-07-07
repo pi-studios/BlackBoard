@@ -43,26 +43,21 @@ public class CreatePollModel {
         }
         pushNotification();
         presenter.createPollSuccess();
-        updatePostRead();
+        postReadIndex(key);
     }
-    private void updatePostRead(){
-        HashMap<String, String> readUploadHash = new HashMap<>();
-        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("post_read")
+
+    private void postReadIndex(String key){
+        ArrayList<String> studentUID = new ArrayList<>();
+        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("student_index")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.getValue() != null){
-                            if (dataSnapshot.getChildrenCount()>0){
-                                for (DataSnapshot s: dataSnapshot.getChildren()){
-                                    int x = Integer.parseInt(s.getValue().toString());
-                                    x++;
-                                    readUploadHash.put(s.getKey(),Integer.toString(x));
-                                }
-                                for (String key : readUploadHash.keySet()){
-                                    mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("post_read")
-                                            .child(key).setValue(readUploadHash.get(key));
-                                }
-                            }
+                        for (DataSnapshot s :dataSnapshot.getChildren()){
+                            studentUID.add(s.getKey());
+                        }
+                        for (String id :studentUID){
+                            mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
+                                    .child("student_index").child(id).child("new_post").setValue(true);
                         }
                     }
 

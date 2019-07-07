@@ -1,7 +1,6 @@
 package com.pistudiosofficial.myclass.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -10,14 +9,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DatabaseReference;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.adapters.AdapterGridResourceBucket;
 import com.pistudiosofficial.myclass.model.ResourceBucketModel;
@@ -29,10 +26,10 @@ import java.util.ArrayList;
 
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
+import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
 import static com.pistudiosofficial.myclass.Common.mREF_RESOURCE_BUCKET;
-import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
-public class ResourceBucket extends AppCompatActivity implements ResourceBucketView {
+public class ResourceBucketActivity extends AppCompatActivity implements ResourceBucketView {
     Dialog uploadDialog;
     FloatingActionButton fab_add_res;
     ResourceBucketModel model;
@@ -52,8 +49,11 @@ public class ResourceBucket extends AppCompatActivity implements ResourceBucketV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resource__bucket);
-
+        setTitle("Resource Bucket");
         fab_add_res = findViewById(R.id.fab_add_res_bucket);
+        if (CURRENT_USER.AdminLevel.equals("user")){
+            fab_add_res.setVisibility(View.GONE);
+        }
         fab_add_res.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,7 +81,7 @@ public class ResourceBucket extends AppCompatActivity implements ResourceBucketV
                     model.performResourceUpload(mREF_RESOURCE_BUCKET,
                             imgURI01,imgURI02,imgURI03,fileURI,CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)
                     );
-                    progressDialogUpload = ProgressDialog.show(ResourceBucket.this, "",
+                    progressDialogUpload = ProgressDialog.show(ResourceBucketActivity.this, "",
                             "Uploading. Please wait...", true);
                 }else {
                     Toast.makeText(getApplicationContext(),"Choose File To upload !",Toast.LENGTH_SHORT).show();

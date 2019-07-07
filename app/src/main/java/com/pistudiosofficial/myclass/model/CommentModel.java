@@ -17,6 +17,11 @@ import com.pistudiosofficial.myclass.view.CommentView;
 
 import java.util.ArrayList;
 
+import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
+import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
+import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
+import static com.pistudiosofficial.myclass.Common.mREF_classList;
+
 public class CommentModel {
     ChildEventListener childEventListener;
     DatabaseReference postRef;
@@ -73,9 +78,11 @@ public class CommentModel {
         postRef.addChildEventListener(childEventListener);
     }
 
-    public void performCommentPost(CommentObject commentObject, DatabaseReference commentRef){
+    public void performCommentPost(CommentObject commentObject, DatabaseReference commentRef,String postID){
         String id = commentRef.push().getKey();
         commentRef.child(id).setValue(commentObject);
+        postReadIndex(postID);
+        postReadIndexAdmin(postID);
         commentRef.child("comment_count").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -94,7 +101,55 @@ public class CommentModel {
             }
         });
     }
+    public void performRemoveReadComment(String postID){
+        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("student_index")
+                .child(CURRENT_USER.UID).child(postID).child("new_comment").removeValue();
+    }
+    private void postReadIndex(String key){
+        ArrayList<String> studentUID = new ArrayList<>();
+        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("student_index")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot s :dataSnapshot.getChildren()){
+                            studentUID.add(s.getKey());
+                        }
+                        for (String id :studentUID){
+                            mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
+                                    .child("student_index").child(id).child(key).child("new_comment").setValue(true);
+                        }
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+    private void postReadIndexAdmin(String key){
+        ArrayList<String> adminUID = new ArrayList<>();
+        Log.i("TAG",key);
+        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("admin_index")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot s :dataSnapshot.getChildren()){
+                            adminUID.add(s.getKey());
+                        }
+                        for (String id :adminUID){
+                            if (!id.equals(CURRENT_USER.UID)){
+                            mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
+                                    .child("admin_index").child(id).child(key).child("new_comment").setValue(true);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
     public void removeListener(){
         postRef.removeEventListener(childEventListener);
     }

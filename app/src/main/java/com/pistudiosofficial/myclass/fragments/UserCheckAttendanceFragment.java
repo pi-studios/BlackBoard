@@ -2,6 +2,7 @@ package com.pistudiosofficial.myclass.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.pistudiosofficial.myclass.activities.ResourceBucketActivity;
 import com.pistudiosofficial.myclass.adapters.AdapterPostLoad;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
@@ -26,11 +29,15 @@ import java.util.HashMap;
 
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
+import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
+import static com.pistudiosofficial.myclass.Common.mREF_RESOURCE_BUCKET;
+import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
 
 public class UserCheckAttendanceFragment extends Fragment implements CheckAttendanceFragView {
     RecyclerView recyclerViewPost;
     CheckAttendancePresenter presenter;
+    FloatingActionButton fab_resourceBucket;
     public UserCheckAttendanceFragment() {
     }
 
@@ -42,6 +49,17 @@ public class UserCheckAttendanceFragment extends Fragment implements CheckAttend
         recyclerViewPost = v.findViewById(R.id.recyclerView_user_check_attendance);
         presenter = new CheckAttendancePresenter(this);
         presenter.performLoadPost(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX));
+        fab_resourceBucket = v.findViewById(R.id.fab_res_bucket_user);
+        fab_resourceBucket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), ResourceBucketActivity.class);
+                mREF_RESOURCE_BUCKET = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
+                        .child("resource_bucket");
+                startActivity(intent);
+            }
+        });
+        presenter.performDeleteRead(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX));
         return v;
     }
 

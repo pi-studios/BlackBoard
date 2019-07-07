@@ -32,6 +32,8 @@ import static com.pistudiosofficial.myclass.Common.ATTD_PERCENTAGE_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 
+import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
+import static com.pistudiosofficial.myclass.Common.LOG;
 import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
 import static com.pistudiosofficial.myclass.Common.TEMP01_LIST;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
@@ -122,7 +124,7 @@ public class CheckAttendanceModel {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 if(databaseError == null){
-                    updatePostRead();
+                    postReadIndex(key);
                     if(imgURI != null && extensionList != null) {
                        uploadInit(imgURI,extensionList,key);
                     }
@@ -165,6 +167,37 @@ public class CheckAttendanceModel {
         };
         mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
                 .child("last_attendance_date").addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    public void deleteClassRead(String classID){
+        if (CURRENT_USER.AdminLevel.equals("admin")){
+            mREF_classList.child(classID).child("admin_index").child(CURRENT_USER.UID).setValue("true");
+        }
+        if (CURRENT_USER.AdminLevel.equals("user")){
+            mREF_classList.child(classID).child("student_index").child(CURRENT_USER.UID).child("new_post").setValue("false");
+        }
+    }
+
+    private void postReadIndex(String key){
+        ArrayList<String> studentUID = new ArrayList<>();
+        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("student_index")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot s :dataSnapshot.getChildren()){
+                            studentUID.add(s.getKey());
+                        }
+                        for (String id :studentUID){
+                            mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
+                                .child("student_index").child(id).child("new_post").setValue(true);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     private void uploadInit(ArrayList<Uri> imgURI, ArrayList<String> extensionList, String key){
@@ -266,33 +299,6 @@ public class CheckAttendanceModel {
                 }
             }
         });
-    }
-    private void updatePostRead(){
-        HashMap<String, String> readUploadHash = new HashMap<>();
-        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("post_read")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.getValue() != null){
-                            if (dataSnapshot.getChildrenCount()>0){
-                                for (DataSnapshot s: dataSnapshot.getChildren()){
-                                    int x = Integer.parseInt(s.getValue().toString());
-                                    x++;
-                                    readUploadHash.put(s.getKey(),Integer.toString(x));
-                                }
-                                for (String key : readUploadHash.keySet()){
-                                    mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("post_read")
-                                            .child(key).setValue(readUploadHash.get(key));
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
     }
 
     private void uploadMetaData(){

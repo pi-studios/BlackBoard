@@ -61,10 +61,11 @@
             android:textSize="16sp" />
 
         <ImageView
-            android:id="@+id/img_user_classList_row"
+            android:id="@+id/img_newPost_userClassList_row"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_weight="0.10"
+            android:visibility="invisible"
             app:srcCompat="@drawable/circle" />
     </LinearLayout>
 

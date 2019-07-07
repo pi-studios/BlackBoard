@@ -31,12 +31,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static com.pistudiosofficial.myclass.Common.ADAPTER_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
 
 public class ClassTabFragment extends Fragment {
 
     RecyclerView recyclerView;
-    AdapterClassList adapterClassList;
+
     FloatingActionButton floatingActionButton1,floatingActionButton2;
     Dialog addClassDialog;
     public ClassTabFragment() {
@@ -52,16 +53,15 @@ public class ClassTabFragment extends Fragment {
         floatingActionButton2 = view.findViewById(R.id.fab_connection_sub);
         recyclerView = view.findViewById(R.id.recyclerView_ClassList);
         if(Common.CURRENT_USER.AdminLevel.equals("admin")){
-            adapterClassList = new AdapterClassList(Common.CURRENT_ADMIN_CLASS_LIST,null,(MainActivity)getActivity());
+            ADAPTER_CLASS_LIST = new AdapterClassList(Common.CURRENT_ADMIN_CLASS_LIST,null,(MainActivity)getActivity());
         }
         if(Common.CURRENT_USER.AdminLevel.equals("user")){
-            adapterClassList = new AdapterClassList(Common.CURRENT_ADMIN_CLASS_LIST,Common.ATTD_PERCENTAGE_LIST,(MainActivity)getActivity());
+            ADAPTER_CLASS_LIST = new AdapterClassList(Common.CURRENT_ADMIN_CLASS_LIST,Common.ATTD_PERCENTAGE_LIST,(MainActivity)getActivity());
         }
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
-        recyclerView.setAdapter(adapterClassList);
-
+        recyclerView.setAdapter(ADAPTER_CLASS_LIST);
         if(!CURRENT_USER.AdminLevel.equals("user")){
             floatingActionButton2.setVisibility(View.GONE);
         }

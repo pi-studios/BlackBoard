@@ -18,6 +18,7 @@ public class CheckAttendanceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_attendance);
 
+
         Fragment fragment;
 
         if(Common.CURRENT_USER.AdminLevel.equals("admin")){
