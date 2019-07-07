@@ -4,23 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ResourceBucketActivity">
+    tools:context=".activities.ResourceBucketActivity"
+    android:background="@android:color/black">
 
     <GridView
         android:id="@+id/gridViewBucket"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:numColumns="3"
         android:stretchMode="columnWidth"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="2dp"
+        android:verticalSpacing="2dp"
+        android:horizontalSpacing="2dp"
+        />
 
 
 
