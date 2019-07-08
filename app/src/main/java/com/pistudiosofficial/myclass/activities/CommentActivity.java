@@ -53,7 +53,7 @@ public class CommentActivity extends AppCompatActivity implements CommentView {
             public void onClick(View view) {
                 if(!et_comment.getText().toString().isEmpty() || !et_comment.getText().toString().equals("")){
                     CommentObject commentObject = new CommentObject(
-                            CURRENT_USER.Name,CURRENT_USER.UID,new SimpleDateFormat("yyyyMMddHHmm").format(new Date()),
+                            CURRENT_USER.Name,CURRENT_USER.UID,new SimpleDateFormat("h:mm a MMM d, ''yy").format(new Date()),
                             CURRENT_USER.profilePicLink, et_comment.getText().toString()
                     );
                     et_comment.setText("");

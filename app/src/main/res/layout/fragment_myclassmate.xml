@@ -3,41 +3,46 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:focusableInTouchMode="true"
     >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentEnd="true"
+    android:layout_marginBottom="2dp"
+    android:id="@+id/searchLayout">
 
     <EditText
         android:id="@+id/et_search_main"
-        android:layout_width="295dp"
-        android:layout_height="50dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="45dp"
-        android:layout_marginEnd="71dp"
-        android:layout_marginBottom="6dp"
+        android:layout_width="290dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="5dp"
+        android:paddingStart="25dp"
+        android:paddingEnd="25dp"
+        android:gravity="center_horizontal"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_marginEnd="0dp"
         android:background="@drawable/rounded_edit_text"
         android:cursorVisible="false"
         android:hint="@android:string/search_go"
         android:imeOptions="actionDone"
         android:inputType="textPersonName"
-        android:paddingStart="10dp"
         android:textSize="18sp" />
 
     <ImageButton
         android:id="@+id/bt_search_main"
-        android:layout_width="50dp"
-        android:layout_height="55dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="347dp"
-        android:layout_marginEnd="0dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="2dp"
         android:background="@drawable/ic_search_black_24dp" />
-
+</LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_main_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/et_search_main"
+        android:layout_above="@+id/searchLayout"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="0dp"
@@ -45,12 +50,11 @@
         android:layout_marginBottom="6dp"
         android:elevation="5dp"
         android:visibility="gone" />
-
     <FrameLayout
         android:id="@+id/frameLayout_mainFrag"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/et_search_main"
+        android:layout_above="@+id/searchLayout"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"

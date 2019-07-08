@@ -11,14 +11,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         android:orientation="horizontal">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_post_icon_post_row"
-            android:layout_width="104dp"
-            android:layout_height="53dp"
+            android:layout_width="96dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/blackboard"
             android:layout_weight="0.2"
-            app:srcCompat="@drawable/buttonshape" />
+            app:civ_border_width="1dp"
+            app:civ_border_color="@color/primaryLightColor" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,11 +54,14 @@
         android:id="@+id/tv_post_content_post_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:autoLink="web"
         android:padding="5dp"
         android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut la."
         android:textColor="#C9000000"
         android:textSize="18sp" />
+
+
 
     <LinearLayout
         android:id="@+id/linearLayout_post_row"
@@ -63,40 +69,41 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"></LinearLayout>
 
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/half_black" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingStart="20dp"
         android:weightSum="3">
 
         <Button
             android:id="@+id/bt_like_post_row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="@null"
-            android:drawableLeft="@drawable/like_new"
+            android:paddingStart="30dp"
+            android:drawableStart="@drawable/like_new"
             android:text="Like"
-            android:textAlignment="viewStart" />
-
-        <!--<ImageButton-->
-        <!--android:id="@+id/imageButton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:scaleType="fitStart"-->
-        <!--android:layout_weight="1"-->
-        <!--app:srcCompat="@drawable/ic_thumb_up_black_24dp" />-->
+            android:textAlignment="viewStart"
+            android:textAllCaps="false"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/bt_comment_post_row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:paddingStart="30dp"
             android:background="@null"
             android:drawableLeft="@drawable/ic_chat_bubble_outline_black_24dp"
             android:text="Comment"
-            android:textAlignment="viewStart"/>
+            android:textAlignment="viewStart"
+            android:textAllCaps="false"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/bt_share_post_row"
@@ -105,7 +112,10 @@
             android:layout_weight="1"
             android:background="@null"
             android:drawableLeft="@drawable/ic_share_black_24dp"
+            android:paddingStart="30dp"
             android:text="Share"
-            android:textAlignment="textStart" />
+            android:textAlignment="textStart"
+            android:textAllCaps="false"
+            android:textSize="12sp" />
     </LinearLayout>
 </LinearLayout>

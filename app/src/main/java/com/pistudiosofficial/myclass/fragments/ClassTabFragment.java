@@ -97,6 +97,7 @@ public class ClassTabFragment extends Fragment {
                         }
                     });
                 }
+
                 if (CURRENT_USER.AdminLevel.equals("user")){
                     addClassDialog = new Dialog(getContext());
                     addClassDialog.setContentView(R.layout.add_class_user);
@@ -119,6 +120,7 @@ public class ClassTabFragment extends Fragment {
                         }
                     });
                 }
+
             }
         });
         floatingActionButton2.setOnClickListener(new View.OnClickListener() {
