@@ -20,6 +20,7 @@ import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.PhotoFullPopupWindow;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.activities.CommentActivity;
+import com.pistudiosofficial.myclass.activities.FeedbackActivity;
 import com.pistudiosofficial.myclass.model.PostInteractionModel;
 import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
 import com.pistudiosofficial.myclass.objects.PostObject;
@@ -32,6 +33,7 @@ import static com.pistudiosofficial.myclass.Common.COMMENT_LOAD_POST_OBJECT;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 
+import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
 import static com.pistudiosofficial.myclass.Common.mREF_COMMENT_LOAD;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
@@ -81,6 +83,16 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
             myViewHolder.tv_title.setText(postObjectArrayList.get(i).getCreatorName());
             myViewHolder.tv_creatIon_time.setText(postObjectArrayList.get(i).getCreationDate());
             myViewHolder.tv_post_content.setText(postObjectArrayList.get(i).getBody());
+            if (postObjectArrayList.get(i).getPostType().equals("admin_feedback")&&CURRENT_USER.AdminLevel.equals("user")){
+                myViewHolder.tv_post_content.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(context, FeedbackActivity.class);
+                        intent.putExtra("class_id",CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX));
+                        context.startActivity(intent);
+                    }
+                });
+            }
             if (post_like_list != null) {
                 myViewHolder.bt_like.setText("Like:" + post_like_list.get(i));
             }

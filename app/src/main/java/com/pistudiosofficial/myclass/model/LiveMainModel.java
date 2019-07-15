@@ -70,19 +70,19 @@ public class LiveMainModel {
                     for (DataSnapshot p:dataSnapshot.child(s).child("student_index").child(UID).getChildren()){
                          if (!p.getKey().equals("new_post")){
                             CHECK_NEW_COMMENT.put(p.getKey(),true);
-                            Log.i("TAG",p.getKey());
                             flag = true;
                          }
                     }
-                    if (dataSnapshot.child(s).child("student_index").child(UID).child("new_post")
-                            .getValue().toString().equals("true")){
-                        CHECK_NEW_COMMENT_POST.add(1);
-                        Log.i("TAG",1+"");
-                    }
-                    else {
-                        if (flag){CHECK_NEW_COMMENT_POST.add(2);Log.i("TAG",2+"");}
-                        else {CHECK_NEW_COMMENT_POST.add(0);}
-                    }
+                    try{
+                        if (dataSnapshot.child(s).child("student_index").child(UID).child("new_post")
+                                .getValue().toString().equals("true")){
+                            CHECK_NEW_COMMENT_POST.add(1);
+                        }
+                        else {
+                            if (flag){CHECK_NEW_COMMENT_POST.add(2);}
+                            else {CHECK_NEW_COMMENT_POST.add(0);}
+                        }
+                    }catch (Exception e){e.printStackTrace();CHECK_NEW_COMMENT_POST.add(1);}
                 }
                 mainActivityView.notifNewComment();
             }

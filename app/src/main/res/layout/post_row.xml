@@ -83,31 +83,35 @@
 
         <Button
             android:id="@+id/bt_like_post_row"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@null"
-            android:paddingStart="30dp"
             android:drawableStart="@drawable/like_new"
+            android:paddingStart="30dp"
             android:text="Like"
             android:textAlignment="viewStart"
             android:textAllCaps="false"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:layout_marginHorizontal="3dp"/>
 
         <Button
             android:id="@+id/bt_comment_post_row"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="30dp"
+            android:layout_weight="1"
             android:background="@null"
             android:drawableLeft="@drawable/ic_chat_bubble_outline_black_24dp"
+            android:paddingStart="30dp"
             android:text="Comment"
             android:textAlignment="viewStart"
             android:textAllCaps="false"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:layout_marginHorizontal="3dp"/>
 
         <Button
             android:id="@+id/bt_share_post_row"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
@@ -116,6 +120,7 @@
             android:text="Share"
             android:textAlignment="textStart"
             android:textAllCaps="false"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:layout_marginHorizontal="3dp"/>
     </LinearLayout>
 </LinearLayout>

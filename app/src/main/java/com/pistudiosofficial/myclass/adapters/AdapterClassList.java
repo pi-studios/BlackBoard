@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,15 +21,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.activities.CheckAttendanceActivity;
+import com.pistudiosofficial.myclass.model.FeedbackHODModel;
 import com.pistudiosofficial.myclass.objects.ClassObject;
 import com.pistudiosofficial.myclass.view.MainActivityView;
 
 import java.util.ArrayList;
 
 import static com.pistudiosofficial.myclass.Common.CHECK_NEW_COMMENT_POST;
+import static com.pistudiosofficial.myclass.Common.CURRENT_ADMIN_FEEDBACK_STATUS;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
-import static com.pistudiosofficial.myclass.Common.LOG;
 
 
 public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyViewHolder> {
@@ -114,14 +116,18 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
             public boolean onLongClick(View view) {
                 final Dialog dialog = new Dialog(view.getContext());
                 dialog.setContentView(R.layout.end_session_dialog);
-                Button button = dialog.findViewById(R.id.bt_faculty_end_session);
+                Button endSession = dialog.findViewById(R.id.bt_faculty_end_session);
                 Button addCollabButton = dialog.findViewById(R.id.bt_faculty_add_collab);
                 Button transferClass = dialog.findViewById(R.id.bt_faculty_transfer);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+                Button feedback = dialog.findViewById(R.id.bt_faculty_initiate_feedback);
                 if(CURRENT_USER.AdminLevel.equals("user")){
                     addCollabButton.setVisibility(View.GONE);
                     transferClass.setVisibility(View.GONE);
+                }
+                if(!CURRENT_ADMIN_FEEDBACK_STATUS.get(CURRENT_CLASS_ID_LIST.get(i)).equals("null")){
+                    feedback.setText("Submit Feedback : "+
+                            CURRENT_ADMIN_FEEDBACK_STATUS.get(CURRENT_CLASS_ID_LIST.get(i)));
                 }
 
                 dialog.show();
@@ -160,7 +166,7 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
                         });
                     }
                 });
-                button.setOnClickListener(new View.OnClickListener() {
+                endSession.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View view) {
                         new AlertDialog.Builder(view.getContext())
@@ -174,6 +180,38 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
                                     }
                                 }).setNegativeButton("No",null).show();
                         dialog.dismiss();
+                    }
+                });
+                feedback.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                        FeedbackHODModel hodModel = new FeedbackHODModel();
+                        if(CURRENT_ADMIN_FEEDBACK_STATUS.get(CURRENT_CLASS_ID_LIST.get(i)).equals("null")){
+                            final Dialog emailDialog = new Dialog(view.getContext());
+                            emailDialog.setContentView(R.layout.hod_email_dialog);
+                            emailDialog.show();
+                            EditText et_email_dialog = emailDialog.findViewById(R.id.et_hod_email_dialog);
+                            Button bt_email_dialog = emailDialog.findViewById(R.id.bt_hod_email_dialog);
+                            bt_email_dialog.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                    if (!et_email_dialog.getText().toString().equals("")) {
+                                        hodModel.performInitiateFeedback(
+                                                et_email_dialog.getText().toString(),
+                                                classObjectArrayList.get(i).className,
+                                                classObjectArrayList
+                                                        .get(i).sessionStart + " : " + classObjectArrayList.get(i).sessionEnd,
+                                                CURRENT_USER.Name, CURRENT_CLASS_ID_LIST.get(i));
+                                        emailDialog.dismiss();
+                                    }
+                                }
+                            });
+                        }
+                        else{
+                            hodModel.performFeedbackSubmitAdmin(CURRENT_CLASS_ID_LIST.get(i));
+                        }
                     }
                 });
                 return true;
@@ -203,9 +241,6 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
                 attendance = itemView.findViewById(R.id.tv_attendance_student_main_recycler_row);
                 faculty = itemView.findViewById(R.id.tv_facultyname_student_main_recycler_row);
                 img_notif = itemView.findViewById(R.id.img_newPost_userClassList_row);
-            }
-            else{
-
             }
         }
     }

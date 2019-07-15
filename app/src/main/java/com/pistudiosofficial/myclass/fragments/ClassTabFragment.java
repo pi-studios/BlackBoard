@@ -3,6 +3,7 @@ package com.pistudiosofficial.myclass.fragments;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.pistudiosofficial.myclass.activities.AdminFeedbackActivity;
 import com.pistudiosofficial.myclass.adapters.AdapterClassList;
 import com.pistudiosofficial.myclass.objects.ClassObject;
 import com.pistudiosofficial.myclass.Common;
@@ -38,7 +40,7 @@ public class ClassTabFragment extends Fragment {
 
     RecyclerView recyclerView;
 
-    FloatingActionButton floatingActionButton1,floatingActionButton2;
+    FloatingActionButton floatingActionButton1,floatingActionButton2,floatingActionButton3;
     Dialog addClassDialog;
     public ClassTabFragment() {
 
@@ -51,11 +53,13 @@ public class ClassTabFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_myclass,container,false);
         floatingActionButton1 = view.findViewById(R.id.fab_addclass_sub);
         floatingActionButton2 = view.findViewById(R.id.fab_connection_sub);
+        floatingActionButton3 = view.findViewById(R.id.fab_admin_feedback);
         recyclerView = view.findViewById(R.id.recyclerView_ClassList);
         if(Common.CURRENT_USER.AdminLevel.equals("admin")){
             ADAPTER_CLASS_LIST = new AdapterClassList(Common.CURRENT_ADMIN_CLASS_LIST,null,(MainActivity)getActivity());
         }
         if(Common.CURRENT_USER.AdminLevel.equals("user")){
+            floatingActionButton3.setVisibility(View.GONE);
             ADAPTER_CLASS_LIST = new AdapterClassList(Common.CURRENT_ADMIN_CLASS_LIST,Common.ATTD_PERCENTAGE_LIST,(MainActivity)getActivity());
         }
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -131,7 +135,13 @@ public class ClassTabFragment extends Fragment {
                 }
             }
         });
-
+        floatingActionButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), AdminFeedbackActivity.class);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 

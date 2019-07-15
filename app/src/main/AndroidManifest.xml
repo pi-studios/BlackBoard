@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.ResourceBucketActivity"></activity>
+        <activity android:name=".activities.AdminFeedbackActivity"></activity>
+        <activity android:name=".activities.FeedbackActivity" />
+        <activity android:name=".activities.ResourceBucketActivity" />
         <activity
             android:name=".activities.CommentActivity"
             android:windowSoftInputMode="adjustPan" />

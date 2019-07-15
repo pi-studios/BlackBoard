@@ -33,12 +33,14 @@ import java.util.HashMap;
 
 import static android.content.ContentValues.TAG;
 import static com.pistudiosofficial.myclass.Common.CURRENT_ADMIN_CLASS_LIST;
+import static com.pistudiosofficial.myclass.Common.CURRENT_ADMIN_FEEDBACK_STATUS;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST_ID;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_USER;
 import static com.pistudiosofficial.myclass.Common.HELLO_REQUEST_USERS;
 
+import static com.pistudiosofficial.myclass.Common.LOG;
 import static com.pistudiosofficial.myclass.Common.mREF_admin_classList;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
 import static com.pistudiosofficial.myclass.Common.mREF_oldRecords;
@@ -100,6 +102,7 @@ public class MainModel {
                     classObject = dataSnapshot.child(CURRENT_CLASS_ID_LIST.get(i)).getValue(ClassObject.class);
                     classObjectArrayList.add(classObject);
                 }
+                countFeedbackState();
                 presenter.adminClassListDownloadSuccess(classObjectArrayList);
             }
 
@@ -115,6 +118,7 @@ public class MainModel {
                 for (DataSnapshot s : dataSnapshot.getChildren()){
                     CURRENT_CLASS_ID_LIST.add(s.getKey());
                 }
+
                 mREF_classList.addListenerForSingleValueEvent(tempListener2);
             }
 
@@ -126,6 +130,35 @@ public class MainModel {
 
 
         mREF_admin_classList.addListenerForSingleValueEvent(tempListener);
+    }
+
+    private void countFeedbackState(){
+        CURRENT_ADMIN_FEEDBACK_STATUS = new HashMap<>();
+        mREF_classList.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (String id : CURRENT_CLASS_ID_LIST){
+                    if (!dataSnapshot.child(id).hasChild("feedback")){
+                        CURRENT_ADMIN_FEEDBACK_STATUS.put(id,"null");
+                    }
+                    else {
+                        long x;
+                        if (dataSnapshot.child(id).child("feedback").hasChild("entry")) {
+                            LOG();
+                            x = dataSnapshot.child(id).child("feedback").child("entry").getChildrenCount();
+                        }
+                        else{x = 0;}
+                        int p = (int)x;
+                        CURRENT_ADMIN_FEEDBACK_STATUS.put(id,Integer.toString(p));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void performAdminAddClass(final ClassObject classObject){
@@ -275,25 +308,24 @@ public class MainModel {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 classObject = dataSnapshot.getValue(ClassObject.class);
-                if(classObject.facultyEmail.equals(studentClassObject.facultyEmail) &&
-                        classObject.joinCode.equals(studentClassObject.joinCode)){
-                    studentClassObject.classKey = dataSnapshot.getKey();
-                    mREF_student_classList.child(studentClassObject.classKey).setValue(studentClassObject, new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                            if(databaseError == null){
-                                mREF_classList.child(studentClassObject.classKey)
-                                        .child("student_index").child(studentClassObject.studentUID)
-                                        .setValue(studentClassObject.studentUID);
-                                presenter.addUserClassSuccess();
+                    if (classObject.facultyEmail.equals(studentClassObject.facultyEmail) &&
+                            classObject.joinCode.equals(studentClassObject.joinCode)) {
+                        studentClassObject.classKey = dataSnapshot.getKey();
+                        mREF_student_classList.child(studentClassObject.classKey).setValue(studentClassObject, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                                if (databaseError == null) {
+                                    mREF_classList.child(studentClassObject.classKey)
+                                            .child("student_index").child(studentClassObject.studentUID)
+                                            .setValue(studentClassObject.studentUID);
+                                    presenter.addUserClassSuccess();
+                                } else {
+                                    presenter.addUserClassFailed();
+                                }
+                                mREF_classList.removeEventListener(childListener);
                             }
-                            else {
-                                presenter.addUserClassFailed();
-                            }
-                            mREF_classList.removeEventListener(childListener);
-                        }
-                    });
-                }
+                        });
+                    }
             }
 
             @Override
@@ -564,16 +596,4 @@ public class MainModel {
         };
         mREF_users.child(CURRENT_USER.UID).child("hello").addValueEventListener(valueEventListener);
     }
-
-    //Special Post Load Section
-
-
-/*    private void checkNewPost(ArrayList<ClassObject> classObjects){
-        for (ClassObject s: classObjects){
-            setValueEventListenerForNewPost(s.);
-        }
-    }
-    private void setValueEventListenerForNewPost(String key){
-
-    }*/
 }

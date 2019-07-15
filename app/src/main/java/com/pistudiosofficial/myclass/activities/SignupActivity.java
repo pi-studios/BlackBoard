@@ -51,10 +51,6 @@ public class SignupActivity extends AppCompatActivity implements SignUpView {
                         admin = "admin";
                         roll.setVisibility(View.INVISIBLE);
                         break;
-                    case R.id.radio_masteradmin:
-                        admin = "master_admin";
-                        roll.setVisibility(View.INVISIBLE);
-                        break;
                     default:
                         admin = "user";
                         roll.setVisibility(View.VISIBLE);
