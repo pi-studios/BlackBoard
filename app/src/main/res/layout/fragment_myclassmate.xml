@@ -16,20 +16,19 @@
         android:id="@+id/et_search_main"
         android:layout_width="290dp"
         android:layout_height="40dp"
-        android:layout_marginStart="45dp"
-        android:paddingStart="25dp"
-        android:paddingEnd="25dp"
-        android:gravity="center_horizontal"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:layout_marginStart="10dp"
         android:layout_marginEnd="0dp"
         android:background="@drawable/rounded_edit_text"
         android:cursorVisible="false"
+        android:gravity="center_horizontal"
         android:hint="@android:string/search_go"
         android:imeOptions="actionDone"
         android:inputType="textPersonName"
-        android:textSize="18sp"
-        android:layout_weight="100"/>
+        android:paddingStart="20dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="5dp"
+        android:textSize="18sp" />
 
     <ImageButton
         android:id="@+id/bt_search_main"
@@ -38,8 +37,7 @@
         android:layout_alignTop="@+id/searchLayout"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="2dp"
-        android:background="@drawable/ic_search_black_24dp"
-        android:layout_weight="20"/>
+        android:background="@drawable/ic_search_black_24dp" />
 </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_main_search"

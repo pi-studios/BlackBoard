@@ -324,9 +324,9 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                         getContext());
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewPost.getContext(),
-                llm.getOrientation());
-        recyclerViewPost.addItemDecoration(dividerItemDecoration);
+//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewPost.getContext(),
+//                llm.getOrientation());
+//        recyclerViewPost.addItemDecoration(dividerItemDecoration);
         recyclerViewPost.setLayoutManager(llm);
         recyclerViewPost.setAdapter(adapterPostLoad);
     }

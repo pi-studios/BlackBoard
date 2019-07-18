@@ -73,7 +73,7 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View view = inflater.inflate(R.layout.post_row,viewGroup,false);
+        View view = inflater.inflate(R.layout.postrow,viewGroup,false);
         return new MyViewHolder(view);
     }
 
@@ -94,16 +94,16 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
                 });
             }
             if (post_like_list != null) {
-                myViewHolder.bt_like.setText("Like:" + post_like_list.get(i));
+                myViewHolder.bt_like.setText(" "+post_like_list.get(i)+" Likes");
             }
             if (comment_count != null) {
-                myViewHolder.bt_comment.setText("Comment:" + comment_count.get(i));
+                myViewHolder.bt_comment.setText(" "+comment_count.get(i)+" Comments");
             }
             myViewHolder.bt_like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Button bt = (Button) view;
-                    bt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_thumb_up_black_24dp, 0, 0, 0);
+                    bt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite_black_24dp, 0, 0, 0);
                     model.likeClicked(post_id.get(i), Common.CURRENT_CLASS_ID_LIST.get(Common.CURRENT_INDEX));
                 }
             });

@@ -14,10 +14,11 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:alpha="0.6"
+        android:layout_marginBottom="16dp"
+        android:alpha="1"
         android:elevation="5dp"
-        app:fab_addButtonColorNormal="@color/pink"
-        app:fab_addButtonColorPressed="@color/pink_pressed"
+        app:fab_addButtonColorNormal="@color/primaryDarkColor"
+        app:fab_addButtonColorPressed="@color/primaryLightColor"
         app:fab_addButtonPlusIconColor="@android:color/white"
         app:fab_labelStyle="@style/customFab"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -27,71 +28,75 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.983">
 
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_export_csv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fab_colorNormal="@color/white"
-        app:fab_colorPressed="@color/white_pressed"
-        app:fab_icon="@drawable/excel"
-        app:fab_size="mini"
-        app:fab_title="Export CSV" />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_export_csv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/white"
+            app:fab_colorPressed="@color/white_pressed"
+            app:fab_icon="@drawable/excel"
+            app:fab_size="mini"
+            app:fab_title="Export CSV" />
 
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_res_bucket"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fab_colorNormal="@color/white"
-        app:fab_colorPressed="@color/white_pressed"
-        app:fab_icon="@drawable/bucket"
-        app:fab_size="mini"
-        app:fab_title="Resource Bucket" />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_res_bucket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/white"
+            app:fab_colorPressed="@color/white_pressed"
+            app:fab_icon="@drawable/bucket"
+            app:fab_size="mini"
+            app:fab_title="Resource Bucket" />
 
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_create_poll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fab_colorNormal="@color/white"
-        app:fab_colorPressed="@color/white_pressed"
-        app:fab_icon="@drawable/ballot"
-        app:fab_size="mini"
-        app:fab_title="Create Poll" />
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_notify"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fab_colorNormal="@color/white"
-        app:fab_colorPressed="@color/white_pressed"
-        app:fab_icon="@drawable/loud_speaker"
-        app:fab_size="mini"
-        app:fab_title="Notify" />
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_new_attendance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fab_colorNormal="@color/white"
-        app:fab_colorPressed="@color/white_pressed"
-        app:fab_icon="@drawable/note"
-        app:fab_size="mini"
-        app:fab_title="New Attendance" />
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_show_attendnace_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fab_colorNormal="@color/white"
-        app:fab_colorPressed="@color/white_pressed"
-        app:fab_icon="@drawable/folder"
-        app:fab_size="mini"
-        app:fab_title="Show Attendance" />
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_post"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fab_colorNormal="@color/white"
-        app:fab_colorPressed="@color/white_pressed"
-        app:fab_icon="@drawable/post"
-        app:fab_size="mini"
-        app:fab_title="Post" />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_create_poll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/white"
+            app:fab_colorPressed="@color/white_pressed"
+            app:fab_icon="@drawable/ballot"
+            app:fab_size="mini"
+            app:fab_title="Create Poll" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_notify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/white"
+            app:fab_colorPressed="@color/white_pressed"
+            app:fab_icon="@drawable/loud_speaker"
+            app:fab_size="mini"
+            app:fab_title="Notify" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_new_attendance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/white"
+            app:fab_colorPressed="@color/white_pressed"
+            app:fab_icon="@drawable/note"
+            app:fab_size="mini"
+            app:fab_title="New Attendance" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_show_attendnace_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/white"
+            app:fab_colorPressed="@color/white_pressed"
+            app:fab_icon="@drawable/folder"
+            app:fab_size="mini"
+            app:fab_title="Show Attendance" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/white"
+            app:fab_colorPressed="@color/white_pressed"
+            app:fab_icon="@drawable/post"
+            app:fab_size="mini"
+            app:fab_title="Post" />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
@@ -99,10 +104,7 @@
         android:id="@+id/recyclerView_check_attendance_post"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="70dp"
+        android:background="#00000000"
         android:elevation="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

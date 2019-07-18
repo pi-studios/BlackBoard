@@ -12,7 +12,9 @@
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#212121</color>
     <color name="transparent">#00FFFFFF</color>
-
+    <color name="purple">#110132</color>
+    <color name="lightPurple">#1E003E</color>
+    <color name="lightBlue">#2A71BF</color>
     <color name="black_semi_transparent">#82000000</color>
     <color name="background">#e5e5e5</color>
     <color name="half_black">#808080</color>
