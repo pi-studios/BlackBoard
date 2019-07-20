@@ -48,7 +48,7 @@
                 android:layout_height="match_parent">
 
                 <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/profile_image"
+                    android:id="@+id/img_profile_pic"
                     android:layout_width="96dp"
                     android:layout_height="96dp"
                     android:layout_marginStart="8dp"
@@ -96,7 +96,7 @@
                     android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+                    app:layout_constraintTop_toBottomOf="@+id/img_profile_pic" />
 
                 <TextView
                     android:id="@+id/textView4"
@@ -118,7 +118,42 @@
         </androidx.cardview.widget.CardView>
     </androidx.cardview.widget.CardView>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/bt_helloList_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/blue_semi_transparent"
+                android:text="Hello List" />
+
+            <Button
+                android:id="@+id/bt_profile_hello"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@color/blue_semi_transparent"
+                android:elevation="5dp"
+                android:text="Hello" />
+
+            <Button
+                android:id="@+id/bt_profile_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/blue_semi_transparent"
+                android:elevation="5dp"
+                android:text="message" />
+        </LinearLayout>
         <TextView
             android:id="@+id/Bio"
             android:layout_width="wrap_content"
@@ -128,6 +163,7 @@
             android:text="Bio"
             android:textColor="#000000"
             android:textSize="24sp" />
+
 
         <RelativeLayout
             android:id="@+id/mail"

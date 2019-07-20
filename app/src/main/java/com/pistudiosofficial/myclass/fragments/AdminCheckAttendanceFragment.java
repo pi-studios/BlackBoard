@@ -105,7 +105,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 if(notMultipleAttendance){
                     Intent intent = new Intent(v.getContext(), NewAttendenceAcitivity.class);
                     startActivity(intent);
-//                    getActivity().finish();
+//                   getActivity().finish();
                 }
                 else{
                     Toast.makeText(v.getContext(),"Attendance cannot be taken twice",Toast.LENGTH_SHORT).show();

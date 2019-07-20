@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity
         headerView.findViewById(R.id.headerImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),ProfileNewActivity.class);
+                Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
                 SELECTED_PROFILE_UID = CURRENT_USER.UID;
                 startActivity(intent);
                 closeDrawer();

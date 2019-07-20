@@ -30,8 +30,9 @@ public class ProfileModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 hodEmail = dataSnapshot.child(CURRENT_USER.UID).child("master_admin").getValue(String.class);
-                if(hodEmail.equals("")){hodEmail = "ADD HOD";}
-                presenter.loadHodEmail(hodEmail);
+                //These lines are causing error when old profile added please check them
+//                if(hodEmail.equals("")){hodEmail = "ADD HOD";}
+//                presenter.loadHodEmail(hodEmail);
             }
 
             @Override
