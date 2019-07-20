@@ -7,15 +7,18 @@
     android:background="@null"
     tools:context=".activities.CreatePollActivity">
 
+
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/one_side_curve_card"
+        android:elevation="5dp"
+        android:gravity="center"
         android:text="Create Poll"
         android:textColor="#000000"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,7 +30,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
-        android:gravity="center"
+        android:gravity="start"
         android:hint="Poll Description"
         android:inputType="textMultiLine"
         android:paddingStart="20dp"
@@ -73,24 +76,24 @@
         app:layout_constraintStart_toEndOf="@+id/et_addPollOption"
         app:layout_constraintTop_toBottomOf="@+id/recyclerView_create_poll" />
 
-    <Button
-        android:id="@+id/bt_pushPoll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="Push Poll"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button2" />
+    <!--<Button-->
+        <!--android:id="@+id/bt_pushPoll"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="24dp"-->
+        <!--android:layout_marginEnd="16dp"-->
+        <!--android:text="Push Poll"-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/bt_cancelPoll"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/et_addPollOption" />-->
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@android:color/transparent"
-        android:text="Cancel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <!--<Button-->
+        <!--android:id="@+id/bt_cancelPoll"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="24dp"-->
+        <!--android:layout_marginEnd="16dp"-->
+        <!--android:background="@android:color/transparent"-->
+        <!--android:text="Cancel"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/bt_addPollOption" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

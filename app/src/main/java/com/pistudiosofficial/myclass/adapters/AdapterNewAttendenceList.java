@@ -2,6 +2,7 @@ package com.pistudiosofficial.myclass.adapters;
 
 import android.graphics.Color;
 
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,9 +35,11 @@ public class AdapterNewAttendenceList extends RecyclerView.Adapter<AdapterNewAtt
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int i){
         myViewHolder.textView.setText(ROLL_LIST.get(i));
         if(TEMP01_LIST.get(i).equals("PRESENT")){
-            myViewHolder.textView.setBackgroundColor(Color.parseColor("#f48f42"));
+            //Change the color to red and green as absent and present
+            myViewHolder.textView.getBackground().setColorFilter(Color.parseColor("#13800B"), PorterDuff.Mode.SRC_ATOP);
+//            myViewHolder.textView.setBackgroundColor(Color.parseColor("#13800B"));
         }else {
-            myViewHolder.textView.setBackgroundColor(Color.parseColor("#80000000"));
+            myViewHolder.textView.getBackground().setColorFilter(Color.parseColor("#CE1212"), PorterDuff.Mode.SRC_ATOP);
         }
     }
 

@@ -105,7 +105,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 if(notMultipleAttendance){
                     Intent intent = new Intent(v.getContext(), NewAttendenceAcitivity.class);
                     startActivity(intent);
-                    getActivity().finish();
+//                    getActivity().finish();
                 }
                 else{
                     Toast.makeText(v.getContext(),"Attendance cannot be taken twice",Toast.LENGTH_SHORT).show();
@@ -134,7 +134,9 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 sessionDatePick(date01);
                 sessionDatePick(date02);
 
-                Button bt_done = dialog.findViewById(R.id.bt_notify_broadcast);
+                Button bt_done,bt_cancel;
+                bt_done= dialog.findViewById(R.id.bt_notify_broadcast);
+                bt_cancel=dialog.findViewById(R.id.bt_cancelBroadcast);
                 radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -188,6 +190,16 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                                 date01.getText().toString(),date02.getText().toString());
                     }
                 });
+                //Added cancel BroadCast Button
+
+                bt_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                //
                 dialog.show();
             }
         });
@@ -198,6 +210,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 v.getContext().startActivity(intent);
             }
         });
+
         fab_show_attendace_percent.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("WrongConstant")
             @Override
@@ -213,12 +226,14 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 dialogAttendancePercent.show();
             }
         });
+
         fab_createPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 createPost();
             }
         });
+
         fab_show_bucket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

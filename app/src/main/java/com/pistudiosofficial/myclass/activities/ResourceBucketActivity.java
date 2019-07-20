@@ -1,5 +1,6 @@
 package com.pistudiosofficial.myclass.activities;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -7,11 +8,13 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -49,7 +52,22 @@ public class ResourceBucketActivity extends AppCompatActivity implements Resourc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resource__bucket);
-        setTitle("Resource Bucket");
+        setTitle("Resource");
+        final ActionBar abar = getSupportActionBar();
+        abar.setDisplayHomeAsUpEnabled(true);
+        abar.setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
+        View viewActionBar = getLayoutInflater().inflate(R.layout.actionbar_titletext_layout, null);
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER);
+        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
+        textviewTitle.setText("Resource Bucket");
+        abar.setCustomView(viewActionBar, params);
+        abar.setDisplayShowCustomEnabled(true);
+        abar.setDisplayShowTitleEnabled(false);
+        abar.setDisplayHomeAsUpEnabled(true);
+        abar.setHomeButtonEnabled(true);
         fab_add_res = findViewById(R.id.fab_add_res_bucket);
         if (CURRENT_USER.AdminLevel.equals("user")){
             fab_add_res.setVisibility(View.GONE);
@@ -184,5 +202,10 @@ public class ResourceBucketActivity extends AppCompatActivity implements Resourc
         gridView.setAdapter(adapter);
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish(); // close this activity as oppose to navigating up
+        return false;
+    }
 
 }

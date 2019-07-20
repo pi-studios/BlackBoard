@@ -35,7 +35,11 @@ public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterChec
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         Log.i("TAG","ROLL lIST: "+ROLL_LIST.size()+"  attendanceList "+attendanceList.size());
-        myViewHolder.textView.setText(ROLL_LIST.get(i)+"  -----  "+attendanceList.get(i));
+        //Change the design of  layout to show name and text, so add two text view
+        myViewHolder.textView_roll.setText(ROLL_LIST.get(i));
+        myViewHolder.textView_name.setText("Vivek");
+        myViewHolder.textView_percent.setText(String.format("%.2f",attendanceList.get(i)));
+        //
     }
 
     @Override
@@ -44,10 +48,14 @@ public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterChec
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView textView;
+        TextView textView_roll,textView_name,textView_percent;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.tv_new_attendance);
+            //Change the design of  layout to show name and text, so add two text view
+            textView_roll = itemView.findViewById(R.id.tv_check_attendance);
+            textView_name=itemView.findViewById(R.id.tv_check_attendance_name);
+            textView_percent=itemView.findViewById(R.id.tv_check_attendance_percent);
+            //
         }
     }
 
