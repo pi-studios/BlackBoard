@@ -6,6 +6,24 @@
     android:layout_height="match_parent">
 
 
+    <TextView
+        android:id="@+id/no_post_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:drawableLeft="@drawable/ic_error_outline_black_24dp"
+        android:text="Oops! No Post Yet"
+        android:textColor="#FD051018"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerView_check_attendance_post"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.29000002" />
+
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/fab_check_attendance"
         android:layout_width="wrap_content"

@@ -100,6 +100,8 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
                 myViewHolder.bt_comment.setText(" "+comment_count.get(i)+" Comments");
             }
             myViewHolder.bt_like.setOnClickListener(new View.OnClickListener() {
+                //TODO
+                //Bug of not showing button
                 @Override
                 public void onClick(View view) {
                     Button bt = (Button) view;
@@ -179,7 +181,18 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
                             .setCompoundDrawablesWithIntrinsicBounds(R.drawable.chat_green, 0, 0, 0);
                 }
             }catch (Exception e){e.printStackTrace();}
-        }// Need To add share
+
+            myViewHolder.bt_share.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent share= new Intent(Intent.ACTION_SEND);
+                    share.setType("text/plain");
+                    share.putExtra(Intent.EXTRA_TEXT,postObjectArrayList.get(i).getCreatorName()+"\n "+postObjectArrayList.get(i).getCreationDate()+"\n"+postObjectArrayList.get(i).getBody());
+                    context.startActivity(share);
+                }
+            });
+        }
+
     }
 
     @Override

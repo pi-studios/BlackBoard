@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -68,6 +69,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
     ImageButton pickImage,pickFile;
     ImageView img1,img2,img3;
     String fileUploadLink = "";
+    TextView noPostMsg;
     int temp;
     private static final int PICK_IMAGE_REQUEST01 = 1,PICK_IMAGE_REQUEST02 = 2, PICK_IMAGE_REQUEST03 = 3,
                         PICK_FILE_REQUEST = 4;
@@ -83,7 +85,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                              Bundle savedInstanceState) {
 
         final View v=inflater.inflate(R.layout.admin_check_attendance, container, false);
-
+        noPostMsg=v.findViewById(R.id.no_post_msg);
         fab_create_poll = v.findViewById(R.id.fab_create_poll);
         fab_exportcsv = v.findViewById(R.id.fab_export_csv);
         fab_new_attendance = v.findViewById(R.id.fab_new_attendance);
@@ -393,7 +395,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         img3 = postDialog.findViewById(R.id.img_create_post_03);
         EditText et_post_content = postDialog.findViewById(R.id.et_create_post_body);
         postDialog.show();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a MMM d, ''yy");
         String simpleTime = simpleDateFormat.format(new Date());
 
         pickImage.setOnClickListener(new View.OnClickListener() {

@@ -4,16 +4,15 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    xmlns:android="http://schemas.android.com/apk/res/android" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
         android:orientation="vertical"
         android:paddingHorizontal="10dp"
         android:paddingVertical="10dp"
@@ -27,12 +26,18 @@
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_post_icon_post_row"
-                android:layout_width="104dp"
-                android:layout_height="53dp"
-                android:layout_weight="0.2"
-                app:srcCompat="@drawable/buttonshape" />
+                android:layout_width="120dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:src="@drawable/logo"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="1dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_weight="0.2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -48,7 +53,7 @@
                     android:paddingStart="10dp"
                     android:text="Title"
                     android:textColor="#000000"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/tv_creation_time_post_row"
@@ -85,9 +90,9 @@
         android:id="@+id/recyclerView_commentList_comment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="0dp"
         android:layout_marginBottom="8dp"
         android:padding="10dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout9"

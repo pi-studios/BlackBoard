@@ -1,11 +1,15 @@
 package com.pistudiosofficial.myclass.activities;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,8 +48,23 @@ public class CommentActivity extends AppCompatActivity implements CommentView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
+        //Add Actionbar and cross button
+        final ActionBar abar = getSupportActionBar();
+        abar.setDisplayHomeAsUpEnabled(true);
+        abar.setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
+        View viewActionBar = getLayoutInflater().inflate(R.layout.actionbar_titletext_layout, null);
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER);
+        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
+        textviewTitle.setText("Comment");
+        abar.setCustomView(viewActionBar, params);
+        abar.setDisplayShowCustomEnabled(true);
+        abar.setDisplayShowTitleEnabled(false);
+        abar.setDisplayHomeAsUpEnabled(true);
+        abar.setHomeButtonEnabled(true);
         postid = getIntent().getStringExtra("post_id");
-        setTitle("Comment");
         et_comment = findViewById(R.id.et_commetInput_comment);
         bt_sendComment = findViewById(R.id.bt_commentSend_comment);
         bt_sendComment.setOnClickListener(new View.OnClickListener() {

@@ -31,7 +31,7 @@ public class CreatePollModel {
     public void performCreatePoll(String title, ArrayList<String> optionList){
         key = Common.mREF_classList.child(Common.CURRENT_CLASS_ID_LIST.get(Common.CURRENT_INDEX))
                 .child("post").push().getKey();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a MMM d, ''yy");
         String simpleTime = simpleDateFormat.format(new Date());
         PostObject postObject = new PostObject(Common.CURRENT_USER.Name,
                 simpleTime,title,"admin_poll",CURRENT_USER.UID,CURRENT_USER.profilePicLink,key);
@@ -71,7 +71,7 @@ public class CreatePollModel {
     private void pushNotification(){
 
         String currentTime = DateFormat.getDateTimeInstance().format(new Date());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a MMM d, ''yy");
         String simpleTime = simpleDateFormat.format(new Date());
         PushNotificationSenderModel notifModel = new PushNotificationSenderModel("Poll",
                 "Respond To The Poll Soon!",Common.CURRENT_ADMIN_CLASS_LIST.get(Common.CURRENT_INDEX).className,

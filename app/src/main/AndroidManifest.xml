@@ -23,7 +23,8 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activities.HelloActivity" />
         <activity android:name=".activities.ChatActivity" />
-        <activity android:name=".activities.ProfileNewActivity" />
+        <activity android:name=".activities.ProfileNewActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
         <activity android:name=".activities.SettingsActivity" />
         <activity android:name=".activities.CreatePollActivity" />
         <activity

@@ -54,7 +54,7 @@ public class CheckAttendancePresenter implements CheckAttendancePresenterInterfa
 
     public void performBroadcast(String type,String broadcastTitle, String broadcastMessage, String date01, String date02){
         String currentTime = DateFormat.getDateTimeInstance().format(new Date());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a MMM d, ''yy");
         String simpleTime = simpleDateFormat.format(new Date());
         this.type = type;
         if (type.equals("Broadcast")){

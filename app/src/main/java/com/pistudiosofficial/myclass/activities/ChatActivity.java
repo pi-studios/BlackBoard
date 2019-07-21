@@ -57,7 +57,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
             public void onClick(View view) {
                 if (!et_chatBox.getText().toString().isEmpty()){
                     if (!et_chatBox.getText().toString().equals("")){
-                        String time = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+                        String time = new SimpleDateFormat("h:mm a MMM d, ''yy").format(new Date());
                         int compare = CURRENT_USER.UID.compareTo(SELECTED_CHAT_UID);
                         String node = "";
                         if (compare<0){

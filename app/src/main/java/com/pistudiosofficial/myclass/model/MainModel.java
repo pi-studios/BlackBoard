@@ -176,7 +176,7 @@ public class MainModel {
                                 .child(Integer.toString(i)).setValue(x);
 
                     }
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a MMM d, ''yy");
                     String simpleTime = simpleDateFormat.format(new Date());
                     String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
                     mREF_classList.child(newID).child("notification").push()

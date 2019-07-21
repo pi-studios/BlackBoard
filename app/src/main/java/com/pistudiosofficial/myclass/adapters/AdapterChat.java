@@ -58,7 +58,7 @@ public class AdapterChat extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Date date = null;
         String newstr = "";
         try {
-            date = new SimpleDateFormat("yyyyMMddHHmm").parse(chatObjects.get(i).timestamp);
+            date = new SimpleDateFormat("h:mm a MMM d, ''yy").parse(chatObjects.get(i).timestamp);
             newstr = new SimpleDateFormat("dd/MM, H:mm").format(date);
         } catch (ParseException e) {
             e.printStackTrace();
