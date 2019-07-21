@@ -20,6 +20,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.pistudiosofficial.myclass.Common;
+import com.pistudiosofficial.myclass.objects.UserObject;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.ProfileNewPresenterInterface;
 
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
@@ -88,8 +89,8 @@ public class ProfileNewModel {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child("profilePicLink").getValue() != null){
-                    presenter.profilePictureLoadSuccess(dataSnapshot.child("profilePicLink").getValue().toString());
+                if (dataSnapshot.getValue() != null){
+                    presenter.profileLoadSuccess(dataSnapshot.getValue(UserObject.class));
                 }
             }
 

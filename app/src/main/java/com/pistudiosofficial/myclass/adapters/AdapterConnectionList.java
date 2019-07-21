@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pistudiosofficial.myclass.R;
-import com.pistudiosofficial.myclass.activities.ProfileActivity;
+import com.pistudiosofficial.myclass.activities.ProfileNewActivity;
 import com.pistudiosofficial.myclass.objects.UserObject;
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class AdapterConnectionList extends RecyclerView.Adapter<AdapterConnectio
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                Intent intent = new Intent(view.getContext(),ProfileActivity.class);
+                Intent intent = new Intent(view.getContext(), ProfileNewActivity.class);
                 SELECTED_USER_PROFILE = userObjectsList.get(i);
                 view.getContext().startActivity(intent);
             }

@@ -15,10 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.pistudiosofficial.myclass.R;
+import com.pistudiosofficial.myclass.objects.UserObject;
 import com.pistudiosofficial.myclass.presenter.ProfileNewPresenter;
 import com.pistudiosofficial.myclass.view.ProfileNewView;
 import com.squareup.picasso.Picasso;
@@ -35,13 +37,14 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
     int PICK_PROFILE_IMG_REQUEST = 101;
     Uri uriProfilePic;
     Button bt_hello, bt_chat;
+    TextView tv_profile_name;
     ProfileNewPresenter presenter;
     ProgressDialog progressDialogProfilePic;
     Menu menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_profile);
+        setContentView(R.layout.activity_profile);
 
 
         img_profile = findViewById(R.id.img_profile_pic);
@@ -68,6 +71,7 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
                 startActivity(intent);
             }
         });
+        tv_profile_name = findViewById(R.id.tv_name_profile);
     }
 
     @Override
@@ -146,10 +150,11 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
     }
 
     @Override
-    public void profilePictureLoadSuccess(String link) {
-        if(link!=null && !link.equals("")){
-            Glide.with(this).load(link).into(img_profile);
+    public void profileLoadSuccess(UserObject userObject) {
+        if(userObject.profilePicLink !=null && !userObject.profilePicLink.equals("")){
+            Glide.with(this).load(userObject.profilePicLink).into(img_profile);
         }
+        tv_profile_name.setText(userObject.Name);
     }
 
     @Override

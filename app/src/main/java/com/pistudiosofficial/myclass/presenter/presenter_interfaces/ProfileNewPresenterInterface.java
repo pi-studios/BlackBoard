@@ -1,5 +1,7 @@
 package com.pistudiosofficial.myclass.presenter.presenter_interfaces;
 
+import com.pistudiosofficial.myclass.objects.UserObject;
+
 public interface ProfileNewPresenterInterface {
 
     void profilePicUploadSuccess();
@@ -8,7 +10,7 @@ public interface ProfileNewPresenterInterface {
     void helloSendSuccess();
     void helloSendFailed();
 
-    void profilePictureLoadSuccess(String link);
+    void profileLoadSuccess(UserObject object);
     void profilePictureLoadFailed();
 
     void helloStatusCheckSuccess(int hello);

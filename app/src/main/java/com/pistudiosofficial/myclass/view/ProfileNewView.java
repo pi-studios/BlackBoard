@@ -1,5 +1,7 @@
 package com.pistudiosofficial.myclass.view;
 
+import com.pistudiosofficial.myclass.objects.UserObject;
+
 public interface ProfileNewView {
 
     void profilePicUploadSuccess();
@@ -8,7 +10,7 @@ public interface ProfileNewView {
     void helloSendSuccess();
     void helloSendFailed();
 
-    void profilePictureLoadSuccess(String link);
+    void profileLoadSuccess(UserObject userObject);
     void profilePictureLoadFailed();
 
     void helloStatusCheckSuccess(int hello);

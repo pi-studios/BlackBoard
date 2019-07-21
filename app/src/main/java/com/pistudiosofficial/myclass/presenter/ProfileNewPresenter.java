@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import com.pistudiosofficial.myclass.model.HelloRequestModel;
 import com.pistudiosofficial.myclass.model.ProfileNewModel;
+import com.pistudiosofficial.myclass.objects.UserObject;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.ProfileNewPresenterInterface;
 import com.pistudiosofficial.myclass.view.ProfileNewView;
 
@@ -57,8 +58,8 @@ public class ProfileNewPresenter implements ProfileNewPresenterInterface {
     }
 
     @Override
-    public void profilePictureLoadSuccess(String link) {
-        view.profilePictureLoadSuccess(link);
+    public void profileLoadSuccess(UserObject userObject) {
+        view.profileLoadSuccess(userObject);
     }
 
     @Override
