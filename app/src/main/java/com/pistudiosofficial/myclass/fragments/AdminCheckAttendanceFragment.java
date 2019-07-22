@@ -85,6 +85,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                              Bundle savedInstanceState) {
 
         final View v=inflater.inflate(R.layout.admin_check_attendance, container, false);
+//        showBackButton();
         noPostMsg=v.findViewById(R.id.no_post_msg);
         fab_create_poll = v.findViewById(R.id.fab_create_poll);
         fab_exportcsv = v.findViewById(R.id.fab_export_csv);
@@ -522,4 +523,10 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cr.getType(uri));
     }
+
+//    public void showBackButton() {
+//        if (getActivity() instanceof ActionBarActivity) {
+//            ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        }
+//    }
 }
