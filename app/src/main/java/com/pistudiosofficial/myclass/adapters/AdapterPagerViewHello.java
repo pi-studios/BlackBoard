@@ -6,11 +6,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.pistudiosofficial.myclass.fragments.ClassTabFragment;
-import com.pistudiosofficial.myclass.fragments.ClassmateTabFragment;
 import com.pistudiosofficial.myclass.fragments.HelloListFragment;
 import com.pistudiosofficial.myclass.fragments.HelloRequestFragment;
-import com.pistudiosofficial.myclass.fragments.NotifTabFragment;
 
 public class AdapterPagerViewHello extends FragmentPagerAdapter {
 

@@ -280,7 +280,6 @@ public class MainModel {
                                 .getValue(Double.class).toString();
                             classObjectArrayList.add(dataSnapshot.child(studentClassObjectArrayList.get(i).classKey)
                                 .getValue(ClassObject.class));
-
                             userAttendancePercentList.add(temp);
                         }
                         catch (Exception e){
@@ -553,6 +552,7 @@ public class MainModel {
 
     private void cleanUselessStudentKey(ArrayList<String> arrayList){
         for (int i = 0; i<arrayList.size();i++){
+            Log.i("TAG",arrayList.get(i));
             mREF_users.child(CURRENT_USER.UID).child("class_list").child(arrayList.get(i)).removeValue();
         }
     }

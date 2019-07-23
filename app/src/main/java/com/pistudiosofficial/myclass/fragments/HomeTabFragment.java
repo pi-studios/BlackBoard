@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -33,34 +32,41 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.activities.ProfileNewActivity;
+import com.pistudiosofficial.myclass.adapters.AdapterHomeFeed;
+import com.pistudiosofficial.myclass.model.LiveMainModel;
+import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
+import com.pistudiosofficial.myclass.objects.PostObject;
 import com.pistudiosofficial.myclass.objects.UserObject;
+import com.pistudiosofficial.myclass.view.HomeView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
-import static com.pistudiosofficial.myclass.Common.LOG;
 import static com.pistudiosofficial.myclass.Common.SELECTED_PROFILE_UID;
 import static com.pistudiosofficial.myclass.Common.mREF_users;
 
-public class ClassmateTabFragment extends Fragment {
+public class HomeTabFragment extends Fragment implements HomeView {
 
     AppCompatImageButton bt_search;
     EditText et_search;
     RecyclerView recyclerViewSearch;
     DatabaseReference mUserRef;
     FrameLayout frameLayout;
-    public ClassmateTabFragment() {
+    public HomeTabFragment() {
     }
 
     @SuppressLint("WrongConstant")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_myclassmate,container,false);
+        View v = inflater.inflate(R.layout.fragment_home,container,false);
         bt_search = v.findViewById(R.id.bt_search_main);
         et_search = v.findViewById(R.id.et_search_main);
         recyclerViewSearch = v.findViewById(R.id.recycler_view_main_search);
-        frameLayout = v.findViewById(R.id.frameLayout_mainFrag);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewSearch.getContext(),
@@ -80,7 +86,6 @@ public class ClassmateTabFragment extends Fragment {
         bt_search.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                recyclerViewSearch.setVisibility(View.GONE);
                 et_search.setText("");
                 et_search.clearFocus();
                 return true;
@@ -103,6 +108,7 @@ public class ClassmateTabFragment extends Fragment {
                 return false;
             }
         });
+        loadFeed();
         return v;
     }
 
@@ -168,5 +174,23 @@ public class ClassmateTabFragment extends Fragment {
         }
     }
 
+    private void loadFeed(){
+        LiveMainModel liveMainModel = new LiveMainModel(this);
+        liveMainModel.performfeedload(CURRENT_CLASS_ID_LIST);
+    }
 
+    @Override
+    public void loadFeedSuccess(ArrayList<PostObject> postObjects, HashMap<String,
+            PollOptionValueLikeObject> post_poll_option,
+                                ArrayList<String> post_like_list,
+                                HashMap<String, ArrayList<String>> post_url_list,
+                                ArrayList<String> comment_count,
+                                HashMap<String, String> postClassID) {
+        AdapterHomeFeed adapterHomeFeed = new AdapterHomeFeed(postObjects,post_poll_option,
+                post_like_list,post_url_list,comment_count,getContext(),postClassID);
+
+        recyclerViewSearch.setAdapter(adapterHomeFeed);
+
+
+    }
 }

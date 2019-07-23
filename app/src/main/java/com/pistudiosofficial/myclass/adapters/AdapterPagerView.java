@@ -1,13 +1,11 @@
 package com.pistudiosofficial.myclass.adapters;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 import com.pistudiosofficial.myclass.fragments.ClassTabFragment;
-import com.pistudiosofficial.myclass.fragments.ClassmateTabFragment;
+import com.pistudiosofficial.myclass.fragments.HomeTabFragment;
 import com.pistudiosofficial.myclass.fragments.NotifTabFragment;
 
 public class AdapterPagerView extends FragmentPagerAdapter {
@@ -25,7 +23,7 @@ public class AdapterPagerView extends FragmentPagerAdapter {
                 fragment = new NotifTabFragment();
                 break;
             case 1:
-                fragment = new ClassmateTabFragment();
+                fragment = new HomeTabFragment();
                 break;
             case 2:
                 fragment = new ClassTabFragment();

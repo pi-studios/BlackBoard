@@ -56,6 +56,6 @@ public class NotifTabFragment extends Fragment implements NotificationHistoryVie
 
     @Override
     public void loadRecyclerFailed() {
-        Toast.makeText(getContext(),"History Load Failed",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(),"History Load Failed",Toast.LENGTH_SHORT).show();
     }
 }
