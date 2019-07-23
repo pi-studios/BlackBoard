@@ -17,7 +17,7 @@
         android:id="@+id/et_search_main"
         android:layout_width="290dp"
         android:layout_height="40dp"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="30dp"
         android:layout_marginEnd="0dp"
         android:layout_weight="5"
         android:background="@drawable/rounded_edit_text"
@@ -37,7 +37,7 @@
         android:layout_width="30dp"
         android:layout_height="40dp"
         android:layout_alignTop="@+id/searchLayout"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="0dp"
         android:layout_marginEnd="2dp"
         android:layout_weight="2"
         android:background="@drawable/ic_search_black_24dp" />

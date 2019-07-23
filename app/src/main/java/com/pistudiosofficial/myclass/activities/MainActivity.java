@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity
             chatListDialogFragment = ChatListDialogFragment.newInstance("Chat List");
             //chatListDialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentTheme);
             FragmentManager fm = getSupportFragmentManager();
-            menu.getItem(1).setIcon(ContextCompat.getDrawable(this, R.drawable.chat));
+            menu.getItem(1).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_chat_bubble_outline_white_24dp));
             chatListDialogFragment.show(fm, "Chat List");
         }
         return super.onOptionsItemSelected(item);
@@ -378,10 +378,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void loadHelloSuccess() {
         if (HELLO_REQUEST_USERS == null || HELLO_REQUEST_USERS.isEmpty()){
-            menu.getItem(2).setIcon(ContextCompat.getDrawable(this, R.drawable.friend));
+            menu.getItem(2).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_people_outline_white_24dp));
         }
         else {
-            menu.getItem(2).setIcon(ContextCompat.getDrawable(this, R.drawable.friend_new));
+            menu.getItem(2).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_people_outline_blue_24dp));
         }
     }
 

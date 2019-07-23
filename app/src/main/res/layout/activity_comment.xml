@@ -118,15 +118,18 @@
             android:id="@+id/et_commetInput_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:ems="10"
             android:hint="Comment"
             android:inputType="textPersonName" />
 
         <ImageButton
             android:id="@+id/bt_commentSend_comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            android:background="@null"
             android:src="@drawable/ic_insert_comment_black_24dp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

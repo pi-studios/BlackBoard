@@ -122,6 +122,12 @@ public class CommentActivity extends AppCompatActivity implements CommentView {
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return false;
+    }
+
+    @Override
     public void commentNotify() {
         adapterComment.notifyDataSetChanged();
     }

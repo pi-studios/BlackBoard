@@ -2,6 +2,8 @@ package com.pistudiosofficial.myclass.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -10,20 +12,25 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.pistudiosofficial.myclass.R;
+import com.pistudiosofficial.myclass.adapters.AdapterCourseItem;
 import com.pistudiosofficial.myclass.objects.UserObject;
 import com.pistudiosofficial.myclass.presenter.ProfileNewPresenter;
 import com.pistudiosofficial.myclass.view.ProfileNewView;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -37,17 +44,28 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
     int PICK_PROFILE_IMG_REQUEST = 101;
     Uri uriProfilePic;
     Button bt_hello, bt_chat;
+    ImageButton bt_back,bt_edit,bt_settings;
     TextView tv_profile_name;
     ProfileNewPresenter presenter;
     ProgressDialog progressDialogProfilePic;
     Menu menu;
+    private ArrayList<String> mCourseNames=new ArrayList<>();
+    private ArrayList<String> mInstructorNames=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
-
+        bt_back=findViewById(R.id.backButton);
+        bt_edit=findViewById(R.id.editbutton);
+        bt_settings=findViewById(R.id.setting_button);
+        courseAndInstructorNames();
         img_profile = findViewById(R.id.img_profile_pic);
+//        bt_back.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onBackPressed();
+//            }
+//        });
         img_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -213,6 +231,31 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
             });
         }
 
+    }
+    public void courseAndInstructorNames()
+    {
+        mCourseNames.add("Graphics");
+        mInstructorNames.add("Badal Soni");
+
+        mCourseNames.add("Maths");
+        mInstructorNames.add("K.N.Das");
+
+        mCourseNames.add("FLAT");
+        mInstructorNames.add("Shyampada Mukherjee");
+
+        mCourseNames.add("Signals And System");
+        mInstructorNames.add("Anish Kumar");
+
+        initRecyclerViewForCourse();
+    }
+    private void initRecyclerViewForCourse(){
+//
+
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        RecyclerView recyclerView=findViewById(R.id.course_recyclerview);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        AdapterCourseItem adapterCourseItem= new AdapterCourseItem(mCourseNames,mInstructorNames,this);
+        recyclerView.setAdapter(adapterCourseItem);
     }
 
     private void initializeProfile(){

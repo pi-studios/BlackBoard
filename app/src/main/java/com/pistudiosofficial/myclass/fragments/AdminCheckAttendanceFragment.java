@@ -26,7 +26,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -69,7 +70,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
     ImageButton pickImage,pickFile;
     ImageView img1,img2,img3;
     String fileUploadLink = "";
-    TextView noPostMsg;
+    TextView noPostMsg,toolbarText;
     int temp;
     private static final int PICK_IMAGE_REQUEST01 = 1,PICK_IMAGE_REQUEST02 = 2, PICK_IMAGE_REQUEST03 = 3,
                         PICK_FILE_REQUEST = 4;
@@ -86,6 +87,17 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
 
         final View v=inflater.inflate(R.layout.admin_check_attendance, container, false);
 //        showBackButton();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        Toolbar toolbar = v.findViewById(R.id.toolbar_admin);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+        String className = getArguments().getString("ClassName");
+        toolbarText=v.findViewById(R.id.toolbar_text_admin);
+        toolbarText.setText(className);
         noPostMsg=v.findViewById(R.id.no_post_msg);
         fab_create_poll = v.findViewById(R.id.fab_create_poll);
         fab_exportcsv = v.findViewById(R.id.fab_export_csv);
@@ -527,9 +539,4 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         return mime.getExtensionFromMimeType(cr.getType(uri));
     }
 
-//    public void showBackButton() {
-//        if (getActivity() instanceof ActionBarActivity) {
-//            ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        }
-//    }
 }
