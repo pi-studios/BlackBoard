@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity
     TabLayout tabLayout;
     ViewPager viewPager;
     Menu menu;
+    boolean flag;
     ChatListModel chatListModel;
     DrawerLayout drawer;
     ChatListDialogFragment chatListDialogFragment;
@@ -396,9 +397,21 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void notifNewComment() {
+        if(CHECK_NEW_COMMENT_POST.size()>0){
+            flag = false;
+            for (int i:CHECK_NEW_COMMENT_POST){
+                if (i == 1 || i == 3){
+                    flag = true;
+                }
+            }
+            if (flag){
+                tabLayout.getTabAt(2).setIcon(R.drawable.blackboard_icon_new);
+                ADAPTER_CLASS_LIST.notifyDataSetChanged();
+            }
+        }
         if (CHECK_NEW_COMMENT.size()>0){
-            tabLayout.getTabAt(2).setIcon(R.drawable.blackboard_icon_new);
-            ADAPTER_CLASS_LIST.notifyDataSetChanged();
+                tabLayout.getTabAt(2).setIcon(R.drawable.blackboard_icon_new);
+                ADAPTER_CLASS_LIST.notifyDataSetChanged();
         }
     }
 

@@ -34,6 +34,7 @@ import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
+import static com.pistudiosofficial.myclass.Common.LOG;
 import static com.pistudiosofficial.myclass.Common.mREF_COMMENT_LOAD;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
@@ -47,21 +48,26 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
     ArrayList<String> comment_count;
     PostInteractionModel model;
     Context context;
+    HashMap<String,String> postPollSelect;
     int k;
     ArrayList<String> url;
+    ArrayList<String> likedPostID;
 
     public AdapterPostLoad(ArrayList<PostObject> postObjectArrayList,HashMap<String,
                             PollOptionValueLikeObject> post_poll_option,
                             ArrayList<String> post_like_list,
                             HashMap<String, ArrayList<String>> post_url_list,
                             ArrayList<String> comment_count,
-                            Context context) {
+                            Context context, ArrayList<String> likedPostID,
+                            HashMap<String,String> postPollSelect) {
         this.postObjectArrayList = postObjectArrayList;
+        this.likedPostID = likedPostID;
         this.post_like_list = post_like_list;
         this.post_poll_option = post_poll_option;
         this.post_url_list = post_url_list;
         this.context = context;
         this.comment_count = comment_count;
+        this.postPollSelect = postPollSelect;
         post_id = new ArrayList<>();
         model = new PostInteractionModel();
         for (PostObject s : postObjectArrayList){
@@ -99,14 +105,24 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
             if (comment_count != null) {
                 myViewHolder.bt_comment.setText(" "+comment_count.get(i)+" Comments");
             }
+            if (!likedPostID.get(i).equals("null") && likedPostID.get(i).equals(post_id.get(i))){
+                myViewHolder.bt_like
+                        .setCompoundDrawablesWithIntrinsicBounds
+                                (R.drawable.ic_favorite_black_24dp, 0, 0, 0);
+            }
             myViewHolder.bt_like.setOnClickListener(new View.OnClickListener() {
                 //TODO
                 //Bug of not showing button
                 @Override
                 public void onClick(View view) {
-                    Button bt = (Button) view;
-                    bt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite_black_24dp, 0, 0, 0);
-                    model.likeClicked(post_id.get(i), Common.CURRENT_CLASS_ID_LIST.get(Common.CURRENT_INDEX));
+                    if (likedPostID.get(i).equals("null") && !likedPostID.get(i).equals(post_id.get(i))){
+                        Button bt = (Button) view;
+                        bt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite_black_24dp, 0, 0, 0);
+                        model.likeClicked(post_id.get(i), Common.CURRENT_CLASS_ID_LIST.get(Common.CURRENT_INDEX));
+                        if (post_like_list.get(i).equals("0")){
+                            bt.setText(" "+"1"+" Likes");
+                        }
+                    }
                 }
             });
             if (postObjectArrayList.get(i).getPostType().equals("admin_poll")) {
@@ -114,7 +130,7 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
                 myViewHolder.listView.removeAllViews();
                 for (int j = 0; j < obj.optionList.size(); j++) {
                     Button tv = new Button(context);
-                    tv.setId(j);
+                    tv.setId(i+j);
                     if (Common.CURRENT_USER.AdminLevel.equals("admin")) {
                         tv.setText(obj.optionList.get(j) + " : " + obj.votesCountList.get(j));
                     } else {
@@ -132,9 +148,15 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
                                 model.pollClicked(option, Common.CURRENT_CLASS_ID_LIST.get(Common.CURRENT_INDEX),
                                         post_id.get(i));
                             }
+                            tv.setEnabled(false);
                         }
                     });
                     myViewHolder.listView.addView(tv);
+                    if (!postPollSelect.get(post_id.get(i)).equals("null") &&
+                            obj.optionList.get(j).equals(postPollSelect.get(post_id.get(i))) &&
+                            Common.CURRENT_USER.AdminLevel.equals("user")){
+                        tv.setEnabled(false);
+                    }
                 }
             } else {
                 if (post_url_list.containsKey(post_id.get(i))) {
@@ -170,6 +192,9 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
                     intent.putExtra("post_id", post_id.get(i));
                     COMMENT_LOAD_POST_OBJECT = postObjectArrayList.get(i);
                     context.startActivity(intent);
+                    myViewHolder.bt_comment
+                            .setCompoundDrawablesWithIntrinsicBounds
+                                    (R.drawable.ic_chat_bubble_outline_black_24dp, 0, 0, 0);
                 }
             });
             if (postObjectArrayList.get(i).getCreatorProPickLink() != null && context != null) {

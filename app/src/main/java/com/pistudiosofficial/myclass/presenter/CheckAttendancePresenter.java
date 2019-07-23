@@ -132,8 +132,9 @@ public class CheckAttendancePresenter implements CheckAttendancePresenterInterfa
     public void loadPostSuccess(ArrayList<PostObject> postObjects, HashMap<String,
             PollOptionValueLikeObject> post_poll_option, ArrayList<String> post_like_list,
                                 HashMap<String, ArrayList<String>> post_url_list,
-                                ArrayList<String> comment_count) {
-        view.loadPostSuccess(postObjects,post_poll_option,post_like_list,post_url_list,comment_count);
+                                ArrayList<String> comment_count, ArrayList<String> likedpostID,
+                                HashMap<String,String> postPollSelect) {
+        view.loadPostSuccess(postObjects,post_poll_option,post_like_list,post_url_list,comment_count,likedpostID,postPollSelect);
     }
 
     public void broadcastFunctionPerform(){

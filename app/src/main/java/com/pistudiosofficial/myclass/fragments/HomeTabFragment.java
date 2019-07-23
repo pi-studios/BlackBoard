@@ -46,6 +46,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
+import static com.pistudiosofficial.myclass.Common.LOG;
 import static com.pistudiosofficial.myclass.Common.SELECTED_PROFILE_UID;
 import static com.pistudiosofficial.myclass.Common.mREF_users;
 
@@ -55,7 +56,7 @@ public class HomeTabFragment extends Fragment implements HomeView {
     EditText et_search;
     RecyclerView recyclerViewSearch;
     DatabaseReference mUserRef;
-    FrameLayout frameLayout;
+    AdapterHomeFeed adapterHomeFeed;
     public HomeTabFragment() {
     }
 
@@ -73,13 +74,14 @@ public class HomeTabFragment extends Fragment implements HomeView {
                 llm.getOrientation());
         recyclerViewSearch.addItemDecoration(dividerItemDecoration);
         recyclerViewSearch.setLayoutManager(llm);
+        loadFeed();
         mUserRef = FirebaseDatabase.getInstance().getReference("users");
         bt_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!et_search.getText().toString().isEmpty() && !et_search.getText().toString().equals("")){
                     recyclerViewSearch.setVisibility(View.VISIBLE);
-                    firebaseUserSearch(et_search.getText().toString());
+                    firebaseUserSearch(et_search.getText().toString().toLowerCase());
                 }
             }
         });
@@ -87,6 +89,7 @@ public class HomeTabFragment extends Fragment implements HomeView {
             @Override
             public boolean onLongClick(View view) {
                 et_search.setText("");
+                recyclerViewSearch.setAdapter(adapterHomeFeed);
                 et_search.clearFocus();
                 return true;
             }
@@ -108,7 +111,6 @@ public class HomeTabFragment extends Fragment implements HomeView {
                 return false;
             }
         });
-        loadFeed();
         return v;
     }
 
@@ -186,11 +188,8 @@ public class HomeTabFragment extends Fragment implements HomeView {
                                 HashMap<String, ArrayList<String>> post_url_list,
                                 ArrayList<String> comment_count,
                                 HashMap<String, String> postClassID) {
-        AdapterHomeFeed adapterHomeFeed = new AdapterHomeFeed(postObjects,post_poll_option,
+                adapterHomeFeed = new AdapterHomeFeed(postObjects,post_poll_option,
                 post_like_list,post_url_list,comment_count,getContext(),postClassID);
-
         recyclerViewSearch.setAdapter(adapterHomeFeed);
-
-
     }
 }

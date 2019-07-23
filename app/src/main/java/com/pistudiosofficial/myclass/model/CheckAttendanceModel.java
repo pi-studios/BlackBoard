@@ -316,8 +316,12 @@ public class CheckAttendanceModel {
     ArrayList<String> post_like_list ;
     HashMap<String, ArrayList<String>> post_url_list ;
     ArrayList<String> post_comment_count;
+    ArrayList<String> likedPostID;
+    HashMap<String,String> pollSelectPostID;
     public void performLoadPost(String classID){
         postObjects = new ArrayList<>();
+        pollSelectPostID = new HashMap<>();
+        likedPostID = new ArrayList<>();
         post_like_list = new ArrayList<>();
         post_poll_option = new HashMap<>();
         post_url_list = new HashMap<>();
@@ -365,6 +369,12 @@ public class CheckAttendanceModel {
                             .child("comment").child("comment_count").getValue()==null){
                         post_comment_count.add("0");
                     }
+                    if (dataSnapshot.child(p.getPostID()).child("like").child(CURRENT_USER.UID).getValue() != null){
+                        likedPostID.add(p.getPostID());
+                    }
+                    if (dataSnapshot.child(p.getPostID()).child("like").child(CURRENT_USER.UID).getValue() == null){
+                        likedPostID.add("null");
+                    }
                 }
                 metaDataLoad(postObject,classID);
             }
@@ -390,6 +400,7 @@ public class CheckAttendanceModel {
                                 url.add(s.getValue().toString());
                             }
                             post_url_list.put(p.getPostID(),url);
+
                         }
                     }else {
                         PollOptionValueLikeObject postmetaOBJ = new PollOptionValueLikeObject();
@@ -399,10 +410,21 @@ public class CheckAttendanceModel {
                                 postmetaOBJ.votesCountList.add(s.getValue().toString());
                             }
                         }
+                        if (dataSnapshot.child(p.getPostID()).child("options").child("poll_clicked_user").
+                        child(CURRENT_USER.UID).getValue() != null){
+                            pollSelectPostID.put(p.getPostID(),dataSnapshot.child(p.getPostID())
+                                    .child("options").child("poll_clicked_user").
+                                    child(CURRENT_USER.UID).getValue().toString());
+                        }
+                        if (dataSnapshot.child(p.getPostID()).child("options").child("poll_clicked_user").
+                                child(CURRENT_USER.UID).getValue() == null){
+                            pollSelectPostID.put(p.getPostID(),"null");
+                        }
                         post_poll_option.put(p.getPostID(),postmetaOBJ);
                     }
                 }
-                presenter.loadPostSuccess(postObjects,post_poll_option,post_like_list,post_url_list,post_comment_count);
+                presenter.loadPostSuccess(postObjects,post_poll_option,post_like_list,
+                        post_url_list,post_comment_count,likedPostID,pollSelectPostID);
             }
 
             @Override

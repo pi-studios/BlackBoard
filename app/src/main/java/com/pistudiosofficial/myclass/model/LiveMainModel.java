@@ -105,7 +105,6 @@ public class LiveMainModel {
 
 
     // This is for loading post in home screen
-    int classCount;
     int counter;
     ArrayList<PostObject> postObjects ;
     HashMap<String, PollOptionValueLikeObject> post_poll_option ;
@@ -114,7 +113,6 @@ public class LiveMainModel {
     ArrayList<String> post_comment_count;
     HashMap<String,String> post_class_id;
     public void performfeedload(ArrayList<String> classID){
-        this.classCount = classID.size()-1;
         counter = 0;
         postObjects = new ArrayList<>();
         post_class_id = new HashMap<>();
@@ -182,6 +180,7 @@ public class LiveMainModel {
     }
 
     private void metaDataLoad(PostObject p,String classID){
+
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -205,7 +204,7 @@ public class LiveMainModel {
                     }
                     post_poll_option.put(p.getPostID(),postmetaOBJ);
                 }
-                if (counter <classCount){
+                if (counter <postObjects.size()-1){
                     counter++;
                 }
                 else{

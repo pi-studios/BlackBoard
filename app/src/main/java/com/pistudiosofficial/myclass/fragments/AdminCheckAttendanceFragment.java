@@ -329,17 +329,20 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
     public void loadPostSuccess(ArrayList<PostObject> postObjects,
                                 HashMap<String, PollOptionValueLikeObject> post_poll_option,
                                 ArrayList<String> post_like_list, HashMap<String,
-            ArrayList<String>> post_url_list, ArrayList<String> comment_count) {
+            ArrayList<String>> post_url_list, ArrayList<String> comment_count,
+                                ArrayList<String> likedPostID,
+            HashMap<String,String> postPollSelect) {
         Collections.reverse(postObjects);
         Collections.reverse(post_like_list);
         Collections.reverse(comment_count);
+        Collections.reverse(likedPostID);
         ArrayList<PostObject> postlist = postObjects;
         AdapterPostLoad adapterPostLoad =
                 new AdapterPostLoad(postlist,
                         post_poll_option,
                         post_like_list,
                         post_url_list,comment_count,
-                        getContext());
+                        getContext(), likedPostID,postPollSelect);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 //        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewPost.getContext(),

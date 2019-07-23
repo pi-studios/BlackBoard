@@ -27,5 +27,6 @@ public interface CheckAttendancePresenterInterface {
     void loadPostSuccess(ArrayList<PostObject> postObjects ,
             HashMap<String, PollOptionValueLikeObject>post_poll_option ,
             ArrayList<String> post_like_list ,
-            HashMap<String, ArrayList<String>> post_url_list,ArrayList<String> comment_count);
+            HashMap<String, ArrayList<String>> post_url_list,ArrayList<String> comment_count,
+                         ArrayList<String> likedPostID,HashMap<String,String> postPollSelect);
 }

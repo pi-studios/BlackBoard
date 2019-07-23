@@ -100,7 +100,7 @@ public class PostInteractionModel {
                 if(flag == 0){
                     Common.mREF_classList.child(classId).child("post")
                             .child(postId).child("options").child("poll_clicked_user")
-                            .child(Common.CURRENT_USER.UID).setValue("true");
+                            .child(Common.CURRENT_USER.UID).setValue(option);
                     Common.mREF_classList.child(classId).child("post")
                             .child(postId).child("options")
                             .addListenerForSingleValueEvent(valueEventListener1);
