@@ -111,8 +111,6 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
                                 (R.drawable.ic_favorite_black_24dp, 0, 0, 0);
             }
             myViewHolder.bt_like.setOnClickListener(new View.OnClickListener() {
-                //TODO
-                //Bug of not showing button
                 @Override
                 public void onClick(View view) {
                     if (likedPostID.get(i).equals("null") && !likedPostID.get(i).equals(post_id.get(i))){

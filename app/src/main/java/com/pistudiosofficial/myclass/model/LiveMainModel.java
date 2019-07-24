@@ -8,11 +8,14 @@ import androidx.annotation.Nullable;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
 import com.pistudiosofficial.myclass.objects.PostObject;
 import com.pistudiosofficial.myclass.view.HomeView;
 import com.pistudiosofficial.myclass.view.MainActivityView;
+import com.pistudiosofficial.myclass.view.SplashView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,13 +23,20 @@ import java.util.HashMap;
 import static com.pistudiosofficial.myclass.Common.CHECK_NEW_COMMENT;
 import static com.pistudiosofficial.myclass.Common.CHECK_NEW_COMMENT_POST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
+import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
 import static com.pistudiosofficial.myclass.Common.LOG;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
 public class LiveMainModel {
 
     MainActivityView mainActivityView;
+    SplashView splashView;
     HomeView homeView;
+
+    public LiveMainModel(SplashView splashView) {
+        this.splashView = splashView;
+    }
+
     public LiveMainModel(MainActivityView mainActivityView) {
         this.mainActivityView = mainActivityView;
     }
@@ -112,8 +122,12 @@ public class LiveMainModel {
     HashMap<String, ArrayList<String>> post_url_list ;
     ArrayList<String> post_comment_count;
     HashMap<String,String> post_class_id;
+    ArrayList<String> likedPostID;
+    HashMap<String,String> pollSelectPostID;
     public void performfeedload(ArrayList<String> classID){
         counter = 0;
+        likedPostID = new ArrayList<>();
+        pollSelectPostID = new HashMap<>();
         postObjects = new ArrayList<>();
         post_class_id = new HashMap<>();
         post_poll_option = new HashMap<>();
@@ -168,7 +182,12 @@ public class LiveMainModel {
                         .child("comment").child("comment_count").getValue()==null){
                     post_comment_count.add("0");
                 }
-
+                if (dataSnapshot.child(p.getPostID()).child("like").child(CURRENT_USER.UID).getValue() != null){
+                    likedPostID.add(p.getPostID());
+                }
+                if (dataSnapshot.child(p.getPostID()).child("like").child(CURRENT_USER.UID).getValue() == null){
+                    likedPostID.add("null");
+                }
                 metaDataLoad(p,classID);
             }
             @Override
@@ -202,6 +221,16 @@ public class LiveMainModel {
                             postmetaOBJ.votesCountList.add(s.getValue().toString());
                         }
                     }
+                    if (dataSnapshot.child(p.getPostID()).child("options").child("poll_clicked_user").
+                            child(CURRENT_USER.UID).getValue() != null){
+                        pollSelectPostID.put(p.getPostID(),dataSnapshot.child(p.getPostID())
+                                .child("options").child("poll_clicked_user").
+                                        child(CURRENT_USER.UID).getValue().toString());
+                    }
+                    if (dataSnapshot.child(p.getPostID()).child("options").child("poll_clicked_user").
+                            child(CURRENT_USER.UID).getValue() == null){
+                        pollSelectPostID.put(p.getPostID(),"null");
+                    }
                     post_poll_option.put(p.getPostID(),postmetaOBJ);
                 }
                 if (counter <postObjects.size()-1){
@@ -209,7 +238,7 @@ public class LiveMainModel {
                 }
                 else{
                     homeView.loadFeedSuccess(postObjects,post_poll_option,post_like_list,
-                            post_url_list,post_comment_count,post_class_id);
+                            post_url_list,post_comment_count,post_class_id,likedPostID,pollSelectPostID);
                 }
             }
 
@@ -219,4 +248,28 @@ public class LiveMainModel {
         };
         mREF_classList.child(classID).child("post").addListenerForSingleValueEvent(valueEventListener);
     }
+
+
+
+
+    // This is for controlling app Access
+    //Maintenance = 0; Running = 1;
+    public void CHECK_CONTROL(){
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference dRef = db.getReference().child("control");
+        dRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long control_state = dataSnapshot.getValue(Long.class);
+                Log.i("TAG",control_state+"");
+                splashView.controlCheck(control_state);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }

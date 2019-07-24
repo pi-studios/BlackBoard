@@ -187,9 +187,10 @@ public class HomeTabFragment extends Fragment implements HomeView {
                                 ArrayList<String> post_like_list,
                                 HashMap<String, ArrayList<String>> post_url_list,
                                 ArrayList<String> comment_count,
-                                HashMap<String, String> postClassID) {
+                                HashMap<String, String> postClassID,ArrayList<String> likedPostID,
+                                HashMap<String,String> pollSelectPostID) {
                 adapterHomeFeed = new AdapterHomeFeed(postObjects,post_poll_option,
-                post_like_list,post_url_list,comment_count,getContext(),postClassID);
+                post_like_list,post_url_list,comment_count,getContext(),postClassID,likedPostID,pollSelectPostID);
         recyclerViewSearch.setAdapter(adapterHomeFeed);
     }
 }
