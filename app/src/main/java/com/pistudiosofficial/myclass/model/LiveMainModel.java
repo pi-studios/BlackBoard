@@ -41,6 +41,9 @@ public class LiveMainModel {
         this.mainActivityView = mainActivityView;
     }
 
+    public LiveMainModel() {
+    }
+
     public LiveMainModel(HomeView homeView) {
         this.homeView = homeView;
     }

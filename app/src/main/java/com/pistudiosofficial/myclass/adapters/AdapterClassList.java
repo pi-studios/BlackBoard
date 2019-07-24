@@ -108,6 +108,7 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
             public void onClick(View view) {
                 Common.CURRENT_INDEX = i;
                 Intent intent = new Intent(view.getContext(), CheckAttendanceActivity.class);
+                intent.putExtra("ClassName",myViewHolder.tvclassName.getText());
                 view.getContext().startActivity(intent);
             }
         });

@@ -234,6 +234,7 @@ public class MainModel {
     }
 
     public void performUserClassListDownload(){
+
         ChildEventListener childEventListener;
         studentClassObjectArrayList = new ArrayList<>();
         userAttendancePercentList = new ArrayList<>();
@@ -242,8 +243,10 @@ public class MainModel {
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                LOG();
                 studentClassObject = dataSnapshot.getValue(StudentClassObject.class);
                     studentClassObjectArrayList.add(studentClassObject);
+                    Log.d("StudentClassKey",studentClassObject.classKey);
                     CURRENT_USER_CLASS_LIST_ID.add(dataSnapshot.getKey());
                     CURRENT_CLASS_ID_LIST.add(studentClassObject.classKey);
             }
@@ -307,6 +310,8 @@ public class MainModel {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 classObject = dataSnapshot.getValue(ClassObject.class);
+                Log.d("FacultyEmail",classObject.facultyEmail);
+                Log.d("FacultyJoinCode",classObject.joinCode);
                     if (classObject.facultyEmail.equals(studentClassObject.facultyEmail) &&
                             classObject.joinCode.equals(studentClassObject.joinCode)) {
                         studentClassObject.classKey = dataSnapshot.getKey();

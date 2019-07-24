@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +41,7 @@ public class UserCheckAttendanceFragment extends Fragment implements CheckAttend
     RecyclerView recyclerViewPost;
     CheckAttendancePresenter presenter;
     FloatingActionButton fab_resourceBucket;
+    TextView toolBarText;
     public UserCheckAttendanceFragment() {
     }
 
@@ -46,6 +50,17 @@ public class UserCheckAttendanceFragment extends Fragment implements CheckAttend
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_user_check_attendence, container, false);
+        // Add Toolbar with back button
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        Toolbar toolbar = v.findViewById(R.id.toolbar_user);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+        toolBarText=v.findViewById(R.id.toolbar_text_user);
+        toolBarText.setText(getArguments().getString("ClassName"));
         recyclerViewPost = v.findViewById(R.id.recyclerView_user_check_attendance);
         presenter = new CheckAttendancePresenter(this);
         presenter.performLoadPost(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX));
@@ -133,9 +148,9 @@ public class UserCheckAttendanceFragment extends Fragment implements CheckAttend
                         getContext(),likedPostID,postPollSelect);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewPost.getContext(),
-                llm.getOrientation());
-        recyclerViewPost.addItemDecoration(dividerItemDecoration);
+//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewPost.getContext(),
+//                llm.getOrientation());
+//        recyclerViewPost.addItemDecoration(dividerItemDecoration);
         recyclerViewPost.setLayoutManager(llm);
         recyclerViewPost.setAdapter(adapterPostLoad);
     }
