@@ -12,13 +12,12 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 
 import com.pistudiosofficial.myclass.R;
-import com.pistudiosofficial.myclass.presenter.MainPresenter;
+import com.pistudiosofficial.myclass.model.LiveMainModel;
+import com.pistudiosofficial.myclass.view.SplashView;
 import com.vanniktech.emoji.EmojiManager;
 import com.vanniktech.emoji.google.GoogleEmojiProvider;
 
-public class SplashActivity extends AppCompatActivity {
-
-    MainPresenter presenter;
+public class SplashActivity extends AppCompatActivity implements SplashView {
 
 
     @Override
@@ -26,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         EmojiManager.install(new GoogleEmojiProvider());
-        timer();
+        initialize();
     }
 
     private boolean haveNetworkConnection() {
@@ -46,23 +45,11 @@ public class SplashActivity extends AppCompatActivity {
         return haveConnectedWifi || haveConnectedMobile;
     }
 
-    public void timer(){
+    public void initialize(){
 
         if (haveNetworkConnection()){
-            initializeData();
-            new CountDownTimer(1500,100){
-                @Override
-                public void onTick(long millisUntilFinished) {
-
-                }
-
-                @Override
-                public void onFinish() {
-                    Intent intent1 = new Intent(getApplicationContext(),MainActivity.class);
-                    startActivity(intent1);
-                    finish();
-                }
-            }.start();
+            LiveMainModel liveMainModel = new LiveMainModel(this);
+            liveMainModel.CHECK_CONTROL();
         }
         else{
             new AlertDialog.Builder(this)
@@ -77,15 +64,44 @@ public class SplashActivity extends AppCompatActivity {
                     }).show();
         }
     }
-
-    private void initializeData(){
-
-
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
 
+    }
+
+    @Override
+    public void controlCheck(long controlCode) {
+        if (controlCode == 1){
+            //App Control is on Running state
+
+            new CountDownTimer(900,100){
+                @Override
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                @Override
+                public void onFinish() {
+                    Intent intent1 = new Intent(getApplicationContext(),MainActivity.class);
+                    startActivity(intent1);
+                    finish();
+                }
+            }.start();
+        }
+        else{
+            //App control is on Maintenance State
+            AlertDialog alertDialog = new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("MAINTENANCE !")
+                    .setMessage("We are under maintenance. Please try again later.")
+                    .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    }).show();
+
+        }
     }
 }

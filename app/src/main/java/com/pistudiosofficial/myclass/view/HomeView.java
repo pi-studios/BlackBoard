@@ -11,5 +11,6 @@ public interface HomeView {
                          HashMap<String, PollOptionValueLikeObject> post_poll_option ,
                          ArrayList<String> post_like_list ,
                          HashMap<String, ArrayList<String>> post_url_list, ArrayList<String> comment_count,
-                         HashMap<String,String> postClassID);
+                         HashMap<String,String> postClassID,ArrayList<String> likedPostID,
+                                 HashMap<String,String> pollSelectPostID);
 }

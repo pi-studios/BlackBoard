@@ -45,6 +45,8 @@ public class AdapterHomeFeed extends RecyclerView.Adapter<AdapterHomeFeed.MyView
     PostInteractionModel model;
     Context context;
     HashMap<String,String> postClassID;
+    ArrayList<String> likedPostID;
+    HashMap<String,String> pollSelectPostID;
     int k;
     ArrayList<String> url;
 
@@ -53,12 +55,15 @@ public class AdapterHomeFeed extends RecyclerView.Adapter<AdapterHomeFeed.MyView
                            ArrayList<String> post_like_list,
                            HashMap<String, ArrayList<String>> post_url_list,
                            ArrayList<String> comment_count,
-                           Context context,HashMap<String,String> postClassID) {
+                           Context context,HashMap<String,String> postClassID,ArrayList<String> likedPostID,
+                           HashMap<String,String> pollSelectPostID) {
         this.postObjectArrayList = postObjectArrayList;
         this.post_like_list = post_like_list;
         this.post_poll_option = post_poll_option;
         this.post_url_list = post_url_list;
         this.context = context;
+        this.likedPostID = likedPostID;
+        this.pollSelectPostID = pollSelectPostID;
         this.comment_count = comment_count;
         this.postClassID = postClassID;
         post_id = new ArrayList<>();
@@ -98,12 +103,22 @@ public class AdapterHomeFeed extends RecyclerView.Adapter<AdapterHomeFeed.MyView
             if (comment_count != null) {
                 myViewHolder.bt_comment.setText(" "+comment_count.get(i)+" Comments");
             }
+            if (!likedPostID.get(i).equals("null") && likedPostID.get(i).equals(post_id.get(i))){
+                myViewHolder.bt_like
+                        .setCompoundDrawablesWithIntrinsicBounds
+                                (R.drawable.ic_favorite_black_24dp, 0, 0, 0);
+            }
             myViewHolder.bt_like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Button bt = (Button) view;
-                    bt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite_black_24dp, 0, 0, 0);
-                    model.likeClicked(post_id.get(i), postClassID.get(postObjectArrayList.get(i).getPostID()));
+                    if (likedPostID.get(i).equals("null") && !likedPostID.get(i).equals(post_id.get(i))){
+                        Button bt = (Button) view;
+                        bt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite_black_24dp, 0, 0, 0);
+                        model.likeClicked(post_id.get(i), postClassID.get(postObjectArrayList.get(i).getPostID()));
+                        if (post_like_list.get(i).equals("0")){
+                            bt.setText(" "+"1"+" Likes");
+                        }
+                    }
                 }
             });
             if (postObjectArrayList.get(i).getPostType().equals("admin_poll")) {
@@ -129,9 +144,15 @@ public class AdapterHomeFeed extends RecyclerView.Adapter<AdapterHomeFeed.MyView
                                 model.pollClicked(option, postClassID.get(postObjectArrayList.get(i).getPostID()),
                                         post_id.get(i));
                             }
+                            tv.setEnabled(false);
                         }
                     });
                     myViewHolder.listView.addView(tv);
+                    if (!pollSelectPostID.get(post_id.get(i)).equals("null") &&
+                            obj.optionList.get(j).equals(pollSelectPostID.get(post_id.get(i))) &&
+                            Common.CURRENT_USER.AdminLevel.equals("user")){
+                        tv.setEnabled(false);
+                    }
                 }
             } else {
                 if (post_url_list.containsKey(post_id.get(i))) {
@@ -178,6 +199,16 @@ public class AdapterHomeFeed extends RecyclerView.Adapter<AdapterHomeFeed.MyView
                             .setCompoundDrawablesWithIntrinsicBounds(R.drawable.chat_green, 0, 0, 0);
                 }
             }catch (Exception e){e.printStackTrace();}
+
+            myViewHolder.bt_share.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent share= new Intent(Intent.ACTION_SEND);
+                    share.setType("text/plain");
+                    share.putExtra(Intent.EXTRA_TEXT,postObjectArrayList.get(i).getCreatorName()+"\n "+postObjectArrayList.get(i).getCreationDate()+"\n"+postObjectArrayList.get(i).getBody());
+                    context.startActivity(share);
+                }
+            });
         }
     }
 
