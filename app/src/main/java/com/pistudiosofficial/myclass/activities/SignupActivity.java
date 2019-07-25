@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +41,26 @@ public class SignupActivity extends AppCompatActivity implements SignUpView {
         radioGroup =findViewById(R.id.radioGroup);
         roll = findViewById(R.id.et_roll_id);
         Button signup = findViewById(R.id.bt_signUp);
+//        roll.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                //do nothing
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                //do nothing
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                String str=roll.getText().toString();
+//                if(str.length()!=7){
+//                    roll.setTextColor(Color.RED);
+//                    Toast.makeText(SignupActivity.this,"Please Input in Format ",Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -62,6 +85,16 @@ public class SignupActivity extends AppCompatActivity implements SignUpView {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(phone.getText().toString().length()!=10){
+                    phone.setError("Please enter ten digit Mob.No");
+                    return;
+//                    Toast.makeText(SignupActivity.this,"Please Input in Format ",Toast.LENGTH_LONG).show();
+                }
+                if(roll.getText().toString().length()!=7){
+                    roll.setError("Please check your roll no ");
+                    return;
+//                    Toast.makeText(SignupActivity.this,"Please Input in Format ",Toast.LENGTH_LONG).show();
+                }
                 if(password1.getText().toString().equals(password2.getText().toString()) && !(password1.getText().toString().length()<6)){
                     presenter.performSignUp(email.getText().toString(),
                             password1.getText().toString(),

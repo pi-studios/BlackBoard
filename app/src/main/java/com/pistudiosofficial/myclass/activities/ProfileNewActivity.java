@@ -12,13 +12,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,22 +41,28 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
     int PICK_PROFILE_IMG_REQUEST = 101;
     Uri uriProfilePic;
     Button bt_hello, bt_chat;
-    ImageButton bt_back,bt_edit,bt_settings;
+//    ImageButton bt_back,bt_edit,bt_settings;
     TextView tv_profile_name;
     ProfileNewPresenter presenter;
     ProgressDialog progressDialogProfilePic;
     Menu menu;
+    Toolbar toolbar;
     private ArrayList<String> mCourseNames=new ArrayList<>();
     private ArrayList<String> mInstructorNames=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        bt_back=findViewById(R.id.backButton);
-        bt_edit=findViewById(R.id.editbutton);
-        bt_settings=findViewById(R.id.setting_button);
+//        toolbar=findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        if(getSupportActionBar()!=null){
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        }
+//        bt_back=findViewById(R.id.backButton);
+//        bt_edit=findViewById(R.id.editbutton);
+//        bt_settings=findViewById(R.id.setting_button);
         courseAndInstructorNames();
-        img_profile = findViewById(R.id.img_profile_pic);
+        img_profile = findViewById(R.id.img_profile_pic_1);
 //        bt_back.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

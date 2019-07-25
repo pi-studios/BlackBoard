@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.pistudiosofficial.myclass.activities.CreatePostActivity;
 import com.pistudiosofficial.myclass.activities.ResourceBucketActivity;
 import com.pistudiosofficial.myclass.adapters.AdapterCheckAttendanceList;
 import com.pistudiosofficial.myclass.adapters.AdapterPostLoad;
@@ -245,6 +246,9 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         fab_createPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                Intent intent=new Intent(getContext(), CreatePostActivity.class);
+//                intent.putExtra("Createpost","createpost");
+//                startActivity(intent);
                 createPost();
             }
         });

@@ -1,5 +1,6 @@
 package com.pistudiosofficial.myclass.activities;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -21,6 +22,11 @@ public class HelloActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hello);
 
+        final ActionBar abar = getSupportActionBar();
+        if(abar!=null) {
+            abar.setDisplayHomeAsUpEnabled(true);
+            abar.setTitle("Connections");
+        }
         viewPager = findViewById(R.id.fragment_container_hello);
         adapterPagerViewHello = new AdapterPagerViewHello(getSupportFragmentManager());
         tabLayout = findViewById(R.id.tab_bar_hello);
@@ -28,6 +34,12 @@ public class HelloActivity extends AppCompatActivity {
         viewPager.setAdapter(adapterPagerViewHello);
         viewPager.setCurrentItem(getIntent().getIntExtra("tab",0));
 
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return  false;
     }
 
     @Override
