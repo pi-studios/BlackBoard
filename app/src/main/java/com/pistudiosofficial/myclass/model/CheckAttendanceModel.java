@@ -36,6 +36,8 @@ import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
 import static com.pistudiosofficial.myclass.Common.LOG;
 import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
 import static com.pistudiosofficial.myclass.Common.TEMP01_LIST;
+import static com.pistudiosofficial.myclass.Common.TOTAL_CLASSES;
+import static com.pistudiosofficial.myclass.Common.TOTAL_PRESENT_DAYS;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
 public class CheckAttendanceModel {
@@ -69,6 +71,7 @@ public class CheckAttendanceModel {
                             checkAttendanceList.add(dataSnapshot.child(ROLL_LIST.get(i))
                                     .getValue(Double.class));
                         }
+                        TOTAL_CLASSES=dataSnapshot.getChildrenCount();
                         mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("attendance_percentage")
                                 .removeEventListener(valueEventListener);
                         for (int i =0; i<checkAttendanceList.size(); i++){

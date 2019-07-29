@@ -50,6 +50,9 @@ public  class CreatePostFragment extends Fragment implements CheckAttendanceFrag
     private ProgressDialog progressDialogPosting;
     private static final int PICK_IMAGE_REQUEST01 = 1,PICK_IMAGE_REQUEST02 = 2, PICK_IMAGE_REQUEST03 = 3,
             PICK_FILE_REQUEST = 4;
+    public CreatePostFragment(){
+
+    }
 //    public CreatePostFragment() {
 //        // Required empty public constructor
 //    }

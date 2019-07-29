@@ -15,8 +15,10 @@ import com.pistudiosofficial.myclass.R;
 import java.util.ArrayList;
 
 import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
+import static com.pistudiosofficial.myclass.Common.TOTAL_CLASSES;
 
 public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterCheckAttendanceList.MyViewHolder> {
+    private static long totalPresentDays;
 
     ArrayList<Double> attendanceList;
 
@@ -33,11 +35,15 @@ public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterChec
     }
 
     @Override
+
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         Log.i("TAG","ROLL lIST: "+ROLL_LIST.size()+"  attendanceList "+attendanceList.size());
         //Change the design of  layout to show name and text, so add two text view
         myViewHolder.textView_roll.setText(ROLL_LIST.get(i));
         myViewHolder.textView_name.setText("Vivek");
+        Log.d("ATT",""+attendanceList.get(i));
+        totalPresentDays=(long)(attendanceList.get(i)/100)*TOTAL_CLASSES;
+        myViewHolder.total_days.setText(totalPresentDays+"/"+TOTAL_CLASSES);
         myViewHolder.textView_percent.setText(String.format("%.2f",attendanceList.get(i)));
         //
     }
@@ -48,13 +54,14 @@ public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterChec
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView textView_roll,textView_name,textView_percent;
+        TextView textView_roll,textView_name,textView_percent,total_days;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             //Change the design of  layout to show name and text, so add two text view
             textView_roll = itemView.findViewById(R.id.tv_check_attendance);
             textView_name=itemView.findViewById(R.id.tv_check_attendance_name);
             textView_percent=itemView.findViewById(R.id.tv_check_attendance_percent);
+            total_days=itemView.findViewById(R.id.present_days);
             //
         }
     }

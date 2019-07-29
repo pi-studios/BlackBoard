@@ -42,11 +42,14 @@ public class Common {
     public static ArrayList<String> ATTD_PERCENTAGE_LIST = null;
     public static ArrayList<String> TEMP01_LIST = null;
     public static ArrayList<String> ROLL_LIST = null;
+    public static ArrayList<Integer> TOTAL_PRESENT_DAYS=null;
     public static ArrayList<StudentClassObject> CURRENT_USER_CLASS_LIST = null;
     public static HashMap<String,String> CURRENT_ADMIN_FEEDBACK_STATUS = null;
     public static ArrayList<String> CURRENT_USER_CLASS_LIST_ID = null;
     public static HashMap<String, HelloListObject> HELLO_REQUEST_USERS = null;
     public static AdapterClassList ADAPTER_CLASS_LIST = null;
+    public static long TOTAL_CLASSES=0;
+    public static ArrayList<Double> SHOW_ATTENDANCE_PERCENTAGE=null;
 
     //Comment
     public static DatabaseReference mREF_COMMENT_LOAD = null;

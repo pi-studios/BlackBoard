@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.pistudiosofficial.myclass.activities.CreatePostActivity;
 import com.pistudiosofficial.myclass.activities.ResourceBucketActivity;
+import com.pistudiosofficial.myclass.activities.ShowAttendanceActivity;
 import com.pistudiosofficial.myclass.adapters.AdapterCheckAttendanceList;
 import com.pistudiosofficial.myclass.adapters.AdapterPostLoad;
 import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
@@ -55,6 +56,7 @@ import java.util.Locale;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
+import static com.pistudiosofficial.myclass.Common.SHOW_ATTENDANCE_PERCENTAGE;
 import static com.pistudiosofficial.myclass.Common.mREF_RESOURCE_BUCKET;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
@@ -63,7 +65,6 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
     ProgressDialog progressDialog,progressDialogPosting,uploadDialog;
     CheckAttendancePresenter presenter;
     Dialog dialog,dialogAttendancePercent, postDialog;
-    ArrayList<Double> admin_attendance_percent_list;
     boolean notMultipleAttendance = false;
     String type = "";
     Uri imgURI01,imgURI02,imgURI03, fileURI;
@@ -231,15 +232,16 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
             @SuppressLint("WrongConstant")
             @Override
             public void onClick(View view) {
-                dialogAttendancePercent = new Dialog(getContext());
-                dialogAttendancePercent.setContentView(R.layout.connection_list_dialog);
-                LinearLayoutManager llm = new LinearLayoutManager(getContext());
-                AdapterCheckAttendanceList adapter = new AdapterCheckAttendanceList(admin_attendance_percent_list);
-                RecyclerView recyclerView = dialogAttendancePercent.findViewById(R.id.recycler_connection_list);
-                llm.setOrientation(LinearLayoutManager.VERTICAL);
-                recyclerView.setLayoutManager(llm);
-                recyclerView.setAdapter(adapter);
-                dialogAttendancePercent.show();
+                startActivity(new Intent(getContext(), ShowAttendanceActivity.class));
+//                dialogAttendancePercent = new Dialog(getContext());
+//                dialogAttendancePercent.setContentView(R.layout.connection_list_dialog);
+//                LinearLayoutManager llm = new LinearLayoutManager(getContext());
+//                AdapterCheckAttendanceList adapter = new AdapterCheckAttendanceList(admin_attendance_percent_list);
+//                RecyclerView recyclerView = dialogAttendancePercent.findViewById(R.id.recycler_connection_list);
+//                llm.setOrientation(LinearLayoutManager.VERTICAL);
+//                recyclerView.setLayoutManager(llm);
+//                recyclerView.setAdapter(adapter);
+//                dialogAttendancePercent.show();
             }
         });
 
@@ -270,7 +272,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
     @SuppressLint("WrongConstant")
     @Override
     public void success(ArrayList<Double> attendancePercentageList) {
-        admin_attendance_percent_list = attendancePercentageList;
+        SHOW_ATTENDANCE_PERCENTAGE = attendancePercentageList;
         progressDialog.dismiss();
     }
 

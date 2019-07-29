@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.CreatePostActivity"></activity>
+        <activity android:name=".activities.ShowAttendanceActivity"></activity>
+        <activity android:name=".activities.CreatePostActivity" />
         <activity android:name=".activities.AboutActivity" />
         <activity android:name=".activities.AdminFeedbackActivity" />
         <activity android:name=".activities.FeedbackActivity" />
