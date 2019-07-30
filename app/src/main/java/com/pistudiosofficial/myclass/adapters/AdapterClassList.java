@@ -125,10 +125,13 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
                 if(CURRENT_USER.AdminLevel.equals("user")){
                     addCollabButton.setVisibility(View.GONE);
                     transferClass.setVisibility(View.GONE);
+                    feedback.setVisibility(View.GONE);
                 }
-                if(!CURRENT_ADMIN_FEEDBACK_STATUS.get(CURRENT_CLASS_ID_LIST.get(i)).equals("null")){
-                    feedback.setText("Submit Feedback : "+
-                            CURRENT_ADMIN_FEEDBACK_STATUS.get(CURRENT_CLASS_ID_LIST.get(i)));
+                if(CURRENT_USER.AdminLevel.equals("admin")){
+                    if(!CURRENT_ADMIN_FEEDBACK_STATUS.get(CURRENT_CLASS_ID_LIST.get(i)).equals("null")){
+                        feedback.setText("Submit Feedback : "+
+                                CURRENT_ADMIN_FEEDBACK_STATUS.get(CURRENT_CLASS_ID_LIST.get(i)));
+                    }
                 }
 
                 dialog.show();

@@ -78,7 +78,8 @@ public class PushNotificationSenderModel {
     public void performBroadcast(){
         broadcastTitle = broadcastTitle+"("+className+")";
         broadcastBody = broadcastBody+"- Created: "+creationTime;
-        NotificationStoreObj obj = new NotificationStoreObj(broadcastTitle,broadcastBody,simpleTime);
+        NotificationStoreObj obj = new NotificationStoreObj(broadcastTitle,broadcastBody,simpleTime,
+                CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX));
         mRefNotification = mREF_classList.child(classID).child("notification");
         pushedNotifKey = mRefNotification.push().getKey();
         mRefNotification.child(pushedNotifKey).setValue(obj, new DatabaseReference.CompletionListener() {
@@ -108,7 +109,7 @@ public class PushNotificationSenderModel {
         }else{
             body = type+" : "+date01+"->"+date02+"  Created: "+creationTime;
         }
-        NotificationStoreObj obj = new NotificationStoreObj(title,body,simpleTime);
+        NotificationStoreObj obj = new NotificationStoreObj(title,body,simpleTime,CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX));
         mRefNotification = mREF_classList.child(classID).child("notification");
         pushedNotifKey = mRefNotification.push().getKey();
         mRefNotification.child(pushedNotifKey).setValue(obj, new DatabaseReference.CompletionListener() {

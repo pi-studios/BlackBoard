@@ -140,11 +140,12 @@ public class AdapterHomeFeed extends RecyclerView.Adapter<AdapterHomeFeed.MyView
                         @Override
                         public void onClick(View view) {
                             String option = tv.getText().toString();
-                            if (Common.CURRENT_USER.AdminLevel.equals("user")) {
+                            if (Common.CURRENT_USER.AdminLevel.equals("user") &&
+                                    pollSelectPostID.get(post_id.get(i)).equals("null")) {
                                 model.pollClicked(option, postClassID.get(postObjectArrayList.get(i).getPostID()),
                                         post_id.get(i));
+                                tv.setEnabled(false);
                             }
-                            tv.setEnabled(false);
                         }
                     });
                     myViewHolder.listView.addView(tv);

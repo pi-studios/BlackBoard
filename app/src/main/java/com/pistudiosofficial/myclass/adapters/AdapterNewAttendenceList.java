@@ -34,11 +34,14 @@ public class AdapterNewAttendenceList extends RecyclerView.Adapter<AdapterNewAtt
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int i){
         myViewHolder.textView.setText(ROLL_LIST.get(i));
+
         if(TEMP01_LIST.get(i).equals("PRESENT")){
             //Change the color to red and green as absent and present
+            myViewHolder.tv_name.setText("PRESENT");
             myViewHolder.textView.getBackground().setColorFilter(Color.parseColor("#13800B"), PorterDuff.Mode.SRC_ATOP);
 //            myViewHolder.textView.setBackgroundColor(Color.parseColor("#13800B"));
         }else {
+            myViewHolder.tv_name.setText("ABSENT");
             myViewHolder.textView.getBackground().setColorFilter(Color.parseColor("#CE1212"), PorterDuff.Mode.SRC_ATOP);
         }
     }
@@ -49,12 +52,13 @@ public class AdapterNewAttendenceList extends RecyclerView.Adapter<AdapterNewAtt
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView textView;
+        TextView textView,tv_name;
         OnItemListener onItemListener;
 
         public MyViewHolder(@NonNull View itemView, OnItemListener onItemListener) {
             super(itemView);
             textView = itemView.findViewById(R.id.tv_new_attendance);
+            tv_name = itemView.findViewById(R.id.tv_new_attendance_name);
             this.onItemListener= onItemListener;
             itemView.setOnClickListener(this);
         }

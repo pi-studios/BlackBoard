@@ -236,7 +236,7 @@
                     android:layout_height="76dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginBottom="16dp"
-                    android:src="@drawable/vivek"
+                    android:src="@drawable/ic_add_pink"
                     app:civ_border_color="#FF000000"
                     app:civ_border_width="1dp"
                     app:layout_constraintBottom_toBottomOf="parent"

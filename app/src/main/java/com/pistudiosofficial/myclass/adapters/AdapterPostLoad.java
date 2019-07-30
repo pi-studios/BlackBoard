@@ -141,12 +141,16 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
                     tv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            String option = tv.getText().toString();
-                            if (Common.CURRENT_USER.AdminLevel.equals("user")) {
-                                model.pollClicked(option, Common.CURRENT_CLASS_ID_LIST.get(Common.CURRENT_INDEX),
-                                        post_id.get(i));
+                            if(!CURRENT_USER.AdminLevel.equals("admin")){
+                                if (postPollSelect.get(post_id.get(i)).equals("null")){
+                                    String option = tv.getText().toString();
+                                    if (Common.CURRENT_USER.AdminLevel.equals("user")) {
+                                        model.pollClicked(option, Common.CURRENT_CLASS_ID_LIST.get(Common.CURRENT_INDEX),
+                                                post_id.get(i));
+                                    }
+                                    tv.setEnabled(false);
+                                }
                             }
-                            tv.setEnabled(false);
                         }
                     });
                     myViewHolder.listView.addView(tv);

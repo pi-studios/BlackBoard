@@ -181,7 +181,7 @@ public class MainModel {
                     String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
                     mREF_classList.child(newID).child("notification").push()
                             .setValue(new NotificationStoreObj(classObject.className,
-                                    "Class Created: \n"+currentDateTimeString,simpleTime));
+                                    "Class Created: \n"+currentDateTimeString,simpleTime,newID));
                     AdminClassObject obj = new AdminClassObject(CURRENT_USER.UID, newID);
                     mREF_admin_classList.child(newID).setValue(obj);
                     presenter.addAdminClassSuccess();
@@ -199,14 +199,22 @@ public class MainModel {
         if(CURRENT_USER.AdminLevel.equals("admin")) {
             fromPath = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(index));
             toPath = mREF_oldRecords;
-            deleteIndex(CURRENT_CLASS_ID_LIST.get(index));
+            fromPath.child("student_index").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    removeNotificationEndSession(CURRENT_CLASS_ID_LIST.get(index),dataSnapshot);
+                    deleteIndex(CURRENT_CLASS_ID_LIST.get(index));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
         if(CURRENT_USER.AdminLevel.equals("user")){
             DatabaseReference fromPath = mREF_student_classList.child(CURRENT_USER_CLASS_LIST_ID.get(index));
             fromPath.removeValue();
-        }
-        else{
-
         }
     }
 
@@ -599,5 +607,9 @@ public class MainModel {
             }
         };
         mREF_users.child(CURRENT_USER.UID).child("hello").addValueEventListener(valueEventListener);
+    }
+
+    private void removeNotificationEndSession(String classID, DataSnapshot snapshot) {
+        //this function is responsible for removing notification object of removed class;
     }
 }
