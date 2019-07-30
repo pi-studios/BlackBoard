@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -38,7 +39,9 @@ import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
 import static com.pistudiosofficial.myclass.Common.TEMP01_LIST;
 import static com.pistudiosofficial.myclass.Common.TOTAL_CLASSES;
 import static com.pistudiosofficial.myclass.Common.TOTAL_PRESENT_DAYS;
+import static com.pistudiosofficial.myclass.Common.mREF_admin_classList;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
+import static com.pistudiosofficial.myclass.Common.sessionStartDate;
 
 public class CheckAttendanceModel {
     CheckAttendancePresenterInterface presenter;
@@ -71,7 +74,21 @@ public class CheckAttendanceModel {
                             checkAttendanceList.add(dataSnapshot.child(ROLL_LIST.get(i))
                                     .getValue(Double.class));
                         }
-                        TOTAL_CLASSES=dataSnapshot.getChildrenCount();
+                        DatabaseReference reference= FirebaseDatabase.getInstance().getReference("class_list").child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("sessionStart");
+                        reference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                String str=dataSnapshot.getValue(String.class);
+                                sessionStartDate=str;
+//                                str.replaceAll("/","");
+//                                Log.d("ANS",str);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
                         mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("attendance_percentage")
                                 .removeEventListener(valueEventListener);
                         for (int i =0; i<checkAttendanceList.size(); i++){

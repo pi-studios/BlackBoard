@@ -49,6 +49,7 @@ public class Common {
     public static HashMap<String, HelloListObject> HELLO_REQUEST_USERS = null;
     public static AdapterClassList ADAPTER_CLASS_LIST = null;
     public static long TOTAL_CLASSES=0;
+    public static String sessionStartDate;
     public static ArrayList<Double> SHOW_ATTENDANCE_PERCENTAGE=null;
 
     //Comment

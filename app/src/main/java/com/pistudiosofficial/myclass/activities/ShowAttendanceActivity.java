@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
 import static com.pistudiosofficial.myclass.Common.SHOW_ATTENDANCE_PERCENTAGE;
 

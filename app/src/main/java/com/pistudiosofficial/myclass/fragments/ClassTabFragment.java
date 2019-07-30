@@ -157,7 +157,7 @@ public class ClassTabFragment extends Fragment {
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                String myFormat = "MM/dd/yy"; //In which you need put here
+                String myFormat = "dd/MM/yyyy"; //In which you need put here
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
                 editText.setText(sdf.format(myCalendar.getTime()));

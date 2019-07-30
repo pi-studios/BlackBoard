@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.pistudiosofficial.myclass.activities.CreatePostActivity;
 import com.pistudiosofficial.myclass.activities.ResourceBucketActivity;
 import com.pistudiosofficial.myclass.activities.ShowAttendanceActivity;
@@ -80,6 +81,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
     RecyclerView recyclerViewPost;
     FloatingActionButton fab_exportcsv,fab_create_poll,fab_new_attendance,
             fab_show_attendace_percent,fab_notify,fab_createPost,fab_show_bucket;
+    FloatingActionsMenu floatingActionsMenu;
     public AdminCheckAttendanceFragment() {
     }
 
@@ -108,6 +110,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         fab_show_attendace_percent = v.findViewById(R.id.fab_show_attendnace_list);
         fab_createPost = v.findViewById(R.id.fab_post);
         fab_show_bucket = v.findViewById(R.id.fab_res_bucket);
+        floatingActionsMenu=v.findViewById(R.id.fab_check_attendance);
         presenter = new CheckAttendancePresenter(this);
         presenter.performDeleteRead(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX));
         presenter.performAdminAttendanceDataDownload();
@@ -382,7 +385,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                String myFormat = "MM/dd/yy"; //In which you need put here
+                String myFormat = "dd/MM/yyyy"; //In which you need put here
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
                 editText.setText(sdf.format(myCalendar.getTime()));

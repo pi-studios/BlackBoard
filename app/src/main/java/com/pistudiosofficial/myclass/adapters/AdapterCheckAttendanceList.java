@@ -12,10 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.pistudiosofficial.myclass.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
 import static com.pistudiosofficial.myclass.Common.TOTAL_CLASSES;
+import static com.pistudiosofficial.myclass.Common.sessionStartDate;
 
 public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterCheckAttendanceList.MyViewHolder> {
     private static long totalPresentDays;
@@ -39,11 +43,13 @@ public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterChec
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         Log.i("TAG","ROLL lIST: "+ROLL_LIST.size()+"  attendanceList "+attendanceList.size());
         //Change the design of  layout to show name and text, so add two text view
+        String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
         myViewHolder.textView_roll.setText(ROLL_LIST.get(i));
         myViewHolder.textView_name.setText("Vivek");
         Log.d("ATT",""+attendanceList.get(i));
-        totalPresentDays=(long)(attendanceList.get(i)/100)*TOTAL_CLASSES;
-        myViewHolder.total_days.setText(totalPresentDays+"/"+TOTAL_CLASSES);
+        Long totalClasses=dateDiffernce(sessionStartDate,currentDate);
+        totalPresentDays=(long)(attendanceList.get(i)/100)*totalClasses;
+        myViewHolder.total_days.setText(totalPresentDays+"/"+totalClasses);
         myViewHolder.textView_percent.setText(String.format("%.2f",attendanceList.get(i)));
         //
     }
@@ -64,6 +70,31 @@ public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterChec
             total_days=itemView.findViewById(R.id.present_days);
             //
         }
+    }
+    public  static long dateDiffernce(String startDate,String FinalDate){
+        long dayDifference=0;
+        try {
+            //Dates to compare
+            Date date1;
+            Date date2;
+
+            SimpleDateFormat dates = new SimpleDateFormat("dd/MM/yyyy");
+
+            //Setting dates
+            date1 = dates.parse(startDate);
+            date2 = dates.parse(FinalDate);
+
+            //Comparing dates
+            long difference = Math.abs(date1.getTime() - date2.getTime());
+             dayDifference = difference / (24 * 60 * 60 * 1000);
+
+            //Convert long to String
+            Log.e("HERE","HERE: " + dayDifference);
+
+        } catch (Exception exception) {
+            Log.e("DIDN'T WORK", "exception " + exception);
+        }
+        return dayDifference;
     }
 
 }
