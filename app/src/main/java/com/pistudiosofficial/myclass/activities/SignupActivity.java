@@ -90,7 +90,7 @@ public class SignupActivity extends AppCompatActivity implements SignUpView {
                     return;
 //                    Toast.makeText(SignupActivity.this,"Please Input in Format ",Toast.LENGTH_LONG).show();
                 }
-                if(roll.getText().toString().length()!=7){
+                if(roll.getText().toString().length()!=7 && admin.equals("user")){
                     roll.setError("Please check your roll no ");
                     return;
 //                    Toast.makeText(SignupActivity.this,"Please Input in Format ",Toast.LENGTH_LONG).show();
