@@ -264,7 +264,6 @@ public class LiveMainModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 long control_state = dataSnapshot.getValue(Long.class);
-                Log.i("TAG",control_state+"");
                 splashView.controlCheck(control_state);
             }
 

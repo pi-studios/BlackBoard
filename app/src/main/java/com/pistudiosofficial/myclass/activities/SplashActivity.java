@@ -101,7 +101,6 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
                             finish();
                         }
                     }).show();
-
         }
     }
 }

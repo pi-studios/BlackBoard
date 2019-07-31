@@ -9,9 +9,12 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.adapters.AdapterCheckAttendanceList;
+import com.pistudiosofficial.myclass.model.CheckAttendanceModel;
 import com.pistudiosofficial.myclass.objects.ClassObject;
+import com.pistudiosofficial.myclass.view.ShowAttendanceView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,31 +22,31 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.pistudiosofficial.myclass.Common.CURRENT_ADMIN_CLASS_LIST;
+import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
+import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.SHOW_ATTENDANCE_PERCENTAGE;
+import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
-public class ShowAttendanceActivity extends AppCompatActivity {
-    ArrayList<Double> admin_attendance_percent_list;
+public class ShowAttendanceActivity extends AppCompatActivity implements ShowAttendanceView {
     TextView fromDate,toDate;
     final Calendar myCalendar = Calendar.getInstance();
-    ClassObject classObject;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        admin_attendance_percent_list = SHOW_ATTENDANCE_PERCENTAGE;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_attendance);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Class");
+        setTitle(CURRENT_ADMIN_CLASS_LIST.get(CURRENT_INDEX).className);
         fromDate=findViewById(R.id.class_from);
         toDate=findViewById(R.id.class_to);
         setCurrentDate(fromDate);
         setCurrentDate(toDate);
         datePick(fromDate);
         datePick(toDate);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        AdapterCheckAttendanceList adapter = new AdapterCheckAttendanceList(admin_attendance_percent_list);
-        RecyclerView recyclerView = findViewById(R.id.recycler_view_show_attendance);
-        recyclerView.setLayoutManager(llm);
-        recyclerView.setAdapter(adapter);
+        DatabaseReference databaseReference = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
+                .child("attendance");
+        CheckAttendanceModel checkAttendanceModel = new CheckAttendanceModel(this);
+        checkAttendanceModel.downloadTotalClass(databaseReference);
     }
 
     @Override
@@ -90,4 +93,12 @@ public class ShowAttendanceActivity extends AppCompatActivity {
         textView.setText(date);
     }
 
+    @Override
+    public void totalClassDownloadSuccess(long totalClass) {
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        AdapterCheckAttendanceList adapter = new AdapterCheckAttendanceList(SHOW_ATTENDANCE_PERCENTAGE,totalClass);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_show_attendance);
+        recyclerView.setLayoutManager(llm);
+        recyclerView.setAdapter(adapter);
+    }
 }

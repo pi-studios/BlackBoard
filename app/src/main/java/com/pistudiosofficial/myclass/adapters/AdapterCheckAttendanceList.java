@@ -16,18 +16,29 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.function.LongToIntFunction;
 
 import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
 import static com.pistudiosofficial.myclass.Common.TOTAL_CLASSES;
 import static com.pistudiosofficial.myclass.Common.sessionStartDate;
 
 public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterCheckAttendanceList.MyViewHolder> {
-    private static long totalPresentDays;
+    private static double totalPresentDays;
 
     ArrayList<Double> attendanceList;
-
-    public AdapterCheckAttendanceList( ArrayList<Double> attendanceList) {
+    ArrayList<Double> presentday;
+    long totalClasses;
+    public AdapterCheckAttendanceList( ArrayList<Double> attendanceList, long totalClasses) {
         this.attendanceList = attendanceList;
+        //total classes is number of child int classList->{UID}->attendance
+        this.totalClasses = totalClasses;
+        presentday = new ArrayList<>();
+
+        for(double d:attendanceList){
+            double p = (d/100.0)*totalClasses;
+            presentday.add(p);
+        }
+
     }
 
     @NonNull
@@ -41,18 +52,16 @@ public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterChec
     @Override
 
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        Log.i("TAG","ROLL lIST: "+ROLL_LIST.size()+"  attendanceList "+attendanceList.size());
         //Change the design of  layout to show name and text, so add two text view
-        String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
         myViewHolder.textView_roll.setText(ROLL_LIST.get(i));
-        myViewHolder.textView_name.setText("Vivek");
-        Log.d("ATT",""+attendanceList.get(i));
-        Long totalClasses=dateDiffernce(sessionStartDate,currentDate);
-        totalPresentDays=(long)(attendanceList.get(i)/100)*totalClasses;
+        myViewHolder.textView_name.setText("Attendance");
+        totalPresentDays=presentday.get(i);
         myViewHolder.total_days.setText(totalPresentDays+"/"+totalClasses);
-        myViewHolder.textView_percent.setText(String.format("%.2f",attendanceList.get(i)));
+
+        myViewHolder.textView_percent.setText(String.format("%.1f",attendanceList.get(i)));
         //
     }
+
 
     @Override
     public int getItemCount() {

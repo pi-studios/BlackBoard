@@ -22,6 +22,7 @@ import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
 import com.pistudiosofficial.myclass.objects.PostObject;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.CheckAttendancePresenterInterface;
+import com.pistudiosofficial.myclass.view.ShowAttendanceView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,13 +53,19 @@ public class CheckAttendanceModel {
     ArrayList<String> storageURL;
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
+    ShowAttendanceView showAttendanceView;
     public CheckAttendanceModel(CheckAttendancePresenterInterface presenter) {
         this.presenter = presenter;
         storageURL = new ArrayList<>();
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
     }
-
+    public CheckAttendanceModel(ShowAttendanceView showAttendanceView) {
+        this.showAttendanceView = showAttendanceView;
+        storageURL = new ArrayList<>();
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
+    }
     public void performCheckAttendanceDownload(){
         int startRoll = Integer.parseInt(Common.CURRENT_ADMIN_CLASS_LIST.get(Common.CURRENT_INDEX).startRoll);
         int endRoll = Integer.parseInt(Common.CURRENT_ADMIN_CLASS_LIST.get(Common.CURRENT_INDEX).endRoll);
@@ -452,6 +459,20 @@ public class CheckAttendanceModel {
             }
         };
         mREF_classList.child(classID).child("post").addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    public void downloadTotalClass(DatabaseReference databaseReference){
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                showAttendanceView.totalClassDownloadSuccess(dataSnapshot.getChildrenCount());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
  }
 
