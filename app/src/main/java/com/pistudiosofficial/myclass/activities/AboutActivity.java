@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.pistudiosofficial.myclass.R;
 
@@ -36,26 +37,32 @@ public class AboutActivity extends AppCompatActivity {
         fb1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                goToUrl("https://www.facebook.com/najimulx");
             }
         });
         linkedin1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                goToUrl("https://www.linkedin.com/in/nazimulhoque6/");
 
             }
         });
         gmail1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(AboutActivity.this, "najimulx@gmail.com", Toast.LENGTH_LONG).show();
+//                Intent intent = new Intent (Intent.ACTION_SEND );
+//                intent.putExtra(Intent.EXTRA_EMAIL,"najimulx@gmail.com");
+////                intent.putExtra(Intent.EXTRA_SUBJECT, "your_subject");
+////                intent.putExtra(Intent.EXTRA_TEXT, "your_text");
+//                startActivity(intent);
             }
         });
 
         fb2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                goToUrl("https://www.facebook.com/profile.php?id=100009383604704");
             }
         });
         linkedin2.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +74,12 @@ public class AboutActivity extends AppCompatActivity {
         gmail2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(AboutActivity.this, "myselfvivek9@gmail.com", Toast.LENGTH_LONG).show();
+//                Intent intent = new Intent (Intent.ACTION_SEND);
+//                intent.putExtra(Intent.EXTRA_EMAIL,"myselfvivek9@gmail.com");
+////                intent.putExtra(Intent.EXTRA_SUBJECT, "your_subject");
+////                intent.putExtra(Intent.EXTRA_TEXT, "your_text");
+//                startActivity(intent);
             }
         });
 

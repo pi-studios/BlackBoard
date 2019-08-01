@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(),ProfileNewActivity.class);
                 SELECTED_PROFILE_UID = CURRENT_USER.UID;
+                Toast.makeText(MainActivity.this, "Work is in Progress, Please Go back", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
                 closeDrawer();
                 finish();

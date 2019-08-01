@@ -19,6 +19,7 @@
     <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:visibility="invisible"
     android:orientation="vertical" >
 
     <!--<androidx.constraintlayout.widget.ConstraintLayout-->
@@ -396,5 +397,6 @@
     <!--android:layout_marginEnd="8dp"-->
     <!--android:text="TextView"/>-->
     </LinearLayout>
+
     <!--</ScrollView>-->
 </ScrollView>
