@@ -57,7 +57,6 @@ public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterChec
         myViewHolder.textView_name.setText("Attendance");
         totalPresentDays=presentday.get(i);
         myViewHolder.total_days.setText(totalPresentDays+"/"+totalClasses);
-
         myViewHolder.textView_percent.setText(String.format("%.1f",attendanceList.get(i)));
         //
     }

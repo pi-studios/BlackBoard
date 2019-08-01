@@ -24,6 +24,7 @@ public class SignUpModel {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        ///only execute if successful sign up
                         if (task.isSuccessful()) {
                             FIREBASE_USER = mAUTH.getCurrentUser();
                             presenter.signupSuccess();

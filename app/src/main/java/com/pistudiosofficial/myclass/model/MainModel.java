@@ -566,6 +566,7 @@ public class MainModel {
     private void cleanUselessStudentKey(ArrayList<String> arrayList){
         for (int i = 0; i<arrayList.size();i++){
             mREF_users.child(CURRENT_USER.UID).child("class_list").child(arrayList.get(i)).removeValue();
+            mREF_classList.child(arrayList.get(i)).child("student_index").child(CURRENT_USER.UID).removeValue();
         }
     }
 
