@@ -70,9 +70,6 @@ public class HomeTabFragment extends Fragment implements HomeView {
         recyclerViewSearch = v.findViewById(R.id.recycler_view_main_search);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewSearch.getContext(),
-                llm.getOrientation());
-        recyclerViewSearch.addItemDecoration(dividerItemDecoration);
         recyclerViewSearch.setLayoutManager(llm);
         loadFeed();
         mUserRef = FirebaseDatabase.getInstance().getReference("users");
