@@ -57,6 +57,7 @@ import java.util.Locale;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
+import static com.pistudiosofficial.myclass.Common.NEW_ATTENDANCE;
 import static com.pistudiosofficial.myclass.Common.SHOW_ATTENDANCE_PERCENTAGE;
 import static com.pistudiosofficial.myclass.Common.mREF_RESOURCE_BUCKET;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
@@ -122,14 +123,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         fab_new_attendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*if(notMultipleAttendance){
-                    Intent intent = new Intent(v.getContext(), NewAttendenceAcitivity.class);
-                    startActivity(intent);
-//                   getActivity().finish();
-                }
-                else{
-                    Toast.makeText(v.getContext(),"Attendance cannot be taken twice",Toast.LENGTH_SHORT).show();
-                }*/
+                NEW_ATTENDANCE = true;
                 Intent intent = new Intent(v.getContext(), NewAttendenceAcitivity.class);
                 startActivity(intent);
             }
@@ -238,24 +232,13 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getContext(), ShowAttendanceActivity.class));
-//                dialogAttendancePercent = new Dialog(getContext());
-//                dialogAttendancePercent.setContentView(R.layout.connection_list_dialog);
-//                LinearLayoutManager llm = new LinearLayoutManager(getContext());
-//                AdapterCheckAttendanceList adapter = new AdapterCheckAttendanceList(admin_attendance_percent_list);
-//                RecyclerView recyclerView = dialogAttendancePercent.findViewById(R.id.recycler_connection_list);
-//                llm.setOrientation(LinearLayoutManager.VERTICAL);
-//                recyclerView.setLayoutManager(llm);
-//                recyclerView.setAdapter(adapter);
-//                dialogAttendancePercent.show();
+
             }
         });
 
         fab_createPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent=new Intent(getContext(), CreatePostActivity.class);
-//                intent.putExtra("Createpost","createpost");
-//                startActivity(intent);
                 createPost();
             }
         });

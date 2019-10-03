@@ -36,10 +36,8 @@ public class AdapterNewAttendenceList extends RecyclerView.Adapter<AdapterNewAtt
         myViewHolder.textView.setText(ROLL_LIST.get(i));
 
         if(TEMP01_LIST.get(i).equals("PRESENT")){
-            //Change the color to red and green as absent and present
             myViewHolder.tv_name.setText("PRESENT");
             myViewHolder.textView.getBackground().setColorFilter(Color.parseColor("#13800B"), PorterDuff.Mode.SRC_ATOP);
-//            myViewHolder.textView.setBackgroundColor(Color.parseColor("#13800B"));
         }else {
             myViewHolder.tv_name.setText("ABSENT");
             myViewHolder.textView.getBackground().setColorFilter(Color.parseColor("#CE1212"), PorterDuff.Mode.SRC_ATOP);
