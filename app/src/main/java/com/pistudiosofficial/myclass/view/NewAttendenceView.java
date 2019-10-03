@@ -5,4 +5,7 @@ public interface NewAttendenceView {
     void uploadSuccess();
     void uploadFailed();
 
+    void editSuccess();
+    void editFailed();
+
 }

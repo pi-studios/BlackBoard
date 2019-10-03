@@ -47,6 +47,7 @@ public class NewAttendenceModel {
         Date todayDate = Calendar.getInstance().getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         todayString = formatter.format(todayDate);
+        attendanceKey = todayString+"-1";
         refAttendance.orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -56,9 +57,6 @@ public class NewAttendenceModel {
                         int x = Integer.parseInt(p);
                         x++;
                         attendanceKey = todayString+"-"+x;
-                    }
-                    else{
-                        attendanceKey = todayString+"-1";
                     }
                 }
                 performIndividualAttendanceUpload();
@@ -79,7 +77,6 @@ public class NewAttendenceModel {
         performAttendancePercentUpload();
     }
 
-
     private void tempFunction(){
         refAttdPercentage.removeEventListener(valueEventListener);
         for (int i = 0; i<templist.size(); i++){
@@ -91,15 +88,9 @@ public class NewAttendenceModel {
                 temp02 = 0.0;
             }
             temp01 = (temp01*(totalLectureCount-1) + temp02)/totalLectureCount;
-            double roundOff = Math.round(temp01 * 100.0) / 100.0;
+            double roundOff = temp01;
             refAttdPercentage.child(ROLL_LIST.get(i)).setValue(roundOff * 100);
         }
-        /*Date todayDate = Calendar.getInstance().getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String todayString = formatter.format(todayDate);
-        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
-                .child("last_attendance_date").setValue(todayString);
-            */
         presenter.success();
 
     }
@@ -130,6 +121,42 @@ public class NewAttendenceModel {
             }
         };
         refAttdPercentage.addValueEventListener(valueEventListener);
+    }
+
+
+    public void performAttendancePercent(){
+        //Load Percentage List
+        ArrayList<Double> percentList = new ArrayList<>();
+        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("attendance_percentage")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                            percentList.add(snapshot.getValue(Double.class));
+                        }
+                        presenter.percentListDownloaded(percentList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    public void updateEditedAttendance(ArrayList<String> roll,
+                                       ArrayList<String> indivList, ArrayList<Double> percent, String date){
+
+        refAttendance = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
+                .child("attendance").child(date);
+        refAttdPercentage = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
+                .child("attendance_percentage");
+        for (int i =0; i<roll.size(); i++){
+            refAttendance.child(roll.get(i)).setValue(percent.get(i));
+            refAttdPercentage.child(roll.get(i)).setValue(indivList.get(i));
+        }
+        presenter.editSuccess();
+
     }
 
 }

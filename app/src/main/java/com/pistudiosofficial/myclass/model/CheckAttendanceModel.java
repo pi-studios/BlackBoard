@@ -461,11 +461,38 @@ public class CheckAttendanceModel {
         mREF_classList.child(classID).child("post").addListenerForSingleValueEvent(valueEventListener);
     }
 
+
+
+
+
     public void downloadTotalClass(DatabaseReference databaseReference){
+        ArrayList<String> dateList = new ArrayList<>();
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                showAttendanceView.totalClassDownloadSuccess(dataSnapshot.getChildrenCount());
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    dateList.add(snapshot.getKey());
+                }
+                dateList.add("Pick Date");
+                showAttendanceView.totalClassDownloadSuccess(dataSnapshot.getChildrenCount(), dateList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void downloadIndivAttendance(DatabaseReference databaseReference){
+        ArrayList<String> indivList = new ArrayList<>();
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    indivList.add(snapshot.getValue().toString());
+                }
+                showAttendanceView.indivAttendanceDownload(indivList);
             }
 
             @Override

@@ -35,11 +35,12 @@ public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterChec
         this.totalClasses = totalClasses;
         presentday = new ArrayList<>();
         this.indivAttendance = indivAttendance;
-        for(double d:attendanceList){
-            double p = (d/100.0)*totalClasses;
-            presentday.add(p);
+        if (indivAttendance == null) {
+            for (double d : attendanceList) {
+                double p = (d / 100.0) * totalClasses;
+                presentday.add(p);
+            }
         }
-
     }
 
     @NonNull
@@ -64,7 +65,6 @@ public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterChec
         else{
             myViewHolder.textView_roll.setText(ROLL_LIST.get(i));
             myViewHolder.textView_name.setText(indivAttendance.get(i));
-            totalPresentDays = presentday.get(i);
             myViewHolder.total_days.setVisibility(View.INVISIBLE);
             myViewHolder.textView_percent.setVisibility(View.INVISIBLE);
         }

@@ -71,6 +71,12 @@ public class Common {
 
     public static int CURRENT_INDEX = 0;
 
+    //Attendance Related Common
+    public static boolean NEW_ATTENDANCE = true;
+    public static String EDIT_ATTENDANCE_DATE;
+    public static ArrayList<String> INDIV_ATTENDANCE_ORIGNAL;
+
+
     public static void LOG(){
         Log.i("TAG","ACCEPTED");
     }
