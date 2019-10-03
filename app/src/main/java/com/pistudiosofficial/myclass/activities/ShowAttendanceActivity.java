@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -25,11 +26,13 @@ import java.util.Locale;
 import static com.pistudiosofficial.myclass.Common.CURRENT_ADMIN_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
+import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
 import static com.pistudiosofficial.myclass.Common.SHOW_ATTENDANCE_PERCENTAGE;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
 public class ShowAttendanceActivity extends AppCompatActivity implements ShowAttendanceView {
     TextView fromDate,toDate;
+    CheckAttendanceModel checkAttendanceModel;
     final Calendar myCalendar = Calendar.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +40,15 @@ public class ShowAttendanceActivity extends AppCompatActivity implements ShowAtt
         setContentView(R.layout.activity_show_attendance);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(CURRENT_ADMIN_CLASS_LIST.get(CURRENT_INDEX).className);
-        fromDate=findViewById(R.id.class_from);
-        toDate=findViewById(R.id.class_to);
-        setCurrentDate(fromDate);
-        setCurrentDate(toDate);
-        datePick(fromDate);
-        datePick(toDate);
+       // fromDate=findViewById(R.id.class_from);
+        //toDate=findViewById(R.id.class_to);
+       // setCurrentDate(fromDate);
+        //setCurrentDate(toDate);
+        //datePick(fromDate);
+        //datePick(toDate);
         DatabaseReference databaseReference = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
                 .child("attendance");
-        CheckAttendanceModel checkAttendanceModel = new CheckAttendanceModel(this);
+        checkAttendanceModel = new CheckAttendanceModel(this);
         checkAttendanceModel.downloadTotalClass(databaseReference);
     }
 
@@ -67,7 +70,8 @@ public class ShowAttendanceActivity extends AppCompatActivity implements ShowAtt
 
                 String myFormat = "MM/dd/yy"; //In which you need put here
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
+                /*SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                String selectedDate = formatter.format(myCalendar.getTime());*/
                 textView.setText(sdf.format(myCalendar.getTime()));
             }
 
@@ -82,7 +86,21 @@ public class ShowAttendanceActivity extends AppCompatActivity implements ShowAtt
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
-                datePickerDialog.show();;
+                datePickerDialog.show();
+            }
+        });
+        textView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Date todayDate = Calendar.getInstance().getTime();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                String todayString = formatter.format(todayDate);
+                textView.setText(todayString);
+                checkAttendanceModel.downloadTotalClass(mREF_classList
+                                .child(CURRENT_CLASS_ID_LIST
+                                .get(CURRENT_INDEX))
+                                .child("attendance"));
+                return true;
             }
         });
 
@@ -96,9 +114,18 @@ public class ShowAttendanceActivity extends AppCompatActivity implements ShowAtt
     @Override
     public void totalClassDownloadSuccess(long totalClass) {
         LinearLayoutManager llm = new LinearLayoutManager(this);
-        AdapterCheckAttendanceList adapter = new AdapterCheckAttendanceList(SHOW_ATTENDANCE_PERCENTAGE,totalClass);
+        AdapterCheckAttendanceList adapter = new AdapterCheckAttendanceList(SHOW_ATTENDANCE_PERCENTAGE,totalClass,null);
         RecyclerView recyclerView = findViewById(R.id.recycler_view_show_attendance);
         recyclerView.setLayoutManager(llm);
         recyclerView.setAdapter(adapter);
     }
+
+/*    @Override
+    public void indivAttendanceDownload(ArrayList<String> data) {
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        AdapterCheckAttendanceList adapter = new AdapterCheckAttendanceList(null,0,data);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_show_attendance);
+        recyclerView.setLayoutManager(llm);
+        recyclerView.setAdapter(adapter);
+    }*/
 }

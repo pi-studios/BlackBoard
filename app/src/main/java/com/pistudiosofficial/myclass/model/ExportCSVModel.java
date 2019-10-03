@@ -68,11 +68,13 @@ public class ExportCSVModel {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (int i = 0; i<ROLL_LIST.size(); i++){
                     for (int j = 0; j<dateListID.size()-1; j++){
+                        if (dataSnapshot
+                                .child(dateListID.get(j))
+                                .child(ROLL_LIST.get(i))
+                                .getValue().toString().equals("PRESENT")){
                         tempList
-                                .add(dataSnapshot
-                                        .child(dateListID.get(j))
-                                        .child(ROLL_LIST.get(i))
-                                        .getValue().toString());
+                                .add("P");}
+                        else{tempList.add("A");}
                     }
                     tempList.add(ATTD_PERCENTAGE_LIST.get(i));
                     data.add(tempList.toArray(new String[0]));

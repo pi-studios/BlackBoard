@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity
         CURRENT_ADMIN_CLASS_LIST = classObjectArrayList;
         viewPager.setAdapter(adapterPagerView);
         checkNewPost(CURRENT_CLASS_ID_LIST);
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(2);
         tabLayout.getTabAt(0).setIcon(R.drawable.bell);
         tabLayout.getTabAt(1).setIcon(R.drawable.house);
         tabLayout.getTabAt(2).setIcon(R.drawable.blackboard_icon);
@@ -318,7 +318,7 @@ public class MainActivity extends AppCompatActivity
                                   ArrayList<String> userAttendanceList) {
         CURRENT_ADMIN_CLASS_LIST = classObjectsList;
         viewPager.setAdapter(adapterPagerView);
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(2);
         tabLayout.getTabAt(0).setIcon(R.drawable.bell);
         tabLayout.getTabAt(1).setIcon(R.drawable.house);
         tabLayout.getTabAt(2).setIcon(R.drawable.blackboard_icon);

@@ -28,12 +28,13 @@ public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterChec
     ArrayList<Double> attendanceList;
     ArrayList<Double> presentday;
     long totalClasses;
-    public AdapterCheckAttendanceList( ArrayList<Double> attendanceList, long totalClasses) {
+    ArrayList<String> indivAttendance;
+    public AdapterCheckAttendanceList( ArrayList<Double> attendanceList, long totalClasses, ArrayList<String> indivAttendance) {
         this.attendanceList = attendanceList;
         //total classes is number of child int classList->{UID}->attendance
         this.totalClasses = totalClasses;
         presentday = new ArrayList<>();
-
+        this.indivAttendance = indivAttendance;
         for(double d:attendanceList){
             double p = (d/100.0)*totalClasses;
             presentday.add(p);
@@ -53,12 +54,20 @@ public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterChec
 
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         //Change the design of  layout to show name and text, so add two text view
-        myViewHolder.textView_roll.setText(ROLL_LIST.get(i));
-        myViewHolder.textView_name.setText("Attendance");
-        totalPresentDays=presentday.get(i);
-        myViewHolder.total_days.setText(totalPresentDays+"/"+totalClasses);
-        myViewHolder.textView_percent.setText(String.format("%.1f",attendanceList.get(i)));
-        //
+        if (indivAttendance == null) {
+            myViewHolder.textView_roll.setText(ROLL_LIST.get(i));
+            myViewHolder.textView_name.setText("Attendance");
+            totalPresentDays = presentday.get(i);
+            myViewHolder.total_days.setText(totalPresentDays + "/" + totalClasses);
+            myViewHolder.textView_percent.setText(String.format("%.1f", attendanceList.get(i)));
+        }
+        else{
+            myViewHolder.textView_roll.setText(ROLL_LIST.get(i));
+            myViewHolder.textView_name.setText(indivAttendance.get(i));
+            totalPresentDays = presentday.get(i);
+            myViewHolder.total_days.setVisibility(View.INVISIBLE);
+            myViewHolder.textView_percent.setVisibility(View.INVISIBLE);
+        }
     }
 
 
@@ -79,6 +88,7 @@ public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterChec
             //
         }
     }
+/*
     public  static long dateDiffernce(String startDate,String FinalDate){
         long dayDifference=0;
         try {
@@ -104,5 +114,6 @@ public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterChec
         }
         return dayDifference;
     }
+*/
 
 }

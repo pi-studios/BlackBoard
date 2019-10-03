@@ -53,7 +53,7 @@ public class NewAttendenceAcitivity extends AppCompatActivity implements Adapter
                 ActionBar.LayoutParams.WRAP_CONTENT,
                 ActionBar.LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER);
-        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
+        TextView textviewTitle = viewActionBar.findViewById(R.id.actionbar_textview);
         textviewTitle.setText("Attendance");
         abar.setCustomView(viewActionBar, params);
         abar.setDisplayShowCustomEnabled(true);
@@ -111,7 +111,7 @@ public class NewAttendenceAcitivity extends AppCompatActivity implements Adapter
     public void uploadFailed() {
         Toast.makeText(NewAttendenceAcitivity.this,"Upload Failed",Toast.LENGTH_LONG).show();
     }
-// Remove 'done' Button and add menu options to save attendance and cancel
+    // Remove 'done' Button and add menu options to save attendance and cancel
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.new_attendance, menu);
@@ -123,7 +123,8 @@ public class NewAttendenceAcitivity extends AppCompatActivity implements Adapter
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id==R.id.action_saveAttendance){
-            new AlertDialog.Builder(NewAttendenceAcitivity.this)
+            presenter.performAttendenceUpload();
+            /*new AlertDialog.Builder(NewAttendenceAcitivity.this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle("Are You Sure?")
                     .setMessage("Once Attendance taken CANNOT be changed")
@@ -132,7 +133,7 @@ public class NewAttendenceAcitivity extends AppCompatActivity implements Adapter
                         public void onClick(DialogInterface dialog, int which) {
                             presenter.performAttendenceUpload();
                         }
-                    }).setNegativeButton("No",null).show();
+                    }).setNegativeButton("No",null).show();*/
         }
 
         if(id==R.id.action_date_pick){

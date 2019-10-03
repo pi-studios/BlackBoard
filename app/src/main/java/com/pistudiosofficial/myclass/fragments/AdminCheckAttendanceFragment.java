@@ -65,7 +65,7 @@ import static com.pistudiosofficial.myclass.Common.mREF_classList;
 public class AdminCheckAttendanceFragment extends Fragment implements CheckAttendanceFragView {
     ProgressDialog progressDialog,progressDialogPosting,uploadDialog;
     CheckAttendancePresenter presenter;
-    Dialog dialog,dialogAttendancePercent, postDialog;
+    Dialog dialog, postDialog;
     boolean notMultipleAttendance = false;
     String type = "";
     Uri imgURI01,imgURI02,imgURI03, fileURI;
@@ -117,19 +117,21 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         presenter.performLoadPost(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX));
         progressDialog = ProgressDialog.show(getContext(), "",
                 "Loading. Please wait...", true);
-        presenter.performMultipleAttendanceCheck();
+       //presenter.performMultipleAttendanceCheck();
         recyclerViewPost = v.findViewById(R.id.recyclerView_check_attendance_post);
         fab_new_attendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(notMultipleAttendance){
+                /*if(notMultipleAttendance){
                     Intent intent = new Intent(v.getContext(), NewAttendenceAcitivity.class);
                     startActivity(intent);
 //                   getActivity().finish();
                 }
                 else{
                     Toast.makeText(v.getContext(),"Attendance cannot be taken twice",Toast.LENGTH_SHORT).show();
-                }
+                }*/
+                Intent intent = new Intent(v.getContext(), NewAttendenceAcitivity.class);
+                startActivity(intent);
             }
         });
         fab_exportcsv.setOnClickListener(new View.OnClickListener() {

@@ -71,7 +71,7 @@ public class CheckAttendanceModel {
         int endRoll = Integer.parseInt(Common.CURRENT_ADMIN_CLASS_LIST.get(Common.CURRENT_INDEX).endRoll);
         for (int i = startRoll; i<=endRoll; i++){
             ROLL_LIST.add(Integer.toString(i));
-            TEMP01_LIST.add("ABSENT");
+            TEMP01_LIST.add("PRESENT");
         }
         checkAttendanceList = new ArrayList<>();
         valueEventListener = new ValueEventListener() {

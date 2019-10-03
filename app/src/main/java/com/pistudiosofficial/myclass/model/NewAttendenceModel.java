@@ -1,5 +1,7 @@
 package com.pistudiosofficial.myclass.model;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +30,7 @@ public class NewAttendenceModel {
     DatabaseReference refAttendance, refAttdPercentage;
     ValueEventListener valueEventListener;
     ArrayList<String> templist;String todayString;
+    String attendanceKey;
     public NewAttendenceModel(NewAttendencePresenterInterface presenter) {
         this.presenter = presenter;
     }
@@ -37,16 +40,40 @@ public class NewAttendenceModel {
                 .child("attendance");
         refAttdPercentage = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
                 .child("attendance_percentage");
-        // Individual Attendance Upload
-        performIndividualAttendanceUpload();
+        // SET key for today attendance
+        setAttendanceKey();
     }
-
-    public void performIndividualAttendanceUpload(){
+    private void setAttendanceKey(){
         Date todayDate = Calendar.getInstance().getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         todayString = formatter.format(todayDate);
+        refAttendance.orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    if (dataSnapshot.getKey().contains(todayString)){
+                        String p = dataSnapshot.getKey().replace(todayString+"-","");
+                        int x = Integer.parseInt(p);
+                        x++;
+                        attendanceKey = todayString+"-"+x;
+                    }
+                    else{
+                        attendanceKey = todayString+"-1";
+                    }
+                }
+                performIndividualAttendanceUpload();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void performIndividualAttendanceUpload(){
         for (int i = 0; i<ROLL_LIST.size(); i++){
-            refAttendance.child(todayString).child(ROLL_LIST.get(i)).setValue(TEMP01_LIST.get(i));
+            refAttendance.child(attendanceKey).child(ROLL_LIST.get(i)).setValue(TEMP01_LIST.get(i));
         }
         // Update Percentage List
         performAttendancePercentUpload();
@@ -67,12 +94,13 @@ public class NewAttendenceModel {
             double roundOff = Math.round(temp01 * 100.0) / 100.0;
             refAttdPercentage.child(ROLL_LIST.get(i)).setValue(roundOff * 100);
         }
-        Date todayDate = Calendar.getInstance().getTime();
+        /*Date todayDate = Calendar.getInstance().getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String todayString = formatter.format(todayDate);
         mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
                 .child("last_attendance_date").setValue(todayString);
-            presenter.success();
+            */
+        presenter.success();
 
     }
     void performAttendancePercentUpload(){
