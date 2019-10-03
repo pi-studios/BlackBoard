@@ -10,8 +10,10 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -20,6 +22,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.adapters.AdapterCourseItem;
 import com.pistudiosofficial.myclass.objects.UserObject;
@@ -32,8 +43,10 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
+import static com.pistudiosofficial.myclass.Common.FIREBASE_DATABASE;
 import static com.pistudiosofficial.myclass.Common.SELECTED_CHAT_UID;
 import static com.pistudiosofficial.myclass.Common.SELECTED_PROFILE_UID;
+import static com.pistudiosofficial.myclass.Common.mAUTH;
 
 public class ProfileNewActivity extends AppCompatActivity implements ProfileNewView {
 
@@ -42,9 +55,11 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
     Uri uriProfilePic;
     Button bt_hello, bt_chat;
 //    ImageButton bt_back,bt_edit,bt_settings;
-    TextView tv_profile_name;
+    TextView userProfileName,userEmail;
     ProfileNewPresenter presenter;
     ProgressDialog progressDialogProfilePic;
+    PieChart pieChart;
+    UserObject userDetail;
     Menu menu;
     Toolbar toolbar;
     private ArrayList<String> mCourseNames=new ArrayList<>();
@@ -53,6 +68,10 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        findViewById();
+        setPieChart();
+
+//        startActivity(new Intent(this,PieChartActivity.class));
 //        toolbar=findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 //        if(getSupportActionBar()!=null){
@@ -61,15 +80,19 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
 //        bt_back=findViewById(R.id.backButton);
 //        bt_edit=findViewById(R.id.editbutton);
 //        bt_settings=findViewById(R.id.setting_button);
+
         courseAndInstructorNames();
-        img_profile = findViewById(R.id.img_profile_pic_1);
+
+
 //        bt_back.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                onBackPressed();
 //            }
 //        });
+
         img_profile.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 if(SELECTED_PROFILE_UID.equals(CURRENT_USER.UID)){
@@ -78,8 +101,7 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
             }
         });
 
-        bt_chat = findViewById(R.id.bt_profile_msg);
-        bt_hello = findViewById(R.id.bt_profile_hello);
+
         if (SELECTED_PROFILE_UID.equals(CURRENT_USER.UID)){
             bt_hello.setVisibility(View.GONE);
             bt_chat.setVisibility(View.GONE);
@@ -92,8 +114,59 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
                 startActivity(intent);
             }
         });
-        tv_profile_name = findViewById(R.id.tv_name_profile);
+
     }
+
+    private void findViewById(){
+        pieChart=(PieChart) findViewById(R.id.attendnace_pie_chart);
+        img_profile = findViewById(R.id.img_profile_pic_1);
+        bt_chat = findViewById(R.id.bt_profile_msg);
+        bt_hello = findViewById(R.id.bt_profile_hello);
+        userProfileName = findViewById(R.id.tv_name_profile);
+        userEmail=findViewById(R.id.user_email);
+
+
+    }
+    private void setProfileData() {
+
+        FirebaseUser user =mAUTH.getCurrentUser();
+        userDetail=new UserObject(user.getEmail(),user.getPhoneNumber(),user.getDisplayName(),null,null);
+        userEmail.setText(userDetail.Email);
+        userProfileName.setText(userDetail.Name);
+
+
+    }
+
+    private void setPieChart() {
+        pieChart.setUsePercentValues(true);
+        pieChart.setTransparentCircleRadius(20f);
+        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+        yValues.add(new PieEntry(8f,"Present", 0));
+        yValues.add(new PieEntry(15f,"Absent", 1));
+        yValues.add(new PieEntry(12f,"Leave", 2));
+        yValues.add(new PieEntry(25f,"Cancel", 3));
+
+        PieDataSet dataSet = new PieDataSet(yValues, "");
+
+        PieData data = new PieData( dataSet);
+        // In Percentage term
+        data.setValueFormatter(new PercentFormatter());
+        // Default value
+        //data.setValueFormatter(new DefaultValueFormatter(0));
+        Description description= new Description();
+        description.setText("");
+        pieChart.setDescription(description);
+        pieChart.setData(data);
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setTransparentCircleRadius(20f);
+        pieChart.setHoleRadius(20f);
+        dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        data.setValueTextSize(10f);
+        data.setValueTextColor(Color.DKGRAY);
+
+        pieChart.animateXY(1400, 1400);
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -175,7 +248,10 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
         if(userObject.profilePicLink !=null && !userObject.profilePicLink.equals("")){
             Glide.with(this).load(userObject.profilePicLink).into(img_profile);
         }
-        tv_profile_name.setText(userObject.Name);
+        setProfileData();
+
+        userProfileName.setText(userObject.Name);
+
     }
 
     @Override
