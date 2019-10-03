@@ -59,7 +59,7 @@ public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterChec
             myViewHolder.textView_roll.setText(ROLL_LIST.get(i));
             myViewHolder.textView_name.setText("Attendance");
             totalPresentDays = presentday.get(i);
-            myViewHolder.total_days.setText(totalPresentDays + "/" + totalClasses);
+            myViewHolder.total_days.setText((int)Math.round(totalPresentDays) + "/" + totalClasses);
             myViewHolder.textView_percent.setText(String.format("%.1f", attendanceList.get(i)));
         }
         else{
@@ -85,35 +85,8 @@ public class AdapterCheckAttendanceList extends RecyclerView.Adapter<AdapterChec
             textView_name=itemView.findViewById(R.id.tv_check_attendance_name);
             textView_percent=itemView.findViewById(R.id.tv_check_attendance_percent);
             total_days=itemView.findViewById(R.id.present_days);
-            //
+
         }
     }
-/*
-    public  static long dateDiffernce(String startDate,String FinalDate){
-        long dayDifference=0;
-        try {
-            //Dates to compare
-            Date date1;
-            Date date2;
-
-            SimpleDateFormat dates = new SimpleDateFormat("dd/MM/yyyy");
-
-            //Setting dates
-            date1 = dates.parse(startDate);
-            date2 = dates.parse(FinalDate);
-
-            //Comparing dates
-            long difference = Math.abs(date1.getTime() - date2.getTime());
-             dayDifference = difference / (24 * 60 * 60 * 1000);
-
-            //Convert long to String
-            Log.e("HERE","HERE: " + dayDifference);
-
-        } catch (Exception exception) {
-            Log.e("DIDN'T WORK", "exception " + exception);
-        }
-        return dayDifference;
-    }
-*/
 
 }

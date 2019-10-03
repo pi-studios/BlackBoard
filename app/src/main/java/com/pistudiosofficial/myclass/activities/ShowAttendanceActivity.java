@@ -122,7 +122,10 @@ public class ShowAttendanceActivity extends AppCompatActivity implements ShowAtt
     @Override
     public void indivAttendanceDownload(ArrayList<String> data) {
         TEMP01_LIST = data;
-        INDIV_ATTENDANCE_ORIGNAL = data;
+        INDIV_ATTENDANCE_ORIGNAL  = new ArrayList<>();
+        for (String s:data){
+            INDIV_ATTENDANCE_ORIGNAL.add(s);
+        }
         LinearLayoutManager llm = new LinearLayoutManager(this);
         AdapterCheckAttendanceList adapter = new AdapterCheckAttendanceList(null,0,data);
         recyclerView.setLayoutManager(llm);

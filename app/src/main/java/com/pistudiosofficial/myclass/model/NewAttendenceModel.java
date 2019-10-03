@@ -152,8 +152,8 @@ public class NewAttendenceModel {
         refAttdPercentage = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
                 .child("attendance_percentage");
         for (int i =0; i<roll.size(); i++){
-            refAttendance.child(roll.get(i)).setValue(percent.get(i));
-            refAttdPercentage.child(roll.get(i)).setValue(indivList.get(i));
+            refAttendance.child(roll.get(i)).setValue(indivList.get(i));
+            refAttdPercentage.child(roll.get(i)).setValue(percent.get(i));
         }
         presenter.editSuccess();
 

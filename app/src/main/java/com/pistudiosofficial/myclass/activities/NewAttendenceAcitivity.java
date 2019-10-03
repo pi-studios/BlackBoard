@@ -76,6 +76,7 @@ public class NewAttendenceAcitivity extends AppCompatActivity implements Adapter
         presenter = new NewAttendencePresenter(this);
         int startRoll = Integer.parseInt(Common.CURRENT_ADMIN_CLASS_LIST.get(Common.CURRENT_INDEX).startRoll);
         int endRoll = Integer.parseInt(Common.CURRENT_ADMIN_CLASS_LIST.get(Common.CURRENT_INDEX).endRoll);
+        ROLL_LIST.clear();
         if(NEW_ATTENDANCE){TEMP01_LIST.clear();}
         for (int i = startRoll; i<=endRoll; i++){
             ROLL_LIST.add(Integer.toString(i));
