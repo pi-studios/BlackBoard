@@ -33,6 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.adapters.AdapterCourseItem;
+import com.pistudiosofficial.myclass.objects.ClassObject;
 import com.pistudiosofficial.myclass.objects.UserObject;
 import com.pistudiosofficial.myclass.presenter.ProfileNewPresenter;
 import com.pistudiosofficial.myclass.view.ProfileNewView;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.pistudiosofficial.myclass.Common.CURRENT_ADMIN_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_DATABASE;
 import static com.pistudiosofficial.myclass.Common.SELECTED_CHAT_UID;
@@ -60,6 +62,7 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
     ProgressDialog progressDialogProfilePic;
     PieChart pieChart;
     UserObject userDetail;
+    ArrayList<ClassObject> currClasses;
     Menu menu;
     Toolbar toolbar;
     private ArrayList<String> mCourseNames=new ArrayList<>();
@@ -80,7 +83,7 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
 //        bt_back=findViewById(R.id.backButton);
 //        bt_edit=findViewById(R.id.editbutton);
 //        bt_settings=findViewById(R.id.setting_button);
-
+        setProfileData();
         courseAndInstructorNames();
 
 
@@ -126,6 +129,8 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
         userEmail=findViewById(R.id.user_email);
 
 
+
+        currClasses=CURRENT_ADMIN_CLASS_LIST;
     }
     private void setProfileData() {
 
@@ -133,8 +138,7 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
         userDetail=new UserObject(user.getEmail(),user.getPhoneNumber(),user.getDisplayName(),null,null);
         userEmail.setText(userDetail.Email);
         userProfileName.setText(userDetail.Name);
-
-
+        Log.d("DICK","Hello");
     }
 
     private void setPieChart() {
@@ -249,9 +253,6 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
             Glide.with(this).load(userObject.profilePicLink).into(img_profile);
         }
         setProfileData();
-
-        userProfileName.setText(userObject.Name);
-
     }
 
     @Override
@@ -313,18 +314,11 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
     }
     public void courseAndInstructorNames()
     {
-        mCourseNames.add("Graphics");
-        mInstructorNames.add("Badal Soni");
 
-        mCourseNames.add("Maths");
-        mInstructorNames.add("K.N.Das");
-
-        mCourseNames.add("FLAT");
-        mInstructorNames.add("Shyampada Mukherjee");
-
-        mCourseNames.add("Signals And System");
-        mInstructorNames.add("Anish Kumar");
-
+        for(int i=0;i<currClasses.size();i++){
+            mCourseNames.add(currClasses.get(i).className);
+            mInstructorNames.add(currClasses.get(i).facultyName);
+        }
         initRecyclerViewForCourse();
     }
     private void initRecyclerViewForCourse(){
