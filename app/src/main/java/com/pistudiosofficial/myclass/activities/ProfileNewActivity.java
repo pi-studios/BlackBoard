@@ -34,6 +34,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.adapters.AdapterCourseItem;
 import com.pistudiosofficial.myclass.objects.ClassObject;
+import com.pistudiosofficial.myclass.objects.StudentClassObject;
 import com.pistudiosofficial.myclass.objects.UserObject;
 import com.pistudiosofficial.myclass.presenter.ProfileNewPresenter;
 import com.pistudiosofficial.myclass.view.ProfileNewView;
@@ -43,12 +44,15 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.pistudiosofficial.myclass.Common.ATTD_PERCENTAGE_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_ADMIN_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
+import static com.pistudiosofficial.myclass.Common.CURRENT_USER_CLASS_LIST_ID;
 import static com.pistudiosofficial.myclass.Common.FIREBASE_DATABASE;
 import static com.pistudiosofficial.myclass.Common.SELECTED_CHAT_UID;
 import static com.pistudiosofficial.myclass.Common.SELECTED_PROFILE_UID;
 import static com.pistudiosofficial.myclass.Common.mAUTH;
+import static com.pistudiosofficial.myclass.Common.mREF_student_classList;
 
 public class ProfileNewActivity extends AppCompatActivity implements ProfileNewView {
 
@@ -60,9 +64,10 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
     TextView userProfileName,userEmail;
     ProfileNewPresenter presenter;
     ProgressDialog progressDialogProfilePic;
-    PieChart pieChart;
+    public PieChart pieChart;
     UserObject userDetail;
     ArrayList<ClassObject> currClasses;
+    ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
     Menu menu;
     Toolbar toolbar;
     private ArrayList<String> mCourseNames=new ArrayList<>();
@@ -72,7 +77,7 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         findViewById();
-        setPieChart();
+        setPieChart(yValues);
 
 //        startActivity(new Intent(this,PieChartActivity.class));
 //        toolbar=findViewById(R.id.toolbar);
@@ -128,30 +133,34 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
         userProfileName = findViewById(R.id.tv_name_profile);
         userEmail=findViewById(R.id.user_email);
 
-
-
         currClasses=CURRENT_ADMIN_CLASS_LIST;
+        computeTotalAttendace();
     }
+
+    private void computeTotalAttendace() {
+        float totalAttendancePer=0,sum;
+        for (int i=0;i<ATTD_PERCENTAGE_LIST.size();i++) {
+            sum=Float.parseFloat(ATTD_PERCENTAGE_LIST.get(i));
+            totalAttendancePer+=sum;
+        }
+        totalAttendancePer=totalAttendancePer/ATTD_PERCENTAGE_LIST.size();
+        yValues.add(new PieEntry(totalAttendancePer,"Present",0));
+        yValues.add(new PieEntry(100-totalAttendancePer,"Absent",1));
+
+    }
+
     private void setProfileData() {
 
         FirebaseUser user =mAUTH.getCurrentUser();
         userDetail=new UserObject(user.getEmail(),user.getPhoneNumber(),user.getDisplayName(),null,null);
         userEmail.setText(userDetail.Email);
         userProfileName.setText(userDetail.Name);
-        Log.d("DICK","Hello");
     }
 
-    private void setPieChart() {
+    public void setPieChart(ArrayList<PieEntry> yValues) {
         pieChart.setUsePercentValues(true);
         pieChart.setTransparentCircleRadius(20f);
-        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
-        yValues.add(new PieEntry(8f,"Present", 0));
-        yValues.add(new PieEntry(15f,"Absent", 1));
-        yValues.add(new PieEntry(12f,"Leave", 2));
-        yValues.add(new PieEntry(25f,"Cancel", 3));
-
         PieDataSet dataSet = new PieDataSet(yValues, "");
-
         PieData data = new PieData( dataSet);
         // In Percentage term
         data.setValueFormatter(new PercentFormatter());
@@ -253,6 +262,7 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
             Glide.with(this).load(userObject.profilePicLink).into(img_profile);
         }
         setProfileData();
+        userProfileName.setText(userObject.Name);
     }
 
     @Override
@@ -312,6 +322,7 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
         }
 
     }
+
     public void courseAndInstructorNames()
     {
 
