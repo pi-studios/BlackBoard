@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,15 +61,17 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
     CircleImageView img_profile;
     int PICK_PROFILE_IMG_REQUEST = 101;
     Uri uriProfilePic;
-    Button bt_hello, bt_chat;
-//    ImageButton bt_back,bt_edit,bt_settings;
+    Button bt_hello, bt_chat,bt_helloList;
+    ImageButton bt_back,bt_edit,bt_settings,confirmProfileEdit,cancelProfileEdit;
     TextView userProfileName,userEmail;
+    EditText userBio,userDept,userSem,userBatch,userSgpi,userCgpi;
     ProfileNewPresenter presenter;
     ProgressDialog progressDialogProfilePic;
     public PieChart pieChart;
+    public PieDataSet dataSet;
     UserObject userDetail;
     ArrayList<ClassObject> currClasses;
-    ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+    public ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
     Menu menu;
     Toolbar toolbar;
     private ArrayList<String> mCourseNames=new ArrayList<>();
@@ -77,27 +81,28 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         findViewById();
-        setPieChart(yValues);
-
-//        startActivity(new Intent(this,PieChartActivity.class));
-//        toolbar=findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        if(getSupportActionBar()!=null){
-//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        }
-//        bt_back=findViewById(R.id.backButton);
-//        bt_edit=findViewById(R.id.editbutton);
-//        bt_settings=findViewById(R.id.setting_button);
         setProfileData();
+        //Todo:
+        //Bug:::: I want to show the pie chart for only student
+        // These two lines show the same thing for admin : a blank pie chart which should not be showing in case of admin because I set visibility =gone in xml
+
+//        if(CURRENT_USER.AdminLevel!="admin")
+//        {
+//            setPieChart();
+//        }
+
+//        setPieChart();
+
+
         courseAndInstructorNames();
 
 
-//        bt_back.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onBackPressed();
-//            }
-//        });
+        bt_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         img_profile.setOnClickListener(new View.OnClickListener() {
 
@@ -122,16 +127,73 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
                 startActivity(intent);
             }
         });
+        bt_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bt_back.setVisibility(View.INVISIBLE);
+                bt_settings.setVisibility(View.INVISIBLE);
+                bt_hello.setVisibility(View.GONE);
+                bt_helloList.setVisibility(View.GONE);
+                bt_edit.setVisibility(View.GONE);
+                confirmProfileEdit.setVisibility(View.VISIBLE);
+                cancelProfileEdit.setVisibility(View.VISIBLE);
+                pieChart.setVisibility(View.GONE);
+                userBio.setEnabled(true);
+                userDept.setEnabled(true);
+                userSem.setEnabled(true);
+                userBatch.setEnabled(true);
+                userSgpi.setEnabled(true);
+                userCgpi.setEnabled(true);
+
+            }
+        });
+        confirmProfileEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userBio.setText(userBio.getText());
+                userBio.setEnabled(false);
+                userDept.setEnabled(false);
+                userSem.setEnabled(false);
+                userBatch.setEnabled(false);
+                userSgpi.setEnabled(false);
+                userCgpi.setEnabled(false);
+                confirmProfileEdit.setVisibility(View.GONE);
+                cancelProfileEdit.setVisibility(View.GONE);
+                bt_back.setVisibility(View.VISIBLE);
+                bt_settings.setVisibility(View.VISIBLE);
+                bt_helloList.setVisibility(View.VISIBLE);
+                bt_edit.setVisibility(View.VISIBLE);
+//                pieChart.setVisibility(View.VISIBLE);
+            }
+        });
+        cancelProfileEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
     }
 
     private void findViewById(){
-        pieChart=(PieChart) findViewById(R.id.attendnace_pie_chart);
+        pieChart=findViewById(R.id.attendnace_pie_chart);
         img_profile = findViewById(R.id.img_profile_pic_1);
+        bt_back=findViewById(R.id.backButton);
         bt_chat = findViewById(R.id.bt_profile_msg);
         bt_hello = findViewById(R.id.bt_profile_hello);
+        bt_helloList=findViewById(R.id.bt_helloList_profile);
+        bt_edit=findViewById(R.id.editbutton);
+        bt_settings=findViewById(R.id.setting_button);
+        confirmProfileEdit=findViewById(R.id.confirm_edit_profile);
+        cancelProfileEdit=findViewById(R.id.cancelEditProfile);
         userProfileName = findViewById(R.id.tv_name_profile);
         userEmail=findViewById(R.id.user_email);
+        userBio=findViewById(R.id.user_bio);
+        userDept=findViewById(R.id.depart_ment);
+        userSem=findViewById(R.id.sem_ester);
+        userBatch=findViewById(R.id.bat_ch);
+        userSgpi=findViewById(R.id.sg_pi);
+        userCgpi=findViewById(R.id.cg_pi);
 
         currClasses=CURRENT_ADMIN_CLASS_LIST;
         computeTotalAttendace();
@@ -157,15 +219,13 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
         userProfileName.setText(userDetail.Name);
     }
 
-    public void setPieChart(ArrayList<PieEntry> yValues) {
+    public void setPieChart() {
+        pieChart.setVisibility(View.VISIBLE);
         pieChart.setUsePercentValues(true);
         pieChart.setTransparentCircleRadius(20f);
-        PieDataSet dataSet = new PieDataSet(yValues, "");
+        dataSet = new PieDataSet(yValues, "");
         PieData data = new PieData( dataSet);
-        // In Percentage term
         data.setValueFormatter(new PercentFormatter());
-        // Default value
-        //data.setValueFormatter(new DefaultValueFormatter(0));
         Description description= new Description();
         description.setText("");
         pieChart.setDescription(description);
@@ -176,10 +236,15 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
         dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
         data.setValueTextSize(10f);
         data.setValueTextColor(Color.DKGRAY);
-
         pieChart.animateXY(1400, 1400);
     }
 
+//    public void updatePieChart(ArrayList<PieEntry> Values){
+//        yValues.add(Values.get(0));
+//        yValues.add(Values.get(1));
+//        pieChart.notifyDataSetChanged();
+//        pieChart.invalidate();
+//    }
 
     @Override
     public void onBackPressed() {
@@ -332,6 +397,7 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
         }
         initRecyclerViewForCourse();
     }
+
     private void initRecyclerViewForCourse(){
 //
 

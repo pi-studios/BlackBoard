@@ -61,15 +61,14 @@ public class AdapterCourseItem extends RecyclerView.Adapter<AdapterCourseItem.Vi
             @Override
             public void onClick(View view) {
                 float att=Float.parseFloat(ATTD_PERCENTAGE_LIST.get(position));
+                Log.d("Dick","Dick");
                 ProfileNewActivity profileNewActivity=new ProfileNewActivity();
                 ArrayList<PieEntry> yValues=new ArrayList<>();
-                yValues.add(new PieEntry(att,"Present",0));
-                yValues.add(new PieEntry((100-att),"Absent",1));
-//                pieChart=(PieChart) view.findViewById(R.id.attendnace_pie_chart);
-
-                //Bug:    From here I am unable to reference the pie chart in ProfileActivity
-                profileNewActivity.setPieChart(yValues);
-//                 pieChart=profileNewActivity.pieChart;
+               yValues.add(new PieEntry(att,"Present",0));
+               yValues.add(new PieEntry((100-att),"Absent",1));
+               profileNewActivity.yValues=yValues;
+               profileNewActivity.pieChart.notifyDataSetChanged();
+               profileNewActivity.pieChart.invalidate();
             }
         });
 
@@ -79,35 +78,6 @@ public class AdapterCourseItem extends RecyclerView.Adapter<AdapterCourseItem.Vi
     public int getItemCount() {
         return mCourseNames.size();
     }
-
-//    public void setPieChart(ArrayList<PieEntry> yValues) {
-//        pieChart.setUsePercentValues(true);
-//        pieChart.setTransparentCircleRadius(20f);
-//        PieDataSet dataSet = new PieDataSet(yValues, "");
-//        PieData data = new PieData( dataSet);
-//        // In Percentage term
-//        data.setValueFormatter(new PercentFormatter());
-//        // Default value
-//        //data.setValueFormatter(new DefaultValueFormatter(0));
-//        Description description= new Description();
-//        description.setText("");
-//        pieChart.setDescription(description);
-//        pieChart.setData(data);
-//        pieChart.setDrawHoleEnabled(true);
-//        pieChart.setTransparentCircleRadius(20f);
-//        pieChart.setHoleRadius(20f);
-//        dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
-//        data.setValueTextSize(10f);
-//        data.setValueTextColor(Color.DKGRAY);
-//
-//        pieChart.animateXY(1400, 1400);
-//    }
-
-
-//    @Override
-//    public void onClick(View view) {
-//
-//    }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView CourseName,InstructorName;
