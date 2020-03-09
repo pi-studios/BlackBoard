@@ -10,10 +10,6 @@
     app:cardCornerRadius="10dp"
     app:cardElevation="5dp">
 
-    <!--<androidx.constraintlayout.widget.ConstraintLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content">-->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -66,7 +62,7 @@
                     android:text="19th June, 2019" />
             </LinearLayout>
             <ImageButton
-                android:id="@+id/post_edit_delete"
+                android:id="@+id/post_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@color/transparent"
@@ -98,7 +94,8 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="5dp"
-            android:background="@color/half_black" />
+            android:background="@color/half_black"
+            android:visibility="invisible" />
 
         <LinearLayout
             android:layout_width="match_parent"

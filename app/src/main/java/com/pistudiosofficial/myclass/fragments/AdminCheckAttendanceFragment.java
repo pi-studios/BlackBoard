@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.pistudiosofficial.myclass.activities.CreatePostActivity;
 import com.pistudiosofficial.myclass.activities.ResourceBucketActivity;
 import com.pistudiosofficial.myclass.activities.ShowAttendanceActivity;
+import com.pistudiosofficial.myclass.activities.StudentListActivity;
 import com.pistudiosofficial.myclass.adapters.AdapterCheckAttendanceList;
 import com.pistudiosofficial.myclass.adapters.AdapterPostLoad;
 import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
@@ -81,7 +83,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
 
     RecyclerView recyclerViewPost;
     FloatingActionButton fab_exportcsv,fab_create_poll,fab_new_attendance,
-            fab_show_attendace_percent,fab_notify,fab_createPost,fab_show_bucket;
+            fab_show_attendace_percent,fab_notify,fab_createPost,fab_show_bucket,fab_addStudent;
     FloatingActionsMenu floatingActionsMenu;
     public AdminCheckAttendanceFragment() {
     }
@@ -91,7 +93,6 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                              Bundle savedInstanceState) {
 
         final View v=inflater.inflate(R.layout.admin_check_attendance, container, false);
-//        showBackButton();
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         Toolbar toolbar = v.findViewById(R.id.toolbar_admin);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -111,6 +112,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         fab_show_attendace_percent = v.findViewById(R.id.fab_show_attendnace_list);
         fab_createPost = v.findViewById(R.id.fab_post);
         fab_show_bucket = v.findViewById(R.id.fab_res_bucket);
+        fab_addStudent = v.findViewById(R.id.fab_student_list);
         floatingActionsMenu=v.findViewById(R.id.fab_check_attendance);
         presenter = new CheckAttendancePresenter(this);
         presenter.performDeleteRead(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX));
@@ -120,6 +122,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 "Loading. Please wait...", true);
        //presenter.performMultipleAttendanceCheck();
         recyclerViewPost = v.findViewById(R.id.recyclerView_check_attendance_post);
+
         fab_new_attendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,12 +131,32 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 startActivity(intent);
             }
         });
+
         fab_exportcsv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.performExportCSV();
+                Dialog exportDialog = new Dialog(getContext());
+                exportDialog.setContentView(R.layout.export_csv_dialog);
+                EditText et_date1,et_date2;
+                Button bt_export;
+                et_date1 = exportDialog.findViewById(R.id.et_date1_exportcsv);
+                et_date2 = exportDialog.findViewById(R.id.et_date2_exportcsv);
+                bt_export = exportDialog.findViewById(R.id.bt_exportcsv);
+                sessionDatePick(et_date1);
+                sessionDatePick(et_date2);
+                exportDialog.show();
+                bt_export.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        exportDialog.dismiss();
+                        if (!TextUtils.isEmpty(et_date1.getText().toString()) && !TextUtils.isEmpty(et_date2.getText().toString())){
+                            presenter.performExportCSV(et_date1.getText().toString(),et_date2.getText().toString());
+                        }
+                    }
+                });
             }
         });
+
         fab_notify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -219,6 +242,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 dialog.show();
             }
         });
+
         fab_create_poll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -250,6 +274,13 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 mREF_RESOURCE_BUCKET = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
                         .child("resource_bucket");
                 startActivity(intent);
+            }
+        });
+
+        fab_addStudent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), StudentListActivity.class));
             }
         });
 

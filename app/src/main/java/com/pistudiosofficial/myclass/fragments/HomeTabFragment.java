@@ -52,7 +52,7 @@ import static com.pistudiosofficial.myclass.Common.mREF_users;
 
 public class HomeTabFragment extends Fragment implements HomeView {
 
-    AppCompatImageButton bt_search;
+    //AppCompatImageButton bt_search;
     EditText et_search;
     RecyclerView recyclerViewSearch;
     DatabaseReference mUserRef;
@@ -65,7 +65,7 @@ public class HomeTabFragment extends Fragment implements HomeView {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home,container,false);
-        bt_search = v.findViewById(R.id.bt_search_main);
+       // bt_search = v.findViewById(R.id.bt_search_main);
         et_search = v.findViewById(R.id.et_search_main);
         recyclerViewSearch = v.findViewById(R.id.recycler_view_main_search);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -73,7 +73,7 @@ public class HomeTabFragment extends Fragment implements HomeView {
         recyclerViewSearch.setLayoutManager(llm);
         loadFeed();
         mUserRef = FirebaseDatabase.getInstance().getReference("users");
-        bt_search.setOnClickListener(new View.OnClickListener() {
+        /*bt_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!et_search.getText().toString().isEmpty() && !et_search.getText().toString().equals("")){
@@ -83,6 +83,15 @@ public class HomeTabFragment extends Fragment implements HomeView {
             }
         });
         bt_search.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                et_search.setText("");
+                recyclerViewSearch.setAdapter(adapterHomeFeed);
+                et_search.clearFocus();
+                return true;
+            }
+        });*/
+        et_search.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 et_search.setText("");

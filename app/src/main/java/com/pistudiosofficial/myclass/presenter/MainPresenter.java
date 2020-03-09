@@ -51,10 +51,6 @@ public class MainPresenter implements MainPresenterInterface {
         model.transferClass(index, email);
     }
 
-    public void performUserAddClass(StudentClassObject studentClassObject){
-        model.performUserAddClass(studentClassObject);
-    }
-
     public void performConnectionDownload(){
         model.performConnectionDownload();
     }
@@ -107,16 +103,6 @@ public class MainPresenter implements MainPresenterInterface {
     public void userClassListDownloadSuccess(ArrayList<ClassObject> classObjectArrayList,
                                              ArrayList<String> userPercentageList) {
         view.loadUserClassList(classObjectArrayList, userPercentageList);
-    }
-
-    @Override
-    public void addUserClassSuccess() {
-        view.addUserClassSuccess();
-    }
-
-    @Override
-    public void addUserClassFailed() {
-        view.addUserClassFailed();
     }
 
     @Override

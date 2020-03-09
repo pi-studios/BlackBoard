@@ -35,18 +35,17 @@ public class NewAttendenceModel {
         this.presenter = presenter;
     }
 
-    public void performAttendenceUpload(){
+    public void performAttendenceUpload(Date date){
         refAttendance = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
                 .child("attendance");
         refAttdPercentage = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
                 .child("attendance_percentage");
         // SET key for today attendance
-        setAttendanceKey();
+        setAttendanceKey(date);
     }
-    private void setAttendanceKey(){
-        Date todayDate = Calendar.getInstance().getTime();
+    private void setAttendanceKey(Date date){
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        todayString = formatter.format(todayDate);
+        todayString = formatter.format(date);
         attendanceKey = todayString+"-1";
         refAttendance.orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

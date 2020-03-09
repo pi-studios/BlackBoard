@@ -75,6 +75,16 @@
         app:layout_constraintVertical_bias="0.983">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_student_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/white"
+            app:fab_colorPressed="@color/white_pressed"
+            app:fab_icon="@drawable/student"
+            app:fab_size="mini"
+            app:fab_title="Add Student" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_export_csv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

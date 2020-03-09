@@ -26,7 +26,6 @@ import com.pistudiosofficial.myclass.adapters.AdapterClassList;
 import com.pistudiosofficial.myclass.objects.ClassObject;
 import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.R;
-import com.pistudiosofficial.myclass.objects.StudentClassObject;
 import com.pistudiosofficial.myclass.activities.MainActivity;
 
 import java.text.SimpleDateFormat;
@@ -36,7 +35,7 @@ import java.util.Locale;
 import static com.pistudiosofficial.myclass.Common.ADAPTER_CLASS_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
 
-public class ClassTabFragment extends Fragment {
+public class ClassTabFragment extends Fragment  {
 
     RecyclerView recyclerView;
 
@@ -60,6 +59,7 @@ public class ClassTabFragment extends Fragment {
         }
         if(Common.CURRENT_USER.AdminLevel.equals("user")){
             floatingActionButton3.setVisibility(View.GONE);
+            floatingActionButton1.setVisibility(View.GONE);
             ADAPTER_CLASS_LIST = new AdapterClassList(Common.CURRENT_ADMIN_CLASS_LIST,Common.ATTD_PERCENTAGE_LIST,(MainActivity)getActivity());
         }
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -76,10 +76,9 @@ public class ClassTabFragment extends Fragment {
                 if (CURRENT_USER.AdminLevel.equals("admin")){
                     addClassDialog = new Dialog(getContext());
                     addClassDialog.setContentView(R.layout.add_class_admin);
-                    final EditText className, joinCode, sessionStart, sessionEnd, startRoll, endRoll;
+                    final EditText className, sessionStart, sessionEnd, startRoll, endRoll;
                     Button addClass = addClassDialog.findViewById(R.id.bt_add_class);
                     className = addClassDialog.findViewById(R.id.et_class_name);
-                    joinCode = addClassDialog.findViewById(R.id.et_addFaculty_code);
                     sessionStart = addClassDialog.findViewById(R.id.et_session_start);
                     sessionEnd = addClassDialog.findViewById(R.id.et_session_end);
                     startRoll = addClassDialog.findViewById(R.id.et_roll_start);
@@ -92,39 +91,21 @@ public class ClassTabFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             ClassObject classObject = new ClassObject(CURRENT_USER.Name,CURRENT_USER.Email,
-                                    CURRENT_USER.UID,className.getText().toString(),
-                                    joinCode.getText().toString(), sessionStart.getText().toString(),
+                                    CURRENT_USER.UID,className.getText().toString(), sessionStart.getText().toString(),
                                     sessionEnd.getText().toString(), startRoll.getText().toString(),
                                     endRoll.getText().toString());
-                            MainActivity.presenter.performAdminAddClass(classObject);
-                            addClassDialog.dismiss();
+                            if (classObject.sessionEnd.equals("") || classObject.className.equals("") ||
+                                    classObject.sessionStart.equals("") ||
+                                    classObject.startRoll.equals("") || classObject.endRoll.equals("")){
+
+                            }
+                            else{
+                                MainActivity.presenter.performAdminAddClass(classObject);
+                                addClassDialog.dismiss();
+                            }
                         }
                     });
                 }
-
-                if (CURRENT_USER.AdminLevel.equals("user")){
-                    addClassDialog = new Dialog(getContext());
-                    addClassDialog.setContentView(R.layout.add_class_user);
-                    final EditText facultyemail,facultyjoinCode;
-                    Button addClass = addClassDialog.findViewById(R.id.bt_add_new_class_student_popup);
-                    facultyemail = addClassDialog.findViewById(R.id.et_addFaculty_email);
-                    facultyjoinCode = addClassDialog.findViewById(R.id.et_addFaculty_code);
-                    addClassDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    addClassDialog.show();
-                    final int roll = Integer.parseInt(CURRENT_USER.Roll)%1000;
-                    addClass.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            StudentClassObject studentClassObject = new StudentClassObject(
-                                    Integer.toString(roll),facultyemail.getText().toString(),
-                                    facultyjoinCode.getText().toString(),CURRENT_USER.UID,null
-                            );
-                            MainActivity.presenter.performUserAddClass(studentClassObject);
-                            addClassDialog.dismiss();
-                        }
-                    });
-                }
-
             }
         });
         floatingActionButton2.setOnClickListener(new View.OnClickListener() {

@@ -1,11 +1,7 @@
 package com.pistudiosofficial.myclass.model;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,15 +20,14 @@ import static com.pistudiosofficial.myclass.Common.CHECK_NEW_COMMENT;
 import static com.pistudiosofficial.myclass.Common.CHECK_NEW_COMMENT_POST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
-import static com.pistudiosofficial.myclass.Common.LOG;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
+import static com.pistudiosofficial.myclass.Common.mREF_users;
 
 public class LiveMainModel {
 
     MainActivityView mainActivityView;
     SplashView splashView;
     HomeView homeView;
-
     public LiveMainModel(SplashView splashView) {
         this.splashView = splashView;
     }
@@ -40,6 +35,7 @@ public class LiveMainModel {
     public LiveMainModel(MainActivityView mainActivityView) {
         this.mainActivityView = mainActivityView;
     }
+
 
     public LiveMainModel() {
     }
@@ -137,8 +133,12 @@ public class LiveMainModel {
         post_like_list = new ArrayList<>();
         post_url_list = new HashMap<>();
         post_comment_count = new ArrayList<>();
+        try{
         for (String s: classID){
             performLoadPost(s);
+        }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -255,7 +255,7 @@ public class LiveMainModel {
 
 
 
-    // This is for controlling app Access
+    // This is for controlling app Access and version check
     //Maintenance = 0; Running = 1;
     public void CHECK_CONTROL(){
         FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -263,8 +263,9 @@ public class LiveMainModel {
         dRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                long control_state = dataSnapshot.getValue(Long.class);
-                splashView.controlCheck(control_state);
+                    int control_state = dataSnapshot.child("maintainance").getValue(Integer.class);
+                    String version = dataSnapshot.child("version").getValue(String.class);
+                    splashView.controlCheck(control_state,version);
             }
 
             @Override
@@ -273,5 +274,7 @@ public class LiveMainModel {
             }
         });
     }
+
+
 
 }

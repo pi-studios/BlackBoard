@@ -11,6 +11,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ import com.pistudiosofficial.myclass.presenter.NewAttendencePresenter;
 import com.pistudiosofficial.myclass.view.NewAttendenceView;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import static com.pistudiosofficial.myclass.Common.NEW_ATTENDANCE;
 import static com.pistudiosofficial.myclass.Common.ROLL_LIST;
@@ -38,6 +40,7 @@ public class NewAttendenceAcitivity extends AppCompatActivity implements Adapter
     RecyclerView newAttendenceRecycler;
     AdapterNewAttendenceList adapterNewAttendenceList;
     NewAttendencePresenter presenter;
+    Date todayDate;
     Menu menu;
     final Calendar newCalendar = Calendar.getInstance();
     @SuppressLint("WrongConstant")
@@ -54,6 +57,7 @@ public class NewAttendenceAcitivity extends AppCompatActivity implements Adapter
                 ActionBar.LayoutParams.WRAP_CONTENT,
                 ActionBar.LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER);
+        todayDate = Calendar.getInstance().getTime();
         TextView textviewTitle = viewActionBar.findViewById(R.id.actionbar_textview);
         textviewTitle.setText("Attendance");
         abar.setCustomView(viewActionBar, params);
@@ -130,7 +134,7 @@ public class NewAttendenceAcitivity extends AppCompatActivity implements Adapter
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id==R.id.action_saveAttendance && NEW_ATTENDANCE){
-            presenter.performAttendenceUpload();
+            presenter.performAttendenceUpload(todayDate);
         }
         if (id == R.id.action_saveAttendance && !NEW_ATTENDANCE){
             presenter.performEditUpload();
@@ -140,6 +144,7 @@ public class NewAttendenceAcitivity extends AppCompatActivity implements Adapter
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                     Calendar newDate = Calendar.getInstance();
                     newDate.set(year, monthOfYear, dayOfMonth);
+                    todayDate = newDate.getTime();
                 }
 
             }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));

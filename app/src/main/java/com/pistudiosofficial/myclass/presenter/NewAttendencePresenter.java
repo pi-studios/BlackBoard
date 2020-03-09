@@ -7,6 +7,7 @@ import com.pistudiosofficial.myclass.presenter.presenter_interfaces.NewAttendenc
 import com.pistudiosofficial.myclass.view.NewAttendenceView;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import static com.pistudiosofficial.myclass.Common.EDIT_ATTENDANCE_DATE;
 import static com.pistudiosofficial.myclass.Common.INDIV_ATTENDANCE_ORIGNAL;
@@ -24,8 +25,8 @@ public class NewAttendencePresenter implements NewAttendencePresenterInterface {
         this.model =new  NewAttendenceModel(this);
     }
 
-    public void performAttendenceUpload(){
-        model.performAttendenceUpload();
+    public void performAttendenceUpload(Date date){
+        model.performAttendenceUpload(date);
     }
 
     public void performEditUpload(){

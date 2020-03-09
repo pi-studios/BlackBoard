@@ -69,9 +69,9 @@ public class CheckAttendancePresenter implements CheckAttendancePresenterInterfa
         broadcastFunctionPerform();
     }
 
-    public void performExportCSV(){
+    public void performExportCSV(String date1,String date2){
         exportModel = new ExportCSVModel(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX),this);
-        exportModel.exportAttendanceData();
+        exportModel.exportAttendanceData(date1,date2);
     }
 
     public void performAdminAttendanceDataDownload(){

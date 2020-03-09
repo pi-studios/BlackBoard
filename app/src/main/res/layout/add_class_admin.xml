@@ -26,19 +26,6 @@
         app:layout_constraintVertical_chainStyle="packed" />
 
     <EditText
-        android:id="@+id/et_addFaculty_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="Class Join Code"
-        android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/et_session_start"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_class_name" />
-
-    <EditText
         android:id="@+id/et_session_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,7 +36,7 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_addFaculty_code" />
+        app:layout_constraintTop_toBottomOf="@+id/et_class_name" />
 
     <EditText
         android:id="@+id/et_session_end"

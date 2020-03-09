@@ -16,7 +16,7 @@ public class SignUpPresenter implements SignUpPresenterInterface {
 
     public void performSignUp(String getEmailSign, String getPasswordSign, String getPhoneSign, String getNameSign, String getAdminLevelSign, String getRollSign){
         UserObject userObject = new UserObject(getEmailSign, getPhoneSign, getNameSign, getAdminLevelSign, getRollSign);
-        signUpModel.signup(getEmailSign,getPasswordSign,userObject);
+        signUpModel.initiate_signup(getEmailSign,getPasswordSign,userObject);
     }
 
 

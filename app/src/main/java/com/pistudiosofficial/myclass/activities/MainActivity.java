@@ -329,17 +329,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void addUserClassSuccess() {
-        Toast.makeText(MainActivity.this,"Success",Toast.LENGTH_SHORT).show();
-        presenter.performUserClassListDownload();
-    }
-
-    @Override
-    public void addUserClassFailed() {
-        Toast.makeText(MainActivity.this,"Class Add Failed", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void addCollab(int index, String email) {
         presenter.addCollab(index,email,false);
     }

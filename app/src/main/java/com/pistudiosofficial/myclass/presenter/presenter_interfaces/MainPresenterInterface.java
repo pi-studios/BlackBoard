@@ -18,9 +18,6 @@ public interface MainPresenterInterface {
     void userClassListDownloadSuccess(ArrayList<ClassObject> classObjectArrayList,
                                       ArrayList<String> userPercentageList);
 
-    void addUserClassSuccess();
-    void addUserClassFailed();
-
     void transferCollabActionFailed();
 
     void connectionListDownloadSuccess(ArrayList<UserObject> userList);

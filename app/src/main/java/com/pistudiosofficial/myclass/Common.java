@@ -22,6 +22,9 @@ import java.util.HashMap;
 
 public class Common {
 
+    public static final String APP_VERSION = "v005";
+
+
     public static UserObject CURRENT_USER = null;
     public static UserObject SELECTED_USER_PROFILE = null;
 
@@ -36,6 +39,8 @@ public class Common {
     public static DatabaseReference mREF_student_classList = null;
     public static DatabaseReference mREF_admin_classList = null;
     public static DatabaseReference mREF_chat = null;
+    public static DatabaseReference mREF_ACCESS_CONTROL = FirebaseDatabase.getInstance().getReference().child("access_control");
+    public static DatabaseReference mREF_ACCOUNT_LIST = FirebaseDatabase.getInstance().getReference().child("account_index");
 
     public static ArrayList<ClassObject> CURRENT_ADMIN_CLASS_LIST = null;
     public static ArrayList<String> CURRENT_CLASS_ID_LIST = null;

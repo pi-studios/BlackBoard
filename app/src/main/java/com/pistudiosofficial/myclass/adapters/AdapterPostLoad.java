@@ -1,12 +1,16 @@
 package com.pistudiosofficial.myclass.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -208,7 +212,6 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
                             .setCompoundDrawablesWithIntrinsicBounds(R.drawable.chat_green, 0, 0, 0);
                 }
             }catch (Exception e){e.printStackTrace();}
-
             myViewHolder.bt_share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -216,6 +219,33 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
                     share.setType("text/plain");
                     share.putExtra(Intent.EXTRA_TEXT,postObjectArrayList.get(i).getCreatorName()+"\n "+postObjectArrayList.get(i).getCreationDate()+"\n"+postObjectArrayList.get(i).getBody());
                     context.startActivity(share);
+                }
+            });
+
+            myViewHolder.post_edit_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PostObject postObject = postObjectArrayList.get(i);
+                    String postid = post_id.get(i);
+                    Dialog postEditDialog = new Dialog(context);
+                    postEditDialog.setContentView(R.layout.create_post_dialog);
+                    Button postDone = postEditDialog.findViewById(R.id.bt_create_post);
+                    Button pdf_selected = postEditDialog.findViewById(R.id.bt_create_post_upload_file);
+
+                    ImageButton pickFile = postEditDialog.findViewById(R.id.img_uploadFile);
+                    ImageButton pickImage = postEditDialog.findViewById(R.id.img_uploadImage);
+
+                    ImageView img1 = postEditDialog.findViewById(R.id.img_create_post_01);
+                    ImageView img2 = postEditDialog.findViewById(R.id.img_create_post_02);
+                    ImageView img3 = postEditDialog.findViewById(R.id.img_create_post_03);
+                    EditText et_post_content = postEditDialog.findViewById(R.id.et_create_post_body);
+                    et_post_content.setText(postObject.getBody());
+                    if (post_url_list.get(postid).get(0) != null){
+
+                    }
+
+
+
                 }
             });
         }
@@ -231,6 +261,7 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
         TextView tv_title,tv_creatIon_time,tv_post_content;
         Button bt_like, bt_comment, bt_share;
         ImageView img_post_icon;
+        ImageButton post_edit_delete;
         LinearLayout listView;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -242,6 +273,7 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
             bt_share = itemView.findViewById(R.id.bt_share_post_row);
             listView = itemView.findViewById(R.id.linearLayout_post_row);
             img_post_icon = itemView.findViewById(R.id.img_post_icon_post_row);
+            post_edit_delete = itemView.findViewById(R.id.post_edit);
         }
     }
 

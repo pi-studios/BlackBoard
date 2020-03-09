@@ -15,6 +15,7 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activities.StudentListActivity"></activity>
         <activity android:name=".activities.ShowAttendanceActivity" />
         <activity android:name=".activities.CreatePostActivity" />
         <activity android:name=".activities.AboutActivity" />

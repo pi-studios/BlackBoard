@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/et_date1_exportcsv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="From"
+        android:inputType="date" />
+
+    <EditText
+        android:id="@+id/et_date2_exportcsv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Upto"
+        android:inputType="date" />
+
+    <Button
+        android:id="@+id/bt_exportcsv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Export" />
+</LinearLayout>

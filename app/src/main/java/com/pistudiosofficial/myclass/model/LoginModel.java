@@ -26,8 +26,13 @@ public class LoginModel {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FIREBASE_USER = mAUTH.getCurrentUser();
-                            firebaseUpdateToken();
-                            presenter.loginSuccess();
+                            if (FIREBASE_USER.isEmailVerified()){
+                                firebaseUpdateToken();
+                                presenter.loginSuccess();
+                            }else{
+                                mAUTH.signOut();
+                                presenter.loginFailed();
+                            }
                         } else {
                             presenter.loginFailed();
                         }

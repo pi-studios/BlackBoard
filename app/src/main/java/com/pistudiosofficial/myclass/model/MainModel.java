@@ -202,7 +202,6 @@ public class MainModel {
             fromPath.child("student_index").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    removeNotificationEndSession(CURRENT_CLASS_ID_LIST.get(index),dataSnapshot);
                     deleteIndex(CURRENT_CLASS_ID_LIST.get(index));
                 }
 
@@ -215,6 +214,7 @@ public class MainModel {
         if(CURRENT_USER.AdminLevel.equals("user")){
             DatabaseReference fromPath = mREF_student_classList.child(CURRENT_USER_CLASS_LIST_ID.get(index));
             fromPath.removeValue();
+            removeNotificationEndSession(CURRENT_CLASS_ID_LIST.get(index));
         }
     }
 
@@ -311,56 +311,6 @@ public class MainModel {
             };
         mREF_student_classList.addChildEventListener(childEventListener);
         mREF_classList.addListenerForSingleValueEvent(valueEventListener);
-    }
-
-    public void performUserAddClass(final StudentClassObject studentClassObject){
-        childListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                classObject = dataSnapshot.getValue(ClassObject.class);
-                Log.d("FacultyEmail",classObject.facultyEmail);
-                Log.d("FacultyJoinCode",classObject.joinCode);
-                    if (classObject.facultyEmail.equals(studentClassObject.facultyEmail) &&
-                            classObject.joinCode.equals(studentClassObject.joinCode)) {
-                        studentClassObject.classKey = dataSnapshot.getKey();
-                        mREF_student_classList.child(studentClassObject.classKey).setValue(studentClassObject, new DatabaseReference.CompletionListener() {
-                            @Override
-                            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                                if (databaseError == null) {
-                                    mREF_classList.child(studentClassObject.classKey)
-                                            .child("student_index").child(studentClassObject.studentUID)
-                                            .setValue(studentClassObject.studentUID);
-                                    presenter.addUserClassSuccess();
-                                } else {
-                                    presenter.addUserClassFailed();
-                                }
-                                mREF_classList.removeEventListener(childListener);
-                            }
-                        });
-                    }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-        mREF_classList.addChildEventListener(childListener);
     }
 
     public void deleteIndex(final String x){
@@ -567,6 +517,7 @@ public class MainModel {
         for (int i = 0; i<arrayList.size();i++){
             mREF_users.child(CURRENT_USER.UID).child("class_list").child(arrayList.get(i)).removeValue();
             mREF_classList.child(arrayList.get(i)).child("student_index").child(CURRENT_USER.UID).removeValue();
+            removeNotificationEndSession(arrayList.get(i));
         }
     }
 
@@ -610,7 +561,24 @@ public class MainModel {
         mREF_users.child(CURRENT_USER.UID).child("hello").addValueEventListener(valueEventListener);
     }
 
-    private void removeNotificationEndSession(String classID, DataSnapshot snapshot) {
+    private void removeNotificationEndSession(String classID) {
         //this function is responsible for removing notification object of removed class;
+        mREF_users.child(CURRENT_USER.UID).child("notification")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                            if (snapshot.child("classID").getValue().toString().equals(classID)){
+                                mREF_users.child(CURRENT_USER.UID)
+                                        .child("notification").child(snapshot.getKey()).removeValue();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
     }
 }

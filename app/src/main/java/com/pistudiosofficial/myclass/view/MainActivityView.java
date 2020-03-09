@@ -22,9 +22,6 @@ public interface MainActivityView {
     void loadAdminClassList(ArrayList<ClassObject> classObjectArrayList);
     void loadUserClassList(ArrayList<ClassObject> classObjects, ArrayList<String> userAttendanceList);
 
-    void addUserClassSuccess();
-    void addUserClassFailed();
-
     void addCollab(int index, String email);
     void transferClass(int index, String email);
     void transferClassFailed();

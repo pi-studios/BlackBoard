@@ -63,8 +63,6 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
     PieChart pieChart;
     UserObject userDetail;
     ArrayList<ClassObject> currClasses;
-    Menu menu;
-    Toolbar toolbar;
     private ArrayList<String> mCourseNames=new ArrayList<>();
     private ArrayList<String> mInstructorNames=new ArrayList<>();
     @Override
@@ -121,15 +119,12 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
     }
 
     private void findViewById(){
-        pieChart=(PieChart) findViewById(R.id.attendnace_pie_chart);
+        pieChart= findViewById(R.id.attendnace_pie_chart);
         img_profile = findViewById(R.id.img_profile_pic_1);
         bt_chat = findViewById(R.id.bt_profile_msg);
         bt_hello = findViewById(R.id.bt_profile_hello);
         userProfileName = findViewById(R.id.tv_name_profile);
         userEmail=findViewById(R.id.user_email);
-
-
-
         currClasses=CURRENT_ADMIN_CLASS_LIST;
     }
     private void setProfileData() {

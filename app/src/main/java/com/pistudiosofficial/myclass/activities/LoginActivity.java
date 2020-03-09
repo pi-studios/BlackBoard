@@ -42,7 +42,9 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
         createAcc = findViewById(R.id.tv_createAccount);
         dialog = new Dialog(LoginActivity.this);
         progressDialog = new ProgressDialog(this);
-
+        if (getIntent().getStringExtra("data")!=null){
+            Toast.makeText(this,getIntent().getStringExtra("data") , Toast.LENGTH_SHORT).show();
+        }
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,65 +57,13 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
                 progressDialog.show();
                 presenter.performLogin(email.getText().toString(),password.getText().toString());
             }
-    });
+        });
 
         createAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this,SignupActivity.class));
                 finish();
-//                dialog.setContentView(R.layout.signup_dialog);
-//                final EditText name,phone,password1,password2,email;
-//
-//                name = dialog.findViewById(R.id.et_name);
-//                phone = dialog.findViewById(R.id.et_phone);
-//                password1 = dialog.findViewById(R.id.et_password_sign);
-//                password2 = dialog.findViewById(R.id.et_password2_sign);
-//                email = dialog.findViewById(R.id.et_email_sign);
-//                radioGroup = dialog.findViewById(R.id.radioGroup);
-//                roll = dialog.findViewById(R.id.et_roll_id);
-//                Button signup = dialog.findViewById(R.id.bt_signUp);
-//                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//                    @Override
-//                    public void onCheckedChanged(RadioGroup radioGroup, int i) {
-//                            int id = radioGroup.getCheckedRadioButtonId();
-//                            switch (id){
-//                                case R.id.radio_student:
-//                                    admin = "user";
-//                                    roll.setVisibility(View.VISIBLE);
-//                                    break;
-//                                case R.id.radio_admin:
-//                                    admin = "admin";
-//                                    roll.setVisibility(View.INVISIBLE);
-//                                    break;
-//                                case R.id.radio_masteradmin:
-//                                    admin = "master_admin";
-//                                    roll.setVisibility(View.INVISIBLE);
-//                                    break;
-//                                default:
-//                                    admin = "user";
-//                                    roll.setVisibility(View.VISIBLE);
-//                                    break;
-//                            }
-//
-//                        }
-//                });
-//                signup.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        if(password1.getText().toString().equals(password2.getText().toString()) && !(password1.getText().toString().length()<6)){
-//                            presenter.performSignUp(email.getText().toString(),
-//                                    password1.getText().toString(),
-//                                    phone.getText().toString(),
-//                                    name.getText().toString(),
-//                                    admin,roll.getText().toString());
-//                        }else{
-//                            Toast.makeText(LoginActivity.this,"Password Not Match \n Cannot be less than 6 character",Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
-//                dialog.show();
-
             }
         });
     }

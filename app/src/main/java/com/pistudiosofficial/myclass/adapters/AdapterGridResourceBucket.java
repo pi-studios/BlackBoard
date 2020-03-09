@@ -72,16 +72,6 @@ public class AdapterGridResourceBucket extends BaseAdapter {
         listViewHolder.textInListView.setText(listStorage.get(position).file_name);
         if (listStorage.get(position).file_type.equals("photo")){
             Glide.with(context).load(listStorage.get(position).file_link).into(listViewHolder.imageInListView);
-            listViewHolder.imageInListView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ImageView imgView = (ImageView) view;
-                    String url = listStorage
-                            .get(position).file_link;
-                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, view, url, null);
-                }
-            });
-
         }
         if (listStorage.get(position).file_type.equals("pdf")){
             listViewHolder.imageInListView.setImageResource(R.drawable.pdf_icon);
@@ -170,5 +160,6 @@ public class AdapterGridResourceBucket extends BaseAdapter {
                     }
                 }).setNegativeButton("Cancel",null).show();
     }
+
 
 }
