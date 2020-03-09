@@ -18,7 +18,7 @@
 
     <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:visibility="visible"
     android:orientation="vertical" >
 
@@ -31,7 +31,6 @@
         android:layout_width="match_parent"
         android:layout_height="240dp"
         app:cardBackgroundColor="#B5B0D5F1"
-        app:cardCornerRadius="10dp"
         app:cardElevation="5dp">
 
         <androidx.cardview.widget.CardView
@@ -48,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/img_profile_pic_1"
                     android:layout_width="96dp"
                     android:layout_height="96dp"
@@ -73,6 +72,17 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
+                <ImageButton
+                    android:id="@+id/cancelEditProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
+                    android:backgroundTint="#2196F3"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_close_black_24dp" />
 
                 <ImageButton
                     android:id="@+id/editbutton"
@@ -95,6 +105,18 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_settings_black_24dp" />
 
+                <ImageButton
+                    android:id="@+id/confirm_edit_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="#2196F3"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_check_black_24dp" />
+
                 <TextView
                     android:id="@+id/tv_name_profile"
                     android:layout_width="wrap_content"
@@ -109,14 +131,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/img_profile_pic_1" />
 
-                <TextView
-                    android:id="@+id/textView4"
+                <EditText
+                    android:id="@+id/user_bio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
+                    android:enabled="false"
                     android:text="This is Bio"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:background="@null"
+                    android:maxLength="45"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
@@ -203,6 +230,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_toRightOf="@id/Email"
                 android:background="@drawable/right_side_curve_text"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:text="xyz@gmail.com"
                 android:textSize="18sp" />
         </RelativeLayout>
@@ -224,7 +253,7 @@
                 android:textColor="#000000"
                 android:textSize="18sp" />
 
-            <TextView
+            <EditText
                 android:id="@+id/depart_ment"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -237,9 +266,11 @@
                 android:layout_toRightOf="@id/dep"
                 android:background="@drawable/right_side_curve_text"
                 android:ellipsize="end"
+                android:enabled="false"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
                 android:text="Computer Science And Enginnering"
+                android:textColor="#000000"
                 android:textSize="18sp" />
         </RelativeLayout>
 
@@ -260,7 +291,7 @@
                 android:textColor="#000000"
                 android:textSize="18sp" />
 
-            <TextView
+            <EditText
                 android:id="@+id/sem_ester"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
@@ -270,7 +301,11 @@
                 android:layout_marginBottom="0dp"
                 android:layout_toRightOf="@id/sem"
                 android:background="@drawable/right_side_curve_text"
+                android:enabled="false"
+                android:hint="5th"
+                android:maxLength="3"
                 android:text="5th"
+                android:textColor="#000000"
                 android:textSize="18sp" />
 
             <TextView
@@ -285,8 +320,8 @@
                 android:textColor="#000000"
                 android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/Batch"
+            <EditText
+                android:id="@+id/bat_ch"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -297,7 +332,11 @@
                 android:layout_marginBottom="0dp"
                 android:layout_toRightOf="@id/batch"
                 android:background="@drawable/right_side_curve_text"
+                android:enabled="false"
+                android:hint="2017-21"
+                android:maxLength="7"
                 android:text="2017-21"
+                android:textColor="#000000"
                 android:textSize="18sp" />
         </RelativeLayout>
 
@@ -318,8 +357,8 @@
                 android:textColor="#000000"
                 android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/SGPI"
+            <EditText
+                android:id="@+id/sg_pi"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -328,7 +367,11 @@
                 android:layout_marginBottom="0dp"
                 android:layout_toRightOf="@id/sgpi"
                 android:background="@drawable/right_side_curve_text"
+                android:enabled="false"
+                android:hint="9.75"
+                android:maxLength="4"
                 android:text="7.65"
+                android:textColor="#000000"
                 android:textSize="18sp" />
 
             <TextView
@@ -337,14 +380,14 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="false"
                 android:layout_marginStart="8dp"
-                android:layout_toRightOf="@id/SGPI"
+                android:layout_toRightOf="@id/sg_pi"
                 android:background="@drawable/left_side_curve_text"
                 android:text="C.G.P.I"
                 android:textColor="#000000"
                 android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/CGPI"
+            <EditText
+                android:id="@+id/cg_pi"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -355,13 +398,18 @@
                 android:layout_marginBottom="0dp"
                 android:layout_toRightOf="@id/cgpi"
                 android:background="@drawable/right_side_curve_text"
+                android:enabled="false"
+                android:hint="9.45"
+                android:maxLength="4"
                 android:text="7.45"
+                android:textColor="#000000"
                 android:textSize="18sp" />
         </RelativeLayout>
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/attendnace_pie_chart"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="300dp"
             android:layout_marginTop="10dp" />
         <TextView

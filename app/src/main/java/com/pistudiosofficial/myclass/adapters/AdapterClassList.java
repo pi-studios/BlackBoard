@@ -25,6 +25,7 @@ import com.pistudiosofficial.myclass.model.FeedbackHODModel;
 import com.pistudiosofficial.myclass.objects.ClassObject;
 import com.pistudiosofficial.myclass.view.MainActivityView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import static com.pistudiosofficial.myclass.Common.CHECK_NEW_COMMENT_POST;
@@ -86,7 +87,8 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
         if(adminLevel == 0) {
             myViewHolder.tvclassName.setText(classObjectArrayList.get(i).className);
             myViewHolder.faculty.setText("Prof : " + classObjectArrayList.get(i).facultyName);
-            myViewHolder.attendance.setText(percentageList.get(i));
+            DecimalFormat df=new DecimalFormat("#.##");
+            myViewHolder.attendance.setText(df.format(Double.parseDouble(percentageList.get(i))));
             myViewHolder.session.setText(classObjectArrayList.get(i).
                     sessionStart + " - " + classObjectArrayList.get(i).sessionEnd);
             try {
