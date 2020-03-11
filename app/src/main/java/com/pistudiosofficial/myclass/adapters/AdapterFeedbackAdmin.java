@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,7 +63,7 @@ public class AdapterFeedbackAdmin extends RecyclerView.Adapter<AdapterFeedbackAd
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         TextView senderName,dateString,session,className;
-        Button feedbackDownload;
+        ImageButton feedbackDownload;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             senderName = itemView.findViewById(R.id.bt_admin_feedback_senderName);

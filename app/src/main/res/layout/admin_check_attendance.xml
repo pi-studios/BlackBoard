@@ -75,34 +75,23 @@
         app:layout_constraintVertical_bias="0.983">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_student_list"
+            android:id="@+id/fab_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_colorNormal="@color/white"
             app:fab_colorPressed="@color/white_pressed"
-            app:fab_icon="@drawable/student"
+            app:fab_icon="@drawable/post"
             app:fab_size="mini"
-            app:fab_title="Add Student" />
-
+            app:fab_title="Post" />
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_export_csv"
+            android:id="@+id/fab_notify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_colorNormal="@color/white"
             app:fab_colorPressed="@color/white_pressed"
-            app:fab_icon="@drawable/excel"
+            app:fab_icon="@drawable/loud_speaker"
             app:fab_size="mini"
-            app:fab_title="Export CSV" />
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_res_bucket"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/white"
-            app:fab_colorPressed="@color/white_pressed"
-            app:fab_icon="@drawable/bucket"
-            app:fab_size="mini"
-            app:fab_title="Resource Bucket" />
+            app:fab_title="Notify" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_create_poll"
@@ -115,14 +104,35 @@
             app:fab_title="Create Poll" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_notify"
+            android:id="@+id/fab_export_csv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_colorNormal="@color/white"
             app:fab_colorPressed="@color/white_pressed"
-            app:fab_icon="@drawable/loud_speaker"
+            app:fab_icon="@drawable/excel"
             app:fab_size="mini"
-            app:fab_title="Notify" />
+            app:fab_title="Export CSV" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_student_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/white"
+            app:fab_colorPressed="@color/white_pressed"
+            app:fab_icon="@drawable/student"
+            app:fab_size="mini"
+            app:fab_title="Add Student" />
+
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_res_bucket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/white"
+            app:fab_colorPressed="@color/white_pressed"
+            app:fab_icon="@drawable/bucket"
+            app:fab_size="mini"
+            app:fab_title="Resource Bucket" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_new_attendance"
@@ -143,16 +153,6 @@
             app:fab_icon="@drawable/folder"
             app:fab_size="mini"
             app:fab_title="Show Attendance" />
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_post"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/white"
-            app:fab_colorPressed="@color/white_pressed"
-            app:fab_icon="@drawable/post"
-            app:fab_size="mini"
-            app:fab_title="Post" />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

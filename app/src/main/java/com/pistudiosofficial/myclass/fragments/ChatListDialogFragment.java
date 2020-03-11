@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -31,6 +32,8 @@ public class ChatListDialogFragment extends DialogFragment implements ChatListVi
     LinearLayoutManager llm;
     HashMap<String, ChatListMasterObject> chatHashMap;
     AdapterChatList adapterChatList;
+    TextView noFriendsList;
+
     public ChatListDialogFragment() {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
@@ -52,11 +55,19 @@ public class ChatListDialogFragment extends DialogFragment implements ChatListVi
         this.chatHashMap = CHAT_LIST_HASH_MAP;
         View view = inflater.inflate(R.layout.activity_chat_list, container);
         adapterChatList = new AdapterChatList(chatHashMap,getContext());
-        recyclerView = view.findViewById(R.id.recyclerView_chatList);
-        llm = new LinearLayoutManager(getContext());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(llm);
-        recyclerView.setAdapter(adapterChatList);
+        noFriendsList=view.findViewById(R.id.no_friends_list);
+        if(chatHashMap.size()==0) {
+            noFriendsList.setVisibility(View.VISIBLE);
+            noFriendsList.setText("No Friends!\nCreate new friends first");
+            noFriendsList.setGravity(Gravity.CENTER_HORIZONTAL);
+        }
+        else {
+            recyclerView = view.findViewById(R.id.recyclerView_chatList);
+            llm = new LinearLayoutManager(getContext());
+            llm.setOrientation(LinearLayoutManager.VERTICAL);
+            recyclerView.setLayoutManager(llm);
+            recyclerView.setAdapter(adapterChatList);
+        }
         return view;
     }
 

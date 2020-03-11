@@ -80,7 +80,7 @@ public class FeedbackHODModel {
         mREF_classList.child(classID).child("feedback").child("class_name").setValue(className);
         mREF_classList.child(classID).child("feedback").child("session").setValue(session);
         mREF_classList.child(classID).child("feedback").child("sender_name").setValue(from_name);
-        String time = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+        String time = new SimpleDateFormat("h:mm a MMM d,''yy").format(new Date());
         mREF_classList.child(classID).child("feedback").child("date").setValue(time);
         UPLOAD_FEEDBACK_QUESTION(mREF_classList.child(classID).child("feedback").child("question"));
         PUSH_FEEDBACK_POST(classID);
@@ -107,7 +107,7 @@ public class FeedbackHODModel {
         postObject.setPostType("admin_feedback");
         postObject.setCreatorUID(CURRENT_USER.UID);
         postObject.setCreatorProPickLink(CURRENT_USER.profilePicLink);
-        String time = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+        String time = new SimpleDateFormat("h:mm a MMM d, ''yy").format(new Date());
         postObject.setCreationDate(time);
         postObject.setCreatorName(CURRENT_USER.Name);
         postObject.setBody("Respond to the Feedback ->HERE");

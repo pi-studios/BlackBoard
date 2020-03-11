@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,6 +23,7 @@ import com.pistudiosofficial.myclass.view.StudentListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
@@ -41,6 +43,8 @@ public class StudentListActivity extends AppCompatActivity implements StudentLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_list);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        setTitle("Add New Student");
         model = new StudentListModel(this);
         spinnerDept = findViewById(R.id.spinner_studentList_dept);
         spinnerYear = findViewById(R.id.spinner_studentList_year);
@@ -91,7 +95,14 @@ public class StudentListActivity extends AppCompatActivity implements StudentLis
         });
 
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     public void spinnerLoadSuccess(HashMap<String, ArrayList<String>> spinnerMap) {
         this.spinnerMap = spinnerMap;
