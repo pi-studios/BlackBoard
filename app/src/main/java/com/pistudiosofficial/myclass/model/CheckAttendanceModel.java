@@ -24,6 +24,7 @@ import com.pistudiosofficial.myclass.objects.PostObject;
 import com.pistudiosofficial.myclass.presenter.presenter_interfaces.CheckAttendancePresenterInterface;
 import com.pistudiosofficial.myclass.view.ShowAttendanceView;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -154,8 +155,10 @@ public class CheckAttendanceModel {
                     postReadIndex(key);
                     if(imgURI != null && extensionList != null) {
                        uploadInit(imgURI,extensionList,key);
+                       pushNotification(postObject.getBody());
                     }
                     else{
+                        pushNotification(postObject.getBody());
                         presenter.postingSuccess();
                     }
                 }
@@ -501,5 +504,18 @@ public class CheckAttendanceModel {
             }
         });
     }
+
+    private void pushNotification(String body){
+
+        String currentTime = DateFormat.getDateTimeInstance().format(new Date());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a MMM d, ''yy");
+        String simpleTime = simpleDateFormat.format(new Date());
+        PushNotificationSenderModel notifModel = new PushNotificationSenderModel(body,
+                body,Common.CURRENT_ADMIN_CLASS_LIST.get(Common.CURRENT_INDEX).className,
+                currentTime,Common.CURRENT_CLASS_ID_LIST.get(Common.CURRENT_INDEX),simpleTime);
+        notifModel.performBroadcast();
+
+    }
+
  }
 

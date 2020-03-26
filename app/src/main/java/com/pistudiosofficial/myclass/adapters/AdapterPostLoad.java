@@ -157,7 +157,6 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
                             }
                         }
                     });
-                    tv.setBackgroundResource(R.drawable.gradient_2);
                     myViewHolder.listView.addView(tv);
                     if (!postPollSelect.get(post_id.get(i)).equals("null") &&
                             obj.optionList.get(j).equals(postPollSelect.get(post_id.get(i))) &&

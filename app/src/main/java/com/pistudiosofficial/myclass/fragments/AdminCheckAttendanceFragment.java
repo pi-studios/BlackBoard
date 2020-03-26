@@ -83,7 +83,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
 
     RecyclerView recyclerViewPost;
     FloatingActionButton fab_exportcsv,fab_create_poll,fab_new_attendance,
-            fab_show_attendace_percent,fab_notify,fab_createPost,fab_show_bucket,fab_addStudent;
+            fab_show_attendace_percent,fab_createPost,fab_show_bucket,fab_addStudent;
     FloatingActionsMenu floatingActionsMenu;
     public AdminCheckAttendanceFragment() {
     }
@@ -108,7 +108,9 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         fab_create_poll = v.findViewById(R.id.fab_create_poll);
         fab_exportcsv = v.findViewById(R.id.fab_export_csv);
         fab_new_attendance = v.findViewById(R.id.fab_new_attendance);
+/*
         fab_notify = v.findViewById(R.id.fab_notify);
+*/
         fab_show_attendace_percent = v.findViewById(R.id.fab_show_attendnace_list);
         fab_createPost = v.findViewById(R.id.fab_post);
         fab_show_bucket = v.findViewById(R.id.fab_res_bucket);
@@ -157,7 +159,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
             }
         });
 
-        fab_notify.setOnClickListener(new View.OnClickListener() {
+       /* fab_notify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog = new Dialog(getContext());
@@ -241,7 +243,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                 //
                 dialog.show();
             }
-        });
+        });*/
 
         fab_create_poll.setOnClickListener(new View.OnClickListener() {
             @Override

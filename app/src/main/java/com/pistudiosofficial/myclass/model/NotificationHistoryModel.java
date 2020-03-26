@@ -55,7 +55,7 @@ public class NotificationHistoryModel {
         };
         mREF_classList.addValueEventListener(valueEventListener);
     }
-    public void done(){
+    private void done(){
         mREF_classList.removeEventListener(valueEventListener);
     }
 

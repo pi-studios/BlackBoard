@@ -83,7 +83,7 @@
             app:fab_icon="@drawable/post"
             app:fab_size="mini"
             app:fab_title="Post" />
-        <com.getbase.floatingactionbutton.FloatingActionButton
+        <!--<com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_notify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
             app:fab_colorPressed="@color/white_pressed"
             app:fab_icon="@drawable/loud_speaker"
             app:fab_size="mini"
-            app:fab_title="Notify" />
+            app:fab_title="Notify" />-->
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_create_poll"

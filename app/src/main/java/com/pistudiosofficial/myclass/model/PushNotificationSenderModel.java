@@ -77,7 +77,7 @@ public class PushNotificationSenderModel {
 
     public void performBroadcast(){
         broadcastTitle = broadcastTitle+"("+className+")";
-        broadcastBody = broadcastBody+"- Created: "+creationTime;
+        broadcastBody = broadcastBody+"\n"+creationTime;
         NotificationStoreObj obj = new NotificationStoreObj(broadcastTitle,broadcastBody,simpleTime,
                 CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX));
         mRefNotification = mREF_classList.child(classID).child("notification");
