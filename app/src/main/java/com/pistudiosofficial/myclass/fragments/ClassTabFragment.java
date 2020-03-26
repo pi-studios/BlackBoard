@@ -55,12 +55,12 @@ public class ClassTabFragment extends Fragment  {
         floatingActionButton3 = view.findViewById(R.id.fab_admin_feedback);
         recyclerView = view.findViewById(R.id.recyclerView_ClassList);
         if(Common.CURRENT_USER.AdminLevel.equals("admin")){
-            ADAPTER_CLASS_LIST = new AdapterClassList(Common.CURRENT_ADMIN_CLASS_LIST,null,(MainActivity)getActivity());
+            ADAPTER_CLASS_LIST = new AdapterClassList(Common.CURRENT_ADMIN_CLASS_LIST,null,(MainActivity)getActivity(),view.getContext());
         }
         if(Common.CURRENT_USER.AdminLevel.equals("user")){
             floatingActionButton3.setVisibility(View.GONE);
             floatingActionButton1.setVisibility(View.GONE);
-            ADAPTER_CLASS_LIST = new AdapterClassList(Common.CURRENT_ADMIN_CLASS_LIST,Common.ATTD_PERCENTAGE_LIST,(MainActivity)getActivity());
+            ADAPTER_CLASS_LIST = new AdapterClassList(Common.CURRENT_ADMIN_CLASS_LIST,Common.ATTD_PERCENTAGE_LIST,(MainActivity)getActivity(),view.getContext());
         }
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);

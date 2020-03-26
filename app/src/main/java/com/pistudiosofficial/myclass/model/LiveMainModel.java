@@ -1,5 +1,7 @@
 package com.pistudiosofficial.myclass.model;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +22,7 @@ import static com.pistudiosofficial.myclass.Common.CHECK_NEW_COMMENT;
 import static com.pistudiosofficial.myclass.Common.CHECK_NEW_COMMENT_POST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
+import static com.pistudiosofficial.myclass.Common.LOG;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
 import static com.pistudiosofficial.myclass.Common.mREF_users;
 

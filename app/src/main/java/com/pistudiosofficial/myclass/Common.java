@@ -84,7 +84,7 @@ public class Common {
 
 
     public static void LOG(){
-        Log.i("TAG","ACCEPTED");
+        Log.i("RAZ","ACCEPTED");
     }
 
 }

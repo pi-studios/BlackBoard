@@ -257,10 +257,10 @@ public class MainActivity extends AppCompatActivity
     public void downloadDataSuccess() {
         circleImageView = headerView.findViewById(R.id.headerImage);
         Menu menu = navigationView.getMenu();
-        if(CURRENT_USER.profilePicLink != null){
+        /*if(CURRENT_USER.profilePicLink != null){
             Glide.with(this).load(CURRENT_USER.profilePicLink)
                     .into(circleImageView);
-        }
+        }*/
         TextView textViewName = headerView.findViewById(R.id.tv_header_title);
         textViewName.setText(CURRENT_USER.Name);
         TextView textViewEmail = headerView.findViewById(R.id.tv_header_email);

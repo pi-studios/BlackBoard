@@ -26,7 +26,8 @@ import java.util.HashMap;
 
 import static com.pistudiosofficial.myclass.Common.CHAT_LIST_HASH_MAP;
 
-public class ChatListDialogFragment extends DialogFragment implements ChatListView {
+public class
+ChatListDialogFragment extends DialogFragment implements ChatListView {
 
     RecyclerView recyclerView;
     LinearLayoutManager llm;

@@ -19,6 +19,7 @@ import com.vanniktech.emoji.EmojiManager;
 import com.vanniktech.emoji.google.GoogleEmojiProvider;
 
 import static com.pistudiosofficial.myclass.Common.APP_VERSION;
+import static com.pistudiosofficial.myclass.Common.LOG;
 
 public class SplashActivity extends AppCompatActivity implements SplashView {
 
@@ -67,12 +68,6 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
                     }).show();
         }
     }
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
 
     @Override
     public void controlCheck(long controlCode,String version) {

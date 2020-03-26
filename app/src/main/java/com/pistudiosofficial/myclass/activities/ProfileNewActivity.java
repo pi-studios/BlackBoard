@@ -104,7 +104,7 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
             }
         });
 
-        img_profile.setOnClickListener(new View.OnClickListener() {
+/*        img_profile.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -112,7 +112,7 @@ public class ProfileNewActivity extends AppCompatActivity implements ProfileNewV
                     openFileChooser(PICK_PROFILE_IMG_REQUEST);
                 }
             }
-        });
+        });*/
 
 
         if (SELECTED_PROFILE_UID.equals(CURRENT_USER.UID)){

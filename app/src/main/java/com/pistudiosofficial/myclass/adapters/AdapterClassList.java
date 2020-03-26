@@ -2,6 +2,7 @@ package com.pistudiosofficial.myclass.adapters;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,15 +13,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.activities.CheckAttendanceActivity;
+import com.pistudiosofficial.myclass.activities.MainActivity;
 import com.pistudiosofficial.myclass.model.FeedbackHODModel;
 import com.pistudiosofficial.myclass.objects.ClassObject;
 import com.pistudiosofficial.myclass.view.MainActivityView;
@@ -39,12 +43,17 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
     ArrayList<ClassObject> classObjectArrayList;
     ArrayList<String> percentageList;
     MainActivityView mainActivityView;
+
+    ArrayList<Integer> gradient_color_code_reference;
+
+    Context context;
     int adminLevel;
     public AdapterClassList(ArrayList<ClassObject> classObjectArrayList,
-            ArrayList<String> percentageList, MainActivityView view) {
+            ArrayList<String> percentageList, MainActivityView view,Context context) {
         this.classObjectArrayList = classObjectArrayList;
         this.percentageList = percentageList;
         this.mainActivityView = view;
+        this.context = context;
         if(CURRENT_USER.AdminLevel.equals("admin")){
             adminLevel = 1;
         }
@@ -53,6 +62,13 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
         }
         if(CURRENT_USER.AdminLevel.equals("master_admin")){
             adminLevel = 2;
+        }
+        gradient_color_code_reference = new ArrayList<>();
+        int k=0;
+        for (int i = 0; i<classObjectArrayList.size(); i++){
+            gradient_color_code_reference.add(k);
+            k++;
+            if (k==4){k=0;}
         }
     }
 
@@ -72,7 +88,7 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, final int i) {
         if(adminLevel == 1){
-            myViewHolder.tvclassName.setText(classObjectArrayList.get(i).className);
+            myViewHolder.tvclassName.setText(classObjectArrayList.get(i).className.toUpperCase());
             myViewHolder.session.
                     setText(classObjectArrayList.get(i).sessionStart + " - " + classObjectArrayList.get(i).sessionEnd);
             myViewHolder.roll.
@@ -83,6 +99,10 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
                 myViewHolder.img_notif.setVisibility(View.VISIBLE);
             }
             }catch (Exception e){e.printStackTrace();}
+            /*if (gradient_color_code_reference.get(i)==0){myViewHolder.linearLayout.setBackgroundResource(R.drawable.gradient_1);}
+            if (gradient_color_code_reference.get(i)==1){myViewHolder.linearLayout.setBackgroundResource(R.drawable.gradient_2);}
+            if (gradient_color_code_reference.get(i)==2){myViewHolder.linearLayout.setBackgroundResource(R.drawable.gradient_4);}
+            if (gradient_color_code_reference.get(i)==3){myViewHolder.linearLayout.setBackgroundResource(R.drawable.gradient_3);}*/
         }
         if(adminLevel == 0) {
             myViewHolder.tvclassName.setText(classObjectArrayList.get(i).className);
@@ -100,9 +120,11 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
                     myViewHolder.img_notif.setVisibility(View.VISIBLE);
                     myViewHolder.img_notif.setImageResource(R.drawable.circle_yellow);
                 }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+            }catch (Exception e){ e.printStackTrace(); }
+            /*if (gradient_color_code_reference.get(i)==0){myViewHolder.linearLayout.setBackgroundResource(R.drawable.gradient_1);}
+            if (gradient_color_code_reference.get(i)==1){myViewHolder.linearLayout.setBackgroundResource(R.drawable.gradient_2);}
+            if (gradient_color_code_reference.get(i)==2){myViewHolder.linearLayout.setBackgroundResource(R.drawable.gradient_3);}
+            if (gradient_color_code_reference.get(i)==3){myViewHolder.linearLayout.setBackgroundResource(R.drawable.gradient_4);}*/
         }
 
         myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -211,6 +233,7 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
                                                         .get(i).sessionStart + " : " + classObjectArrayList.get(i).sessionEnd,
                                                 CURRENT_USER.Name, CURRENT_CLASS_ID_LIST.get(i));
                                         emailDialog.dismiss();
+                                        Toast.makeText(context,"Feed Back Initiated",Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -233,6 +256,7 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvclassName, session, roll,attendance,faculty;
         ImageView img_notif;
+        //LinearLayout linearLayout;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             if(adminLevel == 1){
@@ -240,8 +264,10 @@ public class AdapterClassList extends RecyclerView.Adapter<AdapterClassList.MyVi
                 session = itemView.findViewById(R.id.tv_session_faculty_main_recycler);
                 roll = itemView.findViewById(R.id.tv_student_roll_faculty_main_recycler);
                 img_notif = itemView.findViewById(R.id.img_notif_admin_classlist_row);
+                //linearLayout = itemView.findViewById(R.id.linearLayout_admin_class_row);
             }
             if(adminLevel == 0){
+                //linearLayout = itemView.findViewById(R.id.linearLayout_admin_class_row);
                 tvclassName = itemView.findViewById(R.id.tv_user_row_className);
                 session = itemView.findViewById(R.id.tv_session_student_main_recycler_row);
                 attendance = itemView.findViewById(R.id.tv_attendance_student_main_recycler_row);

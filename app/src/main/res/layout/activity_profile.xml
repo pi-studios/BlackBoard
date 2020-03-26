@@ -190,13 +190,14 @@
                 android:elevation="5dp"
                 android:text="message" />
         </LinearLayout>
+
         <TextView
             android:id="@+id/Bio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="Bio"
+            android:text="Profile Work In Progress"
             android:textColor="#000000"
             android:textSize="24sp" />
 
@@ -205,7 +206,8 @@
             android:id="@+id/mail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/Email"
@@ -230,8 +232,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_toRightOf="@id/Email"
                 android:background="@drawable/right_side_curve_text"
-                android:singleLine="true"
                 android:ellipsize="end"
+                android:singleLine="true"
                 android:text="xyz@gmail.com"
                 android:textSize="18sp" />
         </RelativeLayout>
@@ -240,7 +242,8 @@
             android:id="@+id/Department"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/dep"
@@ -278,7 +281,8 @@
             android:id="@+id/SemesterandBatch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/sem"
@@ -344,7 +348,8 @@
             android:id="@+id/pointer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/sgpi"
@@ -409,9 +414,10 @@
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/attendnace_pie_chart"
             android:layout_width="match_parent"
-            android:visibility="gone"
             android:layout_height="300dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/course"
             android:layout_width="wrap_content"
@@ -420,12 +426,14 @@
             android:layout_marginTop="8dp"
             android:text="Courses"
             android:textColor="#000000"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/course_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            android:id="@+id/course_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:visibility="gone" />
 
         <!---->
         <!--<TextView-->

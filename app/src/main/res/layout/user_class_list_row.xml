@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="1dp"
+    android:layout_marginRight="1dp"
+    android:orientation="vertical"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp">
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="2dp"
@@ -18,21 +28,20 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingStart="10dp"
+            android:singleLine="true"
             android:text="CG 1206"
             android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tv_facultyname_student_main_recycler_row"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/img_newPost_userClassList_row"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_weight="1"
-            android:gravity="center"
-            android:paddingStart="10dp"
-            android:text="Badal Soni"
-            android:textSize="14sp"
-            android:textStyle="italic" />
+            android:visibility="invisible"
+            app:srcCompat="@drawable/circle" />
+
     </LinearLayout>
 
 
@@ -51,32 +60,30 @@
             android:paddingStart="10dp"
             android:text="2019-2020"
             android:textSize="16sp"
-            android:visibility="invisible" />
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_facultyname_student_main_recycler_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="10dp"
+            android:text="Badal Soni"
+            android:textSize="14sp"
+            android:textStyle="italic" />
 
         <TextView
             android:id="@+id/tv_attendance_student_main_recycler_row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
+            android:gravity="end"
             android:paddingStart="15dp"
+            android:paddingEnd="5dp"
             android:text="Attendance - 75%"
             android:textSize="16sp" />
-
-        <ImageView
-            android:id="@+id/img_newPost_userClassList_row"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_weight="0.10"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/circle" />
     </LinearLayout>
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorPrimaryDark"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp" />
+
 </LinearLayout>
+</androidx.cardview.widget.CardView>
