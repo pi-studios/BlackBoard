@@ -44,6 +44,7 @@ public class AssignmentCreationActivity extends AppCompatActivity implements Ass
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assignment_creation);
+        setTitle("Create Assignment");
         et_title = findViewById(R.id.et_title_assignmentCreation);
         et_description = findViewById(R.id.et_description_assignmentCreation);
         et_due_date = findViewById(R.id.et_dueDate_assignmentCreation);

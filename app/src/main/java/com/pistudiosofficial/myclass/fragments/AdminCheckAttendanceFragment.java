@@ -9,7 +9,6 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,8 +21,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,13 +31,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-import com.pistudiosofficial.myclass.activities.AssignmentCreationActivity;
-import com.pistudiosofficial.myclass.activities.AssignmentHomeAdmin;
-import com.pistudiosofficial.myclass.activities.CreatePostActivity;
+import com.pistudiosofficial.myclass.activities.AssignmentHome;
 import com.pistudiosofficial.myclass.activities.ResourceBucketActivity;
 import com.pistudiosofficial.myclass.activities.ShowAttendanceActivity;
 import com.pistudiosofficial.myclass.activities.StudentListActivity;
-import com.pistudiosofficial.myclass.adapters.AdapterCheckAttendanceList;
 import com.pistudiosofficial.myclass.adapters.AdapterPostLoad;
 import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
 import com.pistudiosofficial.myclass.objects.PostObject;
@@ -293,7 +287,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         fab_assignments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), AssignmentHomeAdmin.class));
+                startActivity(new Intent(getActivity(), AssignmentHome.class));
             }
         });
 
@@ -505,7 +499,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                         postObject = new PostObject(
                                 CURRENT_USER.Name,simpleTime,
                                 et_post_content.getText().toString()+". Link: "+fileUploadLink,"simple_admin_post",
-                                "simple_class_post",CURRENT_USER.UID,CURRENT_USER.profilePicLink);
+                                CURRENT_USER.UID,CURRENT_USER.profilePicLink,null);
                     }
                     progressDialogPosting = ProgressDialog.show(getContext(), "",
                             "Posting. Please wait...", true);

@@ -13,13 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.pistudiosofficial.myclass.activities.AssignmentHome;
 import com.pistudiosofficial.myclass.activities.ResourceBucketActivity;
-import com.pistudiosofficial.myclass.activities.StudentAssignment;
 import com.pistudiosofficial.myclass.adapters.AdapterPostLoad;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
@@ -33,7 +32,6 @@ import java.util.HashMap;
 
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
-import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
 import static com.pistudiosofficial.myclass.Common.mREF_RESOURCE_BUCKET;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
@@ -79,7 +77,7 @@ public class UserCheckAttendanceFragment extends Fragment implements CheckAttend
         fab_student_Assignment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent= new Intent(getContext(), StudentAssignment.class);
+                Intent intent= new Intent(getContext(), AssignmentHome.class);
                 startActivity(intent);
             }
         });

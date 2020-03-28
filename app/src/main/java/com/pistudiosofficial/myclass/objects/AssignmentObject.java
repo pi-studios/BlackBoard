@@ -1,13 +1,21 @@
 package com.pistudiosofficial.myclass.objects;
 
 public class AssignmentObject {
-    String description,dueDate, timePosted,title;
+    String description,dueDate, timePosted,title,assignmentid;
 
     public AssignmentObject(String description, String dueDate, String timePosted, String title) {
         this.description = description;
         this.dueDate = dueDate;
         this.timePosted = timePosted;
         this.title = title;
+    }
+
+    public String getAssignmentid() {
+        return assignmentid;
+    }
+
+    public void setAssignmentid(String assignmentid) {
+        this.assignmentid = assignmentid;
     }
 
     public String getDescription() {
