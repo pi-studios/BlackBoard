@@ -63,8 +63,8 @@ public class AdapterGridResourceBucket extends BaseAdapter {
         if(convertView == null){
             listViewHolder = new ViewHolder();
             convertView = layoutinflater.inflate(R.layout.resource_bucket_grid_row, parent, false);
-            listViewHolder.textInListView = (TextView)convertView.findViewById(R.id.tv_grid_view_bucket);
-            listViewHolder.imageInListView = (ImageView)convertView.findViewById(R.id.img_grid_view_bucket);
+            listViewHolder.textInListView = convertView.findViewById(R.id.tv_grid_view_bucket);
+            listViewHolder.imageInListView = convertView.findViewById(R.id.img_grid_view_bucket);
             convertView.setTag(listViewHolder);
         }else{
             listViewHolder = (ViewHolder)convertView.getTag();

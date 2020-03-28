@@ -54,7 +54,7 @@ public class CreatePollActivity extends AppCompatActivity implements CreatePollV
                 ActionBar.LayoutParams.WRAP_CONTENT,
                 ActionBar.LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER);
-        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
+        TextView textviewTitle = viewActionBar.findViewById(R.id.actionbar_textview);
         textviewTitle.setText("");
         abar.setCustomView(viewActionBar, params);
         abar.setDisplayShowCustomEnabled(true);

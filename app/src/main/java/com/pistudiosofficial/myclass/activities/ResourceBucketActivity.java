@@ -61,7 +61,7 @@ public class ResourceBucketActivity extends AppCompatActivity implements Resourc
                 ActionBar.LayoutParams.WRAP_CONTENT,
                 ActionBar.LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER);
-        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
+        TextView textviewTitle = viewActionBar.findViewById(R.id.actionbar_textview);
         textviewTitle.setText("Resource Bucket");
         abar.setCustomView(viewActionBar, params);
         abar.setDisplayShowCustomEnabled(true);

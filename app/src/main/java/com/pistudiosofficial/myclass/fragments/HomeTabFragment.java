@@ -106,8 +106,8 @@ public class HomeTabFragment extends Fragment implements HomeView {
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if(actionId == EditorInfo.IME_ACTION_DONE
                         || actionId == EditorInfo.IME_ACTION_DONE
-                        || keyEvent.getAction() == keyEvent.ACTION_DOWN
-                        || keyEvent.getAction() == keyEvent.KEYCODE_ENTER) {
+                        || keyEvent.getAction() == KeyEvent.ACTION_DOWN
+                        || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
                     recyclerViewSearch.setVisibility(View.VISIBLE);
                     firebaseUserSearch(et_search.getText().toString().toLowerCase());
                     et_search.clearFocus();

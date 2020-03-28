@@ -70,7 +70,7 @@ public class AdapterHelloRequest extends RecyclerView.Adapter<AdapterHelloReques
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ProfileNewActivity.class);
-                ((Activity)context).startActivity(intent);
+                context.startActivity(intent);
                 Common.SELECTED_PROFILE_UID = helloList.get(i).userObject.UID;
             }
         });

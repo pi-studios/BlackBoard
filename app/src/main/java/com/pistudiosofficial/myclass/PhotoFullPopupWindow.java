@@ -46,7 +46,7 @@ public class PhotoFullPopupWindow extends PopupWindow {
         }
         this.mContext = ctx;
         this.view = getContentView();
-        ImageButton closeButton = (ImageButton) this.view.findViewById(R.id.ib_close);
+        ImageButton closeButton = this.view.findViewById(R.id.ib_close);
         setOutsideTouchable(true);
 
         setFocusable(true);
@@ -60,8 +60,8 @@ public class PhotoFullPopupWindow extends PopupWindow {
         });
         //---------Begin customising this popup--------------------
 
-        photoView = (PhotoView) view.findViewById(R.id.image);
-        loading = (ProgressBar) view.findViewById(R.id.loading);
+        photoView = view.findViewById(R.id.image);
+        loading = view.findViewById(R.id.loading);
         photoView.setMaximumScale(6);
         parent = (ViewGroup) photoView.getParent();
         // ImageUtils.setZoomable(imageView);

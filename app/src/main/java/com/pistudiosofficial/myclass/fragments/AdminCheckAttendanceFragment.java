@@ -49,7 +49,8 @@ import com.pistudiosofficial.myclass.activities.CreatePollActivity;
 import com.pistudiosofficial.myclass.activities.NewAttendenceAcitivity;
 import com.pistudiosofficial.myclass.presenter.CheckAttendancePresenter;
 import com.pistudiosofficial.myclass.view.CheckAttendanceFragView;
-import com.squareup.picasso.Picasso;;
+import com.squareup.picasso.Picasso;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;

@@ -52,7 +52,7 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyViewHo
             public void onClick(View view) {
                 Intent intent = new Intent(context, ProfileNewActivity.class);
                 SELECTED_PROFILE_UID = commentObjects.get(i).userUID;
-                ((Activity)context).startActivity(intent);
+                context.startActivity(intent);
             }
         });
         if (commentObjects.get(i).profile_pic_link != null){
