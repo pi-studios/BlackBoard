@@ -77,4 +77,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_dueDate_assignmentCreation" />
+
+    <TextView
+        android:id="@+id/tv_warning_assignmentCreation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Note: Any Upload will overwrite previous media."
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/et_title_assignmentCreation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

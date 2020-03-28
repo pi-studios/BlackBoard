@@ -222,32 +222,6 @@ public class AdapterPostLoad extends RecyclerView.Adapter<AdapterPostLoad.MyView
                 }
             });
 
-//            myViewHolder.post_edit_delete.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    PostObject postObject = postObjectArrayList.get(i);
-//                    String postid = post_id.get(i);
-//                    Dialog postEditDialog = new Dialog(context);
-//                    postEditDialog.setContentView(R.layout.create_post_dialog);
-//                    Button postDone = postEditDialog.findViewById(R.id.bt_create_post);
-//                    Button pdf_selected = postEditDialog.findViewById(R.id.bt_create_post_upload_file);
-//
-//                    ImageButton pickFile = postEditDialog.findViewById(R.id.img_uploadFile);
-//                    ImageButton pickImage = postEditDialog.findViewById(R.id.img_uploadImage);
-//
-//                    ImageView img1 = postEditDialog.findViewById(R.id.img_create_post_01);
-//                    ImageView img2 = postEditDialog.findViewById(R.id.img_create_post_02);
-//                    ImageView img3 = postEditDialog.findViewById(R.id.img_create_post_03);
-//                    EditText et_post_content = postEditDialog.findViewById(R.id.et_create_post_body);
-//                    et_post_content.setText(postObject.getBody());
-//                    if (post_url_list.get(postid).get(0) != null){
-//
-//                    }
-//
-//
-//
-//                }
-//            });
         }
 
     }

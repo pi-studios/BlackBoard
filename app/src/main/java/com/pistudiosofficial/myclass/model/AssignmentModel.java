@@ -1,6 +1,12 @@
 package com.pistudiosofficial.myclass.model;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,14 +23,18 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.pistudiosofficial.myclass.Common;
 import com.pistudiosofficial.myclass.objects.AssignmentObject;
+import com.pistudiosofficial.myclass.objects.AssignmentSubmissionObject;
 import com.pistudiosofficial.myclass.objects.PostObject;
 import com.pistudiosofficial.myclass.view.AssignmentCreationView;
 import com.pistudiosofficial.myclass.view.AssignmentHomeView;
+import com.pistudiosofficial.myclass.view.AssignmentViewerInfoFragView;
+import com.pistudiosofficial.myclass.view.AssignmentViewerSubmissionFragView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
@@ -33,57 +43,45 @@ import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
 public class AssignmentModel {
 
-    AssignmentCreationView assignmentCreationView;
-    AssignmentHomeView assignmentHomeView;
+    private AssignmentCreationView assignmentCreationView;
+    private AssignmentHomeView assignmentHomeView;
+    private AssignmentViewerInfoFragView assignmentViewerInfoFragView;
+    private AssignmentViewerSubmissionFragView assignmentViewerSubmissionFragView;
+    private Context context;
     private String assignmentid;
-    int counter;
-    ArrayList<Uri> uriArrayList;
-    public AssignmentModel(AssignmentCreationView assignmentCreationView) {
+    private int counter;
+    private ArrayList<Uri> uriArrayList;
+    public AssignmentModel(AssignmentCreationView assignmentCreationView,Context context) {
         this.assignmentCreationView = assignmentCreationView;
+        this.context = context;
     }
 
     public AssignmentModel(AssignmentHomeView assignmentHomeView) {
         this.assignmentHomeView = assignmentHomeView;
     }
 
-    public void performAssignmentCreation(String title, String description, String dueDate, ArrayList<Uri> uriArrayList){
+    public AssignmentModel(AssignmentViewerInfoFragView assignmentViewerInfoFragView) {
+        this.assignmentViewerInfoFragView = assignmentViewerInfoFragView;
+    }
+
+    public AssignmentModel(AssignmentViewerSubmissionFragView assignmentViewerSubmissionFragView) {
+        this.assignmentViewerSubmissionFragView = assignmentViewerSubmissionFragView;
+    }
+
+    //Assignment Creation
+    public void performAssignmentCreation(String title, String description, String dueDate, ArrayList<Uri> uriArrayList, String edit_key){
         counter = uriArrayList.size();
-        assignmentCreationFinal(title,description,dueDate);
+        assignmentCreationFinal(title,description,dueDate,edit_key);
         this.uriArrayList = uriArrayList;
     }
-    private void uploadAssignmentResource(Uri uri){
-        StorageReference imgREF = FirebaseStorage.getInstance().getReference()
-                .child("assignments/"+CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)
-                        +"/"+"/"+System.currentTimeMillis());
-        UploadTask uploadTask = imgREF.putFile(uri);
-        uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-            @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    throw task.getException();
-                }
-                return imgREF.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if (task.isSuccessful()) {
-                    Uri downloadUri = task.getResult();
-                    DatabaseReference databaseReference = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("assignment_online");
-                    databaseReference.child(assignmentid).child("meta_data").child(counter+"").setValue(downloadUri.toString());
-                    counter--;
-                    if (counter == 0){assignmentCreationView.assignmentCreationSuccess();}
-                } else {
-                    // Handle failures
-                    // ...
-                    assignmentCreationView.assignmentCreationFailed();
-                }
-            }
-        });
-    }
-    private void assignmentCreationFinal(String title, String description, String dueDate){
+    private void assignmentCreationFinal(String title, String description, String dueDate,String edit_key){
         DatabaseReference databaseReference = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("assignment_online");
-        String newID = databaseReference.push().getKey();
+        String newID;
+        if (edit_key != null){
+            newID=edit_key;
+        }else {
+            newID = databaseReference.push().getKey();
+        }
         assignmentid = newID;
         PostObject postObject = new PostObject();
         String currentTime = DateFormat.getDateTimeInstance().format(new Date());
@@ -131,6 +129,43 @@ public class AssignmentModel {
         });
 
     }
+    private void uploadAssignmentResource(Uri uri){
+        StorageReference imgREF = FirebaseStorage.getInstance().getReference()
+                .child("assignments/"+CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)
+                        +"/"+"/"+System.currentTimeMillis());
+        UploadTask uploadTask = imgREF.putFile(uri);
+        uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+                return imgREF.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    DatabaseReference databaseReference = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("assignment_online");
+                    databaseReference.child(assignmentid).child("meta_data").child(counter+"").child("link").setValue(downloadUri.toString());
+                    ContentResolver cR = context.getContentResolver();
+                    MimeTypeMap mime = MimeTypeMap.getSingleton();
+                    String type = mime.getExtensionFromMimeType(cR.getType(uri));
+                    if (type.equals("pdf")){type = "pdf";}
+                    else{type = "jpg";}
+                    databaseReference.child(assignmentid).child("meta_data").child(counter+"").child("type").setValue(type);
+                    databaseReference.child(assignmentid).child("meta_data").child(counter+"").child("name").setValue(fileName(uri));
+                    counter--;
+                    if (counter == 0){assignmentCreationView.assignmentCreationSuccess();}
+                } else {
+                    // Handle failures
+                    // ...
+                    assignmentCreationView.assignmentCreationFailed();
+                }
+            }
+        });
+    }
     private void postReadIndex(){
         ArrayList<String> studentUID = new ArrayList<>();
         mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("student_index")
@@ -162,7 +197,32 @@ public class AssignmentModel {
                 currentTime,Common.CURRENT_CLASS_ID_LIST.get(Common.CURRENT_INDEX),simpleTime);
         notifModel.performBroadcast();
     }
+    String fileName(Uri data){
+        String fileName = "";
+        if (data.getScheme().equals("file")) {
+            fileName = data.getLastPathSegment();
+        } else {
+            Cursor cursor = null;
+            try {
+                cursor = context.getContentResolver().query(data, new String[]{
+                        MediaStore.Images.ImageColumns.DISPLAY_NAME
+                }, null, null, null);
 
+                if (cursor != null && cursor.moveToFirst()) {
+                    fileName = cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME));
+                }
+            } finally {
+
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        }
+        return fileName;
+    }
+
+
+    //Downloading assignment list.
     public void downloadAssignmentList(String classid){
         DatabaseReference databaseReference = mREF_classList.child(classid).child("assignment_online");
         ArrayList<AssignmentObject> list= new ArrayList<>();
@@ -173,6 +233,7 @@ public class AssignmentModel {
                     AssignmentObject object = new AssignmentObject(dpShot.child("description").getValue().toString(),
                             dpShot.child("due_date").getValue().toString(),dpShot.child("timestamp").getValue().toString(),
                             dpShot.child("title").getValue().toString());
+                    object.setAssignmentid(dpShot.child("assignment_id").getValue(String.class));
                     list.add(object);
                 }
                 assignmentHomeView.assignmentDownloadSuccess(list);
@@ -185,5 +246,101 @@ public class AssignmentModel {
         });
     }
 
+    //For downloading single assignment for assignmentviewer
+    public void downloadAssignmentForViewer(String key){
+        mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("assignment_online")
+                .child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                AssignmentObject assignmentObject = new AssignmentObject(
+                        dataSnapshot.child("description").getValue(String.class),
+                        dataSnapshot.child("due_date").getValue(String.class),
+                        dataSnapshot.child("timestamp").getValue(String.class),
+                        dataSnapshot.child("title").getValue(String.class)
+                    );
+                assignmentObject.setAssignmentid(dataSnapshot.child("assignment_id").getValue(String.class));
+                HashMap<String,String> metaData = new HashMap<>();
+                ArrayList<String> name_meta_data = new ArrayList<>();
+                if (dataSnapshot.child("meta_data").getValue() != null){
+                    for (DataSnapshot snapshot:dataSnapshot.child("meta_data").getChildren()){
+                        metaData.put(snapshot.child("link").getValue(String.class),snapshot.child("type").getValue(String.class));
+                        name_meta_data.add(snapshot.child("name").getValue(String.class));
+                    }
+                }
+                assignmentViewerInfoFragView.downloadSuccess(assignmentObject,metaData,name_meta_data);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                assignmentViewerInfoFragView.downloadFailed();
+            }
+        });
+    }
+
+    //For downloading Grid for submission in assignment submission
+    public void downloadAssignmentSubmissionStudent(String assignmentid,String classId){
+        ArrayList<AssignmentSubmissionObject> assignmentSubmissionObjects = new ArrayList<>();
+        mREF_classList.child(classId).child("assignment_online").child(assignmentid).child("submission")
+                .child(CURRENT_USER.Roll).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot:dataSnapshot.getChildren()) {
+                    if (snapshot.getValue() != null && !snapshot.getKey().equals("name")) {
+                        assignmentSubmissionObjects.add(snapshot.getValue(AssignmentSubmissionObject.class));
+                    }
+                }
+                assignmentViewerSubmissionFragView.downloadSuccessStudent(assignmentSubmissionObjects);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                assignmentViewerSubmissionFragView.downloadFailed();
+            }
+        });
+    }
+
+    //For downloading student list who have submitted assignment
+    public void downloadAssignmentSubmissionStudentList(String assignmentid,String classId){
+        ArrayList<String> roll_list = new ArrayList<>();
+        ArrayList<String> name_list = new ArrayList<>();
+        mREF_classList.child(classId).child("assignment_online").child(assignmentid).child("submission")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot:dataSnapshot.getChildren()){
+                            roll_list.add(snapshot.getKey());
+                            name_list.add(snapshot.child("name").getValue(String.class));
+                        }
+                        assignmentViewerSubmissionFragView.downloadSuccessSubmissionStudentList(roll_list,name_list);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        assignmentViewerSubmissionFragView.downloadFailed();
+                    }
+                });
+    }
+
+    //For Faculty to check individual submission
+    public void downloadAssignmentSubmissionCheckFaculty(String assignmentid,String classId,String roll){
+        ArrayList<AssignmentSubmissionObject> assignmentSubmissionObjects = new ArrayList<>();
+        mREF_classList.child(classId).child("assignment_online").child(assignmentid).child("submission")
+                .child(roll).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot:dataSnapshot.getChildren()) {
+                    if (snapshot.getValue() != null && !snapshot.getKey().equals("name")) {
+                        assignmentSubmissionObjects.add(snapshot.getValue(AssignmentSubmissionObject.class));
+                    }
+                }
+                assignmentViewerSubmissionFragView.downloadSuccessStudent(assignmentSubmissionObjects);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                assignmentViewerSubmissionFragView.downloadFailed();
+            }
+        });
+    }
 
 }

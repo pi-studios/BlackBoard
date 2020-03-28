@@ -1,6 +1,8 @@
 package com.pistudiosofficial.myclass.objects;
 
-public class AssignmentObject {
+import java.io.Serializable;
+
+public class AssignmentObject implements Serializable {
     String description,dueDate, timePosted,title,assignmentid;
 
     public AssignmentObject(String description, String dueDate, String timePosted, String title) {

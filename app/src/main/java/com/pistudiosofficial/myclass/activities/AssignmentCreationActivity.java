@@ -11,17 +11,20 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.adapters.AdapterCreateAssignment;
 import com.pistudiosofficial.myclass.adapters.AdapterNotificationHistory;
 import com.pistudiosofficial.myclass.model.AssignmentModel;
+import com.pistudiosofficial.myclass.objects.AssignmentObject;
 import com.pistudiosofficial.myclass.view.AssignmentCreationView;
 import com.squareup.picasso.Picasso;
 
@@ -29,6 +32,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+
+import static com.pistudiosofficial.myclass.Common.ASSIGNMENT_OBJECT_TEMP;
+import static com.pistudiosofficial.myclass.Common.LOG;
 
 public class AssignmentCreationActivity extends AppCompatActivity implements AssignmentCreationView {
 
@@ -40,11 +46,14 @@ public class AssignmentCreationActivity extends AppCompatActivity implements Ass
     private static final int PICK_FILE_REQUEST = 1;
     ArrayList<Uri> attachmentUriList;
     ProgressDialog progressDialog;
+    String status;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assignment_creation);
         setTitle("Create Assignment");
+        status ="";
+        status = getIntent().getStringExtra("status");
         et_title = findViewById(R.id.et_title_assignmentCreation);
         et_description = findViewById(R.id.et_description_assignmentCreation);
         et_due_date = findViewById(R.id.et_dueDate_assignmentCreation);
@@ -67,16 +76,32 @@ public class AssignmentCreationActivity extends AppCompatActivity implements Ass
         bt_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AssignmentModel assignmentModel = new AssignmentModel(AssignmentCreationActivity.this);
+                AssignmentModel assignmentModel = new AssignmentModel(AssignmentCreationActivity.this,getApplicationContext());
                 if (!TextUtils.isEmpty(et_title.getText().toString())){
                     progressDialog = new ProgressDialog(AssignmentCreationActivity.this);
                     progressDialog.show();
-                    assignmentModel.performAssignmentCreation(et_title.getText().toString(),et_description.getText().toString(),
-                            et_due_date.getText().toString(),attachmentUriList);
+                    if (status.equals("edit")) {
+                        assignmentModel.performAssignmentCreation(et_title.getText().toString(), et_description.getText().toString(),
+                                et_due_date.getText().toString(), attachmentUriList, ASSIGNMENT_OBJECT_TEMP.getAssignmentid());
+                    }else{
+                        assignmentModel.performAssignmentCreation(et_title.getText().toString(), et_description.getText().toString(),
+                                et_due_date.getText().toString(), attachmentUriList, null);
+                    }
                 }
                 else{et_title.setError("Please Give a Title"); }
             }
         });
+        if (status.equals("edit")){
+            bt_create.setText("Edit Done");
+            et_title.setText(ASSIGNMENT_OBJECT_TEMP.getTitle());
+            et_due_date.setText(ASSIGNMENT_OBJECT_TEMP.getDueDate());
+            et_description.setText(ASSIGNMENT_OBJECT_TEMP.getDescription());
+        }else{
+            TextView textView = findViewById(R.id.tv_warning_assignmentCreation);
+            textView.setVisibility(View.GONE);
+        }
+
+
     }
 
     private void openFileChooser(int imgRQST){
@@ -93,6 +118,7 @@ public class AssignmentCreationActivity extends AppCompatActivity implements Ass
         }
 
     }
+
     private Intent getFileChooserIntent() {
         String[] mimeTypes = {"image/*", "application/pdf"};
 

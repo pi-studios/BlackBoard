@@ -150,7 +150,7 @@ public class MainModel {
                     else {
                         long x;
                         if (dataSnapshot.child(id).child("feedback").hasChild("entry")) {
-                            LOG();
+
                             x = dataSnapshot.child(id).child("feedback").child("entry").getChildrenCount();
                         }
                         else{x = 0;}
@@ -257,7 +257,7 @@ public class MainModel {
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                LOG();
+
                 studentClassObject = dataSnapshot.getValue(StudentClassObject.class);
                     studentClassObjectArrayList.add(studentClassObject);
                     Log.d("StudentClassKey",studentClassObject.classKey);

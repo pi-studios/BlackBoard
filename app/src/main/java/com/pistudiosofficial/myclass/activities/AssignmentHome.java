@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.pistudiosofficial.myclass.R;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 
 import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
+import static com.pistudiosofficial.myclass.Common.CURRENT_USER;
 
 public class AssignmentHome extends AppCompatActivity implements AssignmentHomeView {
 
@@ -31,11 +33,17 @@ public class AssignmentHome extends AppCompatActivity implements AssignmentHomeV
         setContentView(R.layout.activity_assignment_home_admin);
         setTitle("Assignment");
         recyclerView=findViewById(R.id.rv_assignmentHome_admin);
+
         fab_new_assignmnents = findViewById(R.id.fab_new_assignments_admin);
+        if (CURRENT_USER.AdminLevel.equals("user")){
+            fab_new_assignmnents.setVisibility(View.GONE);
+        }
         fab_new_assignmnents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),AssignmentCreationActivity.class));
+                Intent intent = new Intent(getApplicationContext(),AssignmentCreationActivity.class);
+                intent.putExtra("status","create");
+                startActivity(intent);
             }
         });
         layoutManager = new LinearLayoutManager(this);
@@ -58,6 +66,6 @@ public class AssignmentHome extends AppCompatActivity implements AssignmentHomeV
 
     @Override
     public void assignmentDownloadFailed() {
-
+        Toast.makeText(this,"Try Again",Toast.LENGTH_SHORT).show();
     }
 }

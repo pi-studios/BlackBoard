@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.pistudiosofficial.myclass.adapters.AdapterClassList;
+import com.pistudiosofficial.myclass.objects.AssignmentObject;
 import com.pistudiosofficial.myclass.objects.ChatListMasterObject;
 import com.pistudiosofficial.myclass.objects.ClassObject;
 import com.pistudiosofficial.myclass.objects.HelloListObject;
@@ -82,9 +83,13 @@ public class Common {
     public static String EDIT_ATTENDANCE_DATE;
     public static ArrayList<String> INDIV_ATTENDANCE_ORIGNAL;
 
+    //Assignment Related common
+    public static String SELECTED_ASSIGNMENT_ID;
+    public static AssignmentObject ASSIGNMENT_OBJECT_TEMP;
+
 
     public static void LOG(){
-        Log.i("RAZ","ACCEPTED");
+        Log.i("TAG","ACCEPTED");
     }
 
 }

@@ -4,47 +4,44 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 import com.pistudiosofficial.myclass.R;
-import com.pistudiosofficial.myclass.adapters.AdapterPagerView;
+import com.pistudiosofficial.myclass.adapters.AdapterPagerAssignmentViewer;
 import com.pistudiosofficial.myclass.adapters.AdapterPagerViewHello;
 
-public class HelloActivity extends AppCompatActivity {
+import static com.pistudiosofficial.myclass.Common.SELECTED_ASSIGNMENT_ID;
 
+public class AssignmentViewerActivity extends AppCompatActivity {
     ViewPager viewPager;
-    AdapterPagerViewHello adapterPagerViewHello;
+    AdapterPagerAssignmentViewer adapterPagerAssignmentViewer;
     TabLayout tabLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hello);
+        setContentView(R.layout.activity_assignment_viewer);
+
+        SELECTED_ASSIGNMENT_ID = getIntent().getStringExtra("assignment_id");
 
         final ActionBar abar = getSupportActionBar();
         if(abar!=null) {
             abar.setDisplayHomeAsUpEnabled(true);
-            abar.setTitle("Connections");
+            abar.setTitle("Assignment Viewer");
         }
-        viewPager = findViewById(R.id.fragment_container_hello);
-        adapterPagerViewHello = new AdapterPagerViewHello(getSupportFragmentManager());
-        tabLayout = findViewById(R.id.tab_bar_hello);
+        viewPager = findViewById(R.id.fragment_container_assignmentviewer);
+        adapterPagerAssignmentViewer = new AdapterPagerAssignmentViewer(getSupportFragmentManager());
+        tabLayout = findViewById(R.id.tab_bar_assignmentviewer);
         tabLayout.setupWithViewPager(viewPager);
-        viewPager.setAdapter(adapterPagerViewHello);
-        viewPager.setCurrentItem(getIntent().getIntExtra("tab",0));
+        viewPager.setAdapter(adapterPagerAssignmentViewer);
+        viewPager.setCurrentItem(0);
 
     }
+
 
     @Override
     public boolean onSupportNavigateUp() {
         finish();
         return  false;
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
     }
 }

@@ -20,5 +20,5 @@
         android:layout_gravity="center_horizontal"
         android:maxLines="1"
         android:text="Document.pdf"
-        android:textSize="14sp" />
+        android:textSize="12sp" />
 </LinearLayout>

@@ -11,9 +11,11 @@
     app:cardElevation="5dp">
 
     <LinearLayout
+        android:id="@+id/assignment_row_linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/tv_assignmenthome_title"
