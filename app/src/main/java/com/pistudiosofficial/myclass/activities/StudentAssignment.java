@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -28,9 +30,7 @@ import static com.pistudiosofficial.myclass.Common.CURRENT_CLASS_ID_LIST;
 import static com.pistudiosofficial.myclass.Common.CURRENT_INDEX;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
 
-public class AssignmentHomeAdmin extends AppCompatActivity {
-
-    FloatingActionButton fab_new_assignmnents;
+public class StudentAssignment extends AppCompatActivity {
     RecyclerView assignmemt_RecyclerView;
     LinearLayoutManager layoutManager;
     RecyclerView.Adapter mAdapter;
@@ -39,21 +39,32 @@ public class AssignmentHomeAdmin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         myDataset=downloadData();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_assignment_home_admin);
-        assignmemt_RecyclerView=findViewById(R.id.rv_assignmentHome_admin);
-        fab_new_assignmnents = findViewById(R.id.fab_new_assignments_admin);
-        fab_new_assignmnents.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),AssignmentCreationActivity.class));
-            }
-        });
+        setContentView(R.layout.activity_student_assignment);
+        setTitle("Assignments");
+        ActionBar actionBar = getActionBar();
+        assert actionBar != null;
+//        actionBar.setDisplayHomeAsUpEnabled(true);
+//        getActionBar().setHomeButtonEnabled(true);
+        assignmemt_RecyclerView=findViewById(R.id.rv_assignmentHome_student);
+//        fab_new_assignmnents = findViewById(R.id.fab_new_assignments_admin);
+//        fab_new_assignmnents.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(getApplicationContext(),AssignmentCreationActivity.class));
+//            }
+//        });
         layoutManager = new LinearLayoutManager(this);
         assignmemt_RecyclerView.setLayoutManager(layoutManager);
         mAdapter = new MyAdapter(myDataset);
         assignmemt_RecyclerView.setAdapter(mAdapter);
-
-
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
     public ArrayList<AssignmentObject> downloadData(){
         DatabaseReference databaseReference = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX)).child("assignment_online");
@@ -73,7 +84,7 @@ public class AssignmentHomeAdmin extends AppCompatActivity {
         });
         return list;
     }
-    public static class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+    public static class MyAdapter extends RecyclerView.Adapter<AssignmentHomeAdmin.MyAdapter.MyViewHolder> {
         private ArrayList<AssignmentObject> mDataSet;
         public static class MyViewHolder extends RecyclerView.ViewHolder {
             TextView assignmentDesc,dueDate;
@@ -90,14 +101,14 @@ public class AssignmentHomeAdmin extends AppCompatActivity {
 
         @NotNull
         @Override
-        public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                         int viewType) {
+        public AssignmentHomeAdmin.MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
+                                                                             int viewType) {
             LayoutInflater layoutInflater=LayoutInflater.from(parent.getContext());
             View v=layoutInflater.inflate(R.layout.assignment_row,parent,false);
-            return new MyViewHolder(v);
+            return new AssignmentHomeAdmin.MyAdapter.MyViewHolder(v);
         }
         @Override
-        public void onBindViewHolder(MyViewHolder holder, int position) {
+        public void onBindViewHolder(AssignmentHomeAdmin.MyAdapter.MyViewHolder holder, int position) {
             holder.assignmentDesc.setText(mDataSet.get(position).getTitle());
             holder.dueDate.setText(mDataSet.get(position).getDueDate());
         }
@@ -106,4 +117,5 @@ public class AssignmentHomeAdmin extends AppCompatActivity {
             return mDataSet.size();
         }
     }
+
 }

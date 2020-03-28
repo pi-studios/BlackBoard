@@ -48,18 +48,45 @@
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="0dp" />
-
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:fab_addButtonColorNormal="@color/primaryDarkColor"
+        app:fab_addButtonColorPressed="@color/primaryLightColor"
+        app:fab_addButtonPlusIconColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_res_bucket_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="17dp"
-        android:layout_marginBottom="15dp"
         app:fab_colorNormal="@color/white"
         app:fab_colorPressed="@color/white_pressed"
         app:fab_icon="@drawable/bucket"
-        app:fab_size="normal"
-        app:fab_title="Resource Bucket" />
+        app:fab_size="mini"
+        app:fab_title="Resource" />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_student_assignment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/white"
+            app:fab_colorPressed="@color/white_pressed"
+            app:fab_icon="@drawable/post"
+            app:fab_size="mini"
+            app:fab_title="Assignment" />
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 </RelativeLayout>

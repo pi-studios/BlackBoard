@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.pistudiosofficial.myclass.activities.ResourceBucketActivity;
+import com.pistudiosofficial.myclass.activities.StudentAssignment;
 import com.pistudiosofficial.myclass.adapters.AdapterPostLoad;
 import com.pistudiosofficial.myclass.R;
 import com.pistudiosofficial.myclass.objects.PollOptionValueLikeObject;
@@ -40,7 +41,7 @@ import static com.pistudiosofficial.myclass.Common.mREF_classList;
 public class UserCheckAttendanceFragment extends Fragment implements CheckAttendanceFragView {
     RecyclerView recyclerViewPost;
     CheckAttendancePresenter presenter;
-    FloatingActionButton fab_resourceBucket;
+    FloatingActionButton fab_resourceBucket,fab_student_Assignment;
     TextView toolBarText;
     public UserCheckAttendanceFragment() {
     }
@@ -65,12 +66,20 @@ public class UserCheckAttendanceFragment extends Fragment implements CheckAttend
         presenter = new CheckAttendancePresenter(this);
         presenter.performLoadPost(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX));
         fab_resourceBucket = v.findViewById(R.id.fab_res_bucket_user);
+        fab_student_Assignment=v.findViewById(R.id.fab_student_assignment);
         fab_resourceBucket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), ResourceBucketActivity.class);
                 mREF_RESOURCE_BUCKET = mREF_classList.child(CURRENT_CLASS_ID_LIST.get(CURRENT_INDEX))
                         .child("resource_bucket");
+                startActivity(intent);
+            }
+        });
+        fab_student_Assignment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent(getContext(), StudentAssignment.class);
                 startActivity(intent);
             }
         });

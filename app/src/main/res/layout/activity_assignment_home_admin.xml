@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:elevation="10dp"
         app:fab_colorNormal="@color/white"
         app:fab_colorPressed="@color/white_pressed"
         app:fab_icon="@drawable/ic_add_pink"
