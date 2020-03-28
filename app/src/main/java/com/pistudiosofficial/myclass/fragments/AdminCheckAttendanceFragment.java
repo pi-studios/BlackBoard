@@ -34,6 +34,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.pistudiosofficial.myclass.activities.AssignmentCreationActivity;
+import com.pistudiosofficial.myclass.activities.AssignmentHomeAdmin;
 import com.pistudiosofficial.myclass.activities.CreatePostActivity;
 import com.pistudiosofficial.myclass.activities.ResourceBucketActivity;
 import com.pistudiosofficial.myclass.activities.ShowAttendanceActivity;
@@ -82,7 +84,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
                         PICK_FILE_REQUEST = 4;
 
     RecyclerView recyclerViewPost;
-    FloatingActionButton fab_exportcsv,fab_create_poll,fab_new_attendance,
+    FloatingActionButton fab_exportcsv,fab_create_poll,fab_new_attendance,fab_assignments,
             fab_show_attendace_percent,fab_createPost,fab_show_bucket,fab_addStudent;
     FloatingActionsMenu floatingActionsMenu;
     public AdminCheckAttendanceFragment() {
@@ -108,6 +110,7 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
         fab_create_poll = v.findViewById(R.id.fab_create_poll);
         fab_exportcsv = v.findViewById(R.id.fab_export_csv);
         fab_new_attendance = v.findViewById(R.id.fab_new_attendance);
+        fab_assignments = v.findViewById(R.id.fab_assignments_faculty);
 /*
         fab_notify = v.findViewById(R.id.fab_notify);
 */
@@ -283,6 +286,13 @@ public class AdminCheckAttendanceFragment extends Fragment implements CheckAtten
             @Override
             public void onClick(View v) {
                 getActivity().startActivity(new Intent(getActivity(), StudentListActivity.class));
+            }
+        });
+
+        fab_assignments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), AssignmentHomeAdmin.class));
             }
         });
 

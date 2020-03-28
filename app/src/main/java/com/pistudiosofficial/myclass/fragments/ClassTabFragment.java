@@ -54,6 +54,7 @@ public class ClassTabFragment extends Fragment  {
         floatingActionButton2 = view.findViewById(R.id.fab_connection_sub);
         floatingActionButton3 = view.findViewById(R.id.fab_admin_feedback);
         recyclerView = view.findViewById(R.id.recyclerView_ClassList);
+
         if(Common.CURRENT_USER.AdminLevel.equals("admin")){
             ADAPTER_CLASS_LIST = new AdapterClassList(Common.CURRENT_ADMIN_CLASS_LIST,null,(MainActivity)getActivity(),view.getContext());
         }

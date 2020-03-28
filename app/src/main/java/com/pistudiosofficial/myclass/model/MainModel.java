@@ -41,6 +41,7 @@ import static com.pistudiosofficial.myclass.Common.FIREBASE_USER;
 import static com.pistudiosofficial.myclass.Common.HELLO_REQUEST_USERS;
 
 import static com.pistudiosofficial.myclass.Common.LOG;
+import static com.pistudiosofficial.myclass.Common.SHARED_PREFERENCES;
 import static com.pistudiosofficial.myclass.Common.mREF_admin_classList;
 import static com.pistudiosofficial.myclass.Common.mREF_classList;
 import static com.pistudiosofficial.myclass.Common.mREF_oldRecords;
@@ -78,6 +79,11 @@ public class MainModel {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Common.CURRENT_USER = dataSnapshot.child(FIREBASE_USER.getUid()).getValue(UserObject.class);
                 if(CURRENT_USER != null){
+                    if (CURRENT_USER.AdminLevel.equals("admin")) {
+                        SHARED_PREFERENCES.edit().putInt("AdminLevel", 0).apply();
+                    }else{
+                        SHARED_PREFERENCES.edit().putInt("AdminLevel", 1).apply();
+                    }
                     presenter.downloadDataSuccess();
                 }
                 else { presenter.downloadDataFailed(); }

@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             app:fab_colorNormal="@color/white"
             app:fab_colorPressed="@color/white_pressed"
-            app:fab_icon="@drawable/post"
+            app:fab_icon="@drawable/loud_speaker"
             app:fab_size="mini"
             app:fab_title="Post" />
         <!--<com.getbase.floatingactionbutton.FloatingActionButton
@@ -122,6 +122,15 @@
             app:fab_icon="@drawable/student"
             app:fab_size="mini"
             app:fab_title="Add Student" />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_assignments_faculty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/white"
+            app:fab_colorPressed="@color/white_pressed"
+            app:fab_icon="@drawable/post"
+            app:fab_size="mini"
+            app:fab_title="Assignments" />
 
 
         <com.getbase.floatingactionbutton.FloatingActionButton
