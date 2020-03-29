@@ -1,5 +1,6 @@
 package com.pistudiosofficial.myclass.activities;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +32,11 @@ public class AssignmentHome extends AppCompatActivity implements AssignmentHomeV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assignment_home_admin);
-        setTitle("Assignment");
+        final ActionBar abar = getSupportActionBar();
+        if(abar!=null) {
+            abar.setDisplayHomeAsUpEnabled(true);
+            abar.setTitle("Assignments");
+        }
         recyclerView=findViewById(R.id.rv_assignmentHome_admin);
 
         fab_new_assignmnents = findViewById(R.id.fab_new_assignments_admin);
@@ -50,7 +55,11 @@ public class AssignmentHome extends AppCompatActivity implements AssignmentHomeV
         recyclerView.setLayoutManager(layoutManager);
 
     }
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return  false;
+    }
     @Override
     protected void onStart() {
         super.onStart();

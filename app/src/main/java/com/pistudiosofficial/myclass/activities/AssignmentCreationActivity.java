@@ -1,5 +1,6 @@
 package com.pistudiosofficial.myclass.activities;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,7 +52,11 @@ public class AssignmentCreationActivity extends AppCompatActivity implements Ass
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assignment_creation);
-        setTitle("Create Assignment");
+        final ActionBar abar = getSupportActionBar();
+        if(abar!=null) {
+            abar.setDisplayHomeAsUpEnabled(true);
+            abar.setTitle("Create Assignment");
+        }
         status ="";
         status = getIntent().getStringExtra("status");
         et_title = findViewById(R.id.et_title_assignmentCreation);
@@ -184,5 +189,11 @@ public class AssignmentCreationActivity extends AppCompatActivity implements Ass
     @Override
     public void assignmentCreationFailed() {
         Toast.makeText(this,"Try Again",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return  false;
     }
 }
