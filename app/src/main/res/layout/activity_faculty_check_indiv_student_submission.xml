@@ -7,6 +7,19 @@
     tools:context=".activities.FacultyCheckIndivStudentSubmissionActivity">
 
 
+    <Button
+        android:id="@+id/bt_chat_assignmentSubmission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@color/blue_semi_transparent_pressed"
+        android:padding="5dp"
+        android:text="Message Student"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <GridView
         android:id="@+id/gridViewAssignmentViewerFacultyCheckSubmission"
         android:layout_width="0dp"
@@ -17,11 +30,13 @@
         android:padding="2dp"
         android:stretchMode="columnWidth"
         android:verticalSpacing="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bt_chat_assignmentSubmission"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </GridView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

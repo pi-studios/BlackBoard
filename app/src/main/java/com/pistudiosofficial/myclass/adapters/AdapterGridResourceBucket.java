@@ -1,8 +1,11 @@
 package com.pistudiosofficial.myclass.adapters;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +37,7 @@ public class AdapterGridResourceBucket extends BaseAdapter {
     private LayoutInflater layoutinflater;
     private ArrayList<ResourceBucketObject> listStorage;
     private Context context;
-
+    ProgressDialog progressDialog;
     public AdapterGridResourceBucket(Context context, ArrayList<ResourceBucketObject> customizedListView) {
         this.context = context;
         layoutinflater =(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -72,9 +75,28 @@ public class AdapterGridResourceBucket extends BaseAdapter {
         listViewHolder.textInListView.setText(listStorage.get(position).file_name);
         if (listStorage.get(position).file_type.equals("photo")){
             Glide.with(context).load(listStorage.get(position).file_link).into(listViewHolder.imageInListView);
+            listViewHolder.imageInListView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = listStorage.get(position).file_link;
+                    new PhotoFullPopupWindow(context, R.layout.popup_photo_full, v, url, null);
+                }
+            });
         }
         if (listStorage.get(position).file_type.equals("pdf")){
             listViewHolder.imageInListView.setImageResource(R.drawable.pdf_icon);
+            listViewHolder.imageInListView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW);
+                    browserIntent.setDataAndType(Uri.parse(listStorage.get(position).file_link),"application/pdf");
+
+                    Intent chooser = Intent.createChooser(browserIntent, "Pdf Viewer");
+                    chooser.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // optional
+
+                    context.startActivity(chooser);
+                }
+            });
         }
         listViewHolder.imageInListView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

@@ -2,6 +2,7 @@ package com.pistudiosofficial.myclass.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,11 +111,29 @@ public class AdapterAssignmentViewerInfoFrag extends BaseAdapter {
                         String url = links.get(position);
                         new PhotoFullPopupWindow(context, R.layout.popup_photo_full, v, url, null);
                     }
+                    else{
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW);
+                        browserIntent.setDataAndType(Uri.parse(links.get(position)),"application/pdf");
+
+                        Intent chooser = Intent.createChooser(browserIntent, "Pdf Viewer");
+                        chooser.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // optional
+
+                        context.startActivity(chooser);
+                    }
                 }
                 else{
                     if (assignmentSubmissionObjects.get(position).type.equals("jpg")) {
                         String url = assignmentSubmissionObjects.get(position).link;
                         new PhotoFullPopupWindow(context, R.layout.popup_photo_full, v, url, null);
+                    }
+                    else{
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW);
+                        browserIntent.setDataAndType(Uri.parse(assignmentSubmissionObjects.get(position).link),"application/pdf");
+
+                        Intent chooser = Intent.createChooser(browserIntent, "Pdf Viewer");
+                        chooser.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // optional
+
+                        context.startActivity(chooser);
                     }
                 }
             }

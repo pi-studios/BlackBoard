@@ -15,7 +15,7 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.FacultyCheckIndivStudentSubmissionActivity"></activity>
+        <activity android:name=".activities.FacultyCheckIndivStudentSubmissionActivity" />
         <activity android:name=".activities.AssignmentViewerActivity" />
         <activity android:name=".activities.AssignmentCreationActivity" />
         <activity android:name=".activities.AssignmentHome" />

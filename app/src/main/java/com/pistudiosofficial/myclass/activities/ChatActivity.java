@@ -44,6 +44,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
     LinearLayoutManager llm;
     AdapterChat adapterChat;
     UserObject chatUser;
+    String referenceTEXT;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +53,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
                 .build(findViewById(R.id.et_chatbox));
         et_chatBox = findViewById(R.id.et_chatbox);
         bt_chatSend = findViewById(R.id.bt_chatbox_send);
+        referenceTEXT = getIntent().getStringExtra("suffix");
         bt_chatSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,11 +68,21 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
                         else {
                             node = SELECTED_CHAT_UID+":"+CURRENT_USER.UID;
                         }
-                        ChatObject chatObject = new ChatObject(
-                                et_chatBox.getText().toString(),
-                                CURRENT_USER.UID,
-                                SELECTED_CHAT_UID,
-                                time);
+                        ChatObject chatObject;
+                        if (referenceTEXT != null) {
+                            chatObject = new ChatObject(
+                                    et_chatBox.getText().toString() + "\nAssignment: " + referenceTEXT,
+                                    CURRENT_USER.UID,
+                                    SELECTED_CHAT_UID,
+                                    time);
+                        }
+                        else{
+                            chatObject = new ChatObject(
+                                    et_chatBox.getText().toString(),
+                                    CURRENT_USER.UID,
+                                    SELECTED_CHAT_UID,
+                                    time);
+                        }
                         model.performMessageSent(chatObject,node,SELECTED_CHAT_UID);
                         et_chatBox.setText("");
                     }
